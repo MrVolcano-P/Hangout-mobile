@@ -13,16 +13,16 @@ export default () => {
   return (
     <ReduxProvider store={reduxStore.store}>
       <PersistGate loading={null} persistor={reduxStore.persistor}>
-        {/* <PaperProvider theme={paperTheme}>
+        <PaperProvider theme={paperTheme}>
           <StatusBar
             translucent
             backgroundColor="transparent"
             barStyle="dark-content"
-          /> */}
+          />
           <SafeAreaProvider>
             <Router />
           </SafeAreaProvider>
-        {/* </PaperProvider> */}
+        </PaperProvider>
       </PersistGate>
     </ReduxProvider>
   );
