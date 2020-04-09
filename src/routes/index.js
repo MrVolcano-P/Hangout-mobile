@@ -13,7 +13,7 @@ export default () => {
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 {
-                    !token ?
+                    token ?
                         <Stack.Screen name="Auth" component={Auth} />
                         :
                         <Stack.Screen name="Main" component={Main} />
