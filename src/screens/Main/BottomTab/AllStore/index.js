@@ -9,22 +9,12 @@ import { Avatar } from 'react-native-paper'
 import { fundComma, dateTime } from 'src/helpers/text'
 import { Appbar } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import { Header } from 'react-native-elements'
 export default function AllStore() {
-    
+
     return (
         <SafeAreaView>
-            <Appbar.Header>
-        <Appbar.BackAction
-          onPress={() => console.log("adsad")}
-        />
-        <Appbar.Content
-          title="Title"
-          subtitle="Subtitle"
-        />
-        <Appbar.Action icon="magnify" onPress={() => console.log("adsad")} />
-        <Appbar.Action icon="dots-vertical" onPress={() => console.log("adsad")} />
-      </Appbar.Header>
+            
         </SafeAreaView>
     )
 }
