@@ -80,7 +80,7 @@ function Item({item }) {
 
 export default function AllStore() {
 
-    console.log(DATA)
+    // console.log(DATA)
     return (
         <SafeAreaView>
             <Appbar.Header>

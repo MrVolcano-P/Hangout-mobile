@@ -7,7 +7,8 @@ export default StyleSheet.create({
     },
     container:{
         flex:2,
-        margin:10
+        margin:10,
+        height:400
     },
     imgview:{
         flex:1,

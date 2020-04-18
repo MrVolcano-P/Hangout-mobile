@@ -4,8 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { Appbar, Searchbar } from 'react-native-paper';
 import styles from './styles'
 import { ScrollableTabView, ScrollableTabBar } from '@valdio/react-native-scrollable-tabview'
-import DetailClub from '../TabView/Detail'
 import Party from '../TabView/Party'
+import Review from '../TabView/Review'
 import { TabView, SceneMap } from 'react-native-tab-view';
 
 const ContentTitle = ({ title, style }) => (
@@ -23,13 +23,13 @@ export default Detail = (props) => {
     const image = { uri: item.pic }
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
-        { key: 'first', title: 'Detail' },
-        { key: 'second', title: 'Party' },
+        { key: 'first', title: 'Party' },
+        { key: 'second', title: 'Review' },
     ]);
 
     const renderScene = SceneMap({
-        first: DetailClub,
-        second: Party,
+        first: Party,
+        second: Review,
     });
     return (
         <>
