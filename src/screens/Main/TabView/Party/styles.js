@@ -7,14 +7,21 @@ export default StyleSheet.create({
         height: 50,
         alignItems: 'center',
         flexDirection: 'row',
-        justifyContent:'center'
+        justifyContent: 'center'
+    },
+    contentView1: {
+        flex: 0.5,
+        borderRightColor: 'black',
+        borderRightWidth: 2,
+        alignItems: 'center'
+    },
+    contentView2: {
+        flex: 3,
+        marginLeft: 10
     },
     item: {
-        // backgroundColor: '#f9c2ff',
-        // padding: 20,
         marginVertical: 8,
         marginHorizontal: 16,
-        // justifyContent: 'center',
     },
     title: {
         fontSize: 18,
@@ -23,6 +30,17 @@ export default StyleSheet.create({
         textShadowRadius: 2,
         textShadowColor: '#fff',
         fontFamily: 'System',
-        // alignContent:'center'
     }
+    , modal: {
+        width: '100%',
+        height: 300,
+        backgroundColor: 'white',
+    },
+    modaltitle: {
+        fontSize: 18,
+    },
+    itemContainer: {
+        flex:1,
+        height: 110,
+    },
 });
