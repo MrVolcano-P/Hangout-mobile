@@ -20,44 +20,71 @@ const ContentTitle = ({ title, style }) => (
 
 const DATA = [
     {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-        pic: 'http://www.zocialx.com/wp-content/uploads/2019/03/3-315.jpg'
+        id: '1',
+        title: 'ท่าช้าง',
+        pic: 'http://www.zocialx.com/wp-content/uploads/2019/03/3-315.jpg',
+        geolocation: {
+            longtitude: "98.994780",
+            latitude: "18.801800"
+        }
 
     },
     {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
+        id: '2',
+        title: 'ตะวันแดง',
+        pic: 'https://fastly.4sqi.net/img/general/width960/9742015_lEq6GL-DCWFs6L4f7IiUOix9gWkR4Klj4zotztJZjXY.jpg',
+        geolocation: {
+            longtitude: "98.964002",
+            latitude: "18.797269"
+        }
     },
     {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
+        id: '3',
+        title: 'Warm Up',
+        pic: 'https://fastly.4sqi.net/img/general/width960/14627946_nj42T4POdU07r3XcCy9BAZkYW_Ze6cfiupQQUyvpMls.jpg',
+        geolocation: {
+            longtitude: "98.965086",
+            latitude: "18.795148"
+        }
     },
 ];
-function Item({ title, pic }) {
-    const image = { uri: pic }
+
+
+
+function Item({item }) {
+    const navigation = useNavigation()
+    const image = { uri: item.pic }
     return (
-        <View style={styles.item}>
-            <CardView
-                cardElevation={5}
-                cardMaxElevation={5}
-                cornerRadius={5}
-                style={styles.cardViewStyle}>
-                <ImageBackground source={image} style={styles.image}>
-                    <Text style={styles.title}>{title}</Text>
-                </ImageBackground>
-            </CardView>
-        </View>
+        <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate('Detail', {
+                item: item
+            })}
+        >
+            <View style={styles.item}>
+                <CardView
+                    cardElevation={5}
+                    cardMaxElevation={5}
+                    cornerRadius={5}
+                    style={styles.cardViewStyle}>
+                    <ImageBackground source={image} style={styles.image}>
+                        <Text style={styles.title}>{item.title}</Text>
+                    </ImageBackground>
+                </CardView>
+            </View>
+        </TouchableOpacity>
+
 
     );
 }
 
 export default function AllStore() {
 
+    console.log(DATA)
     return (
         <SafeAreaView>
             <Appbar.Header>
-                <ContentTitle title={'Title'} style={styles.contentTitle} />
+                <ContentTitle title={'Yark Hangout'} style={styles.contentTitle} />
             </Appbar.Header>
             <Searchbar
                 placeholder="Search"
@@ -67,7 +94,7 @@ export default function AllStore() {
             />
             <FlatList
                 data={DATA}
-                renderItem={({ item }) => <Item title={item.title} pic={item.pic} />}
+                renderItem={({ item }) => <Item item={item} />}
                 keyExtractor={item => item.id}
             />
         </SafeAreaView>

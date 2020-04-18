@@ -3,12 +3,20 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
     contentTitle: {
         fontFamily: 'Roboto',
-        color: 'white',
-        fontSize: 30,
+        // color: 'white',
+        fontSize: 26,
+        color: '#fff',
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 2,
+        textShadowColor: '#000',
+        fontFamily: 'System'
+        // height:40
     },
     searchbar: {
-        margin: 10,
+        marginVertical:5,
         borderRadius: 8,
+        marginHorizontal: 16,
+        height:40
     }, item: {
         // backgroundColor: '#f9c2ff',
         // padding: 20,
@@ -17,7 +25,7 @@ export default StyleSheet.create({
         // justifyContent: 'center',
     },
     title: {
-        fontSize: 32,
+        fontSize: 24,
         color: '#fff',
         textShadowOffset: { width: 2, height: 2 },
         textShadowRadius: 2,
