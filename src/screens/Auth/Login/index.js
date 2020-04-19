@@ -15,11 +15,11 @@ import colors from 'src/themes/colors'
 
 
 export default function Login() {
-    const [ username, setUsername ] = useState('')
-    const [ password, setPassword ] = useState('')
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
     const dispatch = useDispatch()
     const navigation = useNavigation()
-    const [ isLoadingLogin, setIsLoadingLogin ] = useState(false)
+    const [isLoadingLogin, setIsLoadingLogin] = useState(false)
 
     const passwordInput = useRef()
 
@@ -67,80 +67,72 @@ export default function Login() {
                 'กรุณากรอก Username และ Password ให้ครบถ้วน',
             )
         }
-    }, [ username, password, navigation, dispatch ])
+    }, [username, password, navigation, dispatch])
 
-    register = useCallback(() => {
+    const register = useCallback(() => {
         navigation.navigate('Register')
-    }, [ navigation ])
+    }, [navigation])
 
     return (
-        // <ScrollView style={styles.container} contentContainerStyle={styles.containerContent}>
-        //     <SafeAreaView style={styles.container}>
-        //         <View style={styles.logoContainer}>
-        //             <Image
-        //                 style={styles.logo}
-        //                 resizeMode="contain"
-        //                 source={require('src/assets/logo.png')}
-        //             />
-        //             <Text style={styles.welcomeTextSecondary}>
-        //                 WELCOME USER
-        //             </Text>
-        //             <Text style={styles.welcomeText}>
-        //                 SIGN IN HERE
-        //             </Text>
-        //         </View>
-        //         <View style={styles.formContainer}>
-        //             <TextInput
-        //                 label="Username"
-        //                 mode="outlined"
-        //                 style={styles.input}
-        //                 value={username}
-        //                 onChangeText={setUsername}
-        //                 returnKeyType="next"
-        //                 textContentType="username"
-        //                 autoCapitalize="none"
-        //                 onSubmitEditing={() => passwordInput.current.focus()}
-        //             />
-        //             <TextInput
-        //                 ref={passwordInput}
-        //                 label="Password"
-        //                 mode="outlined"
-        //                 secureTextEntry
-        //                 style={styles.input}
-        //                 value={password}
-        //                 onChangeText={setPassword}
-        //                 returnKeyType="done"
-        //                 textContentType="password"
-        //                 autoCapitalize="none"
-        //                 onSubmitEditing={login}
-        //             />
-        //         </View>
-        //         <View style={styles.actionContainer}>
-        //             <Button
-        //                 title="LOGIN"
-        //                 ViewComponent={LinearGradient}
-        //                 linearGradientProps={{
-        //                     colors: [ colors.secondary, colors.primary ],
-        //                     start: { x: 0, y: 0 },
-        //                     end: { x: 1, y: 1 },
-        //                 }}
-        //                 raised
-        //                 containerStyle={styles.loginButtonContainer}
-        //                 buttonStyle={styles.loginButton}
-        //                 onPress={login}
-        //                 loading={isLoadingLogin}
-        //             />
-        //             <TouchableOpacity
-        //                 style={styles.registerButton}
-        //                 onPress={register}
-        //             >
-        //                 <Text style={styles.registerText}>REGISTER A NEW ACCOUNT</Text>
-        //             </TouchableOpacity>
-        //         </View>
-        //     </SafeAreaView>
-        // </ScrollView>
-        <>
-        <Text>Login</Text>
-        </>
+        <ScrollView style={styles.container} contentContainerStyle={styles.containerContent}>
+            <SafeAreaView style={styles.container}>
+                <View style={styles.logoContainer}>
+                    <Image
+                        style={styles.logo}
+                        resizeMode="contain"
+                        source={{ uri: 'https://reactjs.org/logo-og.png' }}
+                    />
+                </View>
+                <View style={styles.formContainer}>
+                    <TextInput
+                        label="Username"
+                        mode="outlined"
+                        style={styles.input}
+                        value={username}
+                        onChangeText={setUsername}
+                        returnKeyType="next"
+                        textContentType="username"
+                        autoCapitalize="none"
+                        onSubmitEditing={() => passwordInput.current.focus()}
+                    />
+                    <TextInput
+                        ref={passwordInput}
+                        label="Password"
+                        mode="outlined"
+                        secureTextEntry
+                        style={styles.input}
+                        value={password}
+                        onChangeText={setPassword}
+                        returnKeyType="done"
+                        textContentType="password"
+                        autoCapitalize="none"
+                        onSubmitEditing={login}
+                    />
+                </View>
+                <View style={styles.actionContainer}>
+                    <Button
+                        title="LOGIN"
+                        ViewComponent={LinearGradient}
+                        linearGradientProps={{
+                            colors: [ colors.secondary, colors.primary ],
+                            start: { x: 0, y: 0 },
+                            end: { x: 1, y: 1 },
+                        }}
+                        raised
+                        containerStyle={styles.loginButtonContainer}
+                        buttonStyle={styles.loginButton}
+                        onPress={login}
+                        loading={isLoadingLogin}
+                    />
+                    <TouchableOpacity
+                        style={styles.registerButton}
+                        onPress={register}
+                    >
+                        <Text style={styles.registerText}>REGISTER A NEW ACCOUNT</Text>
+                    </TouchableOpacity>
+                </View>
+            </SafeAreaView>
+        </ScrollView>
+
     )
 }

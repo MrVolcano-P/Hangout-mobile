@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFF',
+        backgroundColor: '#900',
     },
     containerContent: {
         flexGrow: 1,
@@ -13,6 +13,7 @@ export default StyleSheet.create({
     logoContainer: {
         flex: 0,
         justifyContent: 'flex-start',
+        alignItems:'center'
     },
     logo: {
         marginVertical: 18,
@@ -30,16 +31,17 @@ export default StyleSheet.create({
         color: '#BCBCBC',
     },
     formContainer: {
-        flex: 0,
-        marginTop: 40,
         marginBottom: 22,
+        backgroundColor: 'rgba(255, 253, 253, 0.5)',
+        borderRadius:5
     },
     input: {
         paddingHorizontal: 0,
-        marginBottom: 18,
+        marginHorizontal:10,
+        marginVertical: 10,
     },
     actionContainer: {
-        flex: 1,
+        alignItems:'center'
     },
     loginButtonContainer: {
         width: '70%',

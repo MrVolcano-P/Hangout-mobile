@@ -3,16 +3,17 @@ import { StyleSheet } from 'react-native'
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFF',
+        backgroundColor: '#900',
     },
     contentContainerStyle: {
         flexGrow: 1,
-        paddingBottom: 16,
+        // paddingBottom: 16,
     },
     mainText: {
         fontWeight: 'bold',
         fontSize: 24,
         marginHorizontal: 32,
+        textAlign:'center'
     },
     subText: {
         fontSize: 20,
@@ -30,13 +31,21 @@ export default StyleSheet.create({
     formContainer: {
         marginTop: 18,
         marginHorizontal: 32,
+        marginBottom: 22,
+        backgroundColor: 'rgba(255, 253, 253, 0.5)',
+        borderRadius:5
     },
     input: {
         paddingHorizontal: 0,
-        marginBottom: 18,
+        marginHorizontal:10,
+        marginVertical: 10,
     },
     actionContainer: {
         marginTop: 24,
+        alignItems:'center'
+    },
+    registerButtonContainer: {
+        width: '70%',
     },
     registerButton: {
         borderRadius: 999,
