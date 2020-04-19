@@ -17,6 +17,8 @@ const ContentTitle = ({ title, style }) => (
 
 const initialLayout = { width: Dimensions.get('window').width };
 
+
+
 export default Detail = (props) => {
     const [item, setItem] = useState(props.route.params.item)
     console.log(item)
@@ -26,9 +28,11 @@ export default Detail = (props) => {
         { key: 'first', title: 'Party' },
         { key: 'second', title: 'Review' },
     ]);
-
+    const PartyRoute = () => (
+        <Party nowData={item} />
+    );
     const renderScene = SceneMap({
-        first: Party,
+        first: PartyRoute,
         second: Review,
     });
     return (
