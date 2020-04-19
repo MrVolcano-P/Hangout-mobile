@@ -7,6 +7,7 @@ import { ScrollableTabView, ScrollableTabBar } from '@valdio/react-native-scroll
 import Party from '../TabView/Party'
 import Review from '../TabView/Review'
 import { TabView, SceneMap } from 'react-native-tab-view';
+import { useNavigation } from '@react-navigation/native';
 
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content
@@ -35,11 +36,16 @@ export default Detail = (props) => {
         first: PartyRoute,
         second: Review,
     });
+    const navigation = useNavigation()
     return (
         <>
             <SafeAreaView>
                 <Appbar.Header>
+                    <Appbar.BackAction
+                        onPress={()=> navigation.goBack()}
+                    />
                     <ContentTitle title={item.title} style={styles.contentTitle} />
+                    <Appbar.Action icon="plus" onPress={() => console.log('add')} />
                 </Appbar.Header>
             </SafeAreaView>
             <View style={styles.imgview}>
