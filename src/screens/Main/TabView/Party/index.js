@@ -83,7 +83,7 @@ export default Party = (props) => {
     const [item, setItem] = useState(props.nowData)
     const [visible, setVisible] = useState(false)
     const [data, setData] = useState(DATA[0])
-    const [date, setDate] = useState(moment())
+    const [date, setDate] = useState(new Date())
     const [show, setShow] = useState(false);
 
     const onChange = (event, selectedDate) => {
@@ -93,11 +93,11 @@ export default Party = (props) => {
     };
 
     console.log('item', item);
-    console.log(date.format('x'))
+    console.log(date)
 
     var datafilter = DATA.filter(data => data.placeID === item.id)
     console.log(datafilter.length)
-    var datefilter = datafilter.filter(d => moment(parseInt(d.date)).format('DD-MM') === date.format('DD-MM'))
+    var datefilter = datafilter.filter(d => moment(parseInt(d.date)).format('DD-MM') === moment(date).format('DD-MM'))
     console.log(datefilter)
     return (
         <>
