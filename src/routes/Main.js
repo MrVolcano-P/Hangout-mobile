@@ -4,6 +4,7 @@ import BottomTab from './BottomTab'
 import Detail from '../screens/Main/Detail'
 import Login from 'src/screens/Auth/Login'
 import Register from 'src/screens/Auth/Register'
+import EditProfile from '../screens/Main/EditProfile'
 
 const Stack = createStackNavigator()
 
@@ -14,6 +15,7 @@ export default () => {
             <Stack.Screen name="Detail" component={Detail} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen name="EditProfile" component={EditProfile} />
         </Stack.Navigator>
     )
 }
