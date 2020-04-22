@@ -76,7 +76,7 @@ export default EditProfile = () => {
                         value={name}
                         onChangeText={setName}
                         textContentType="name"
-                        returnKeyType="next"
+                        returnKeyType="submit"
                     />
                 </View>
                 <View style={styles.bottomContainer}>

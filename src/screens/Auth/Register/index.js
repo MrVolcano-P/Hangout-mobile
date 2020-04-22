@@ -128,7 +128,7 @@ export default function Register () {
                         onChangeText={setName}
                         textContentType="name"
                         returnKeyType="next"
-                        onSubmitEditing={() => setIsDatePickerVisble(true)}
+                        onSubmitEditing={() => usernameInput.current.focus()}
                     />
                     <TextInput
                         ref={usernameInput}

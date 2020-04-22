@@ -33,14 +33,19 @@ export default StyleSheet.create({
     }
     , modal: {
         width: '100%',
-        height: 300,
+        height: 500,
         backgroundColor: 'white',
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        marginHorizontal:20
     },
     modaltitle: {
         fontSize: 18,
     },
     itemContainer: {
-        flex:1,
+        flex: 1,
         height: 110,
     },
 });

@@ -16,7 +16,7 @@ const DATA = [
         title: 'ใจเหงาๆ',
         member: [{ username: 'boy' }, { username: 'poom' }],
         amount: '5',
-        date: '1587315600000',
+        date: '1587747600000',
         placeID: '1'
 
     },
@@ -27,7 +27,7 @@ const DATA = [
         { username: 'boy' }, { username: 'boy' },
         ],
         amount: '12',
-        date: '1587315600000',
+        date: '1587747600000',
         placeID: '1'
     },
     {
@@ -167,7 +167,7 @@ export default Party = (props) => {
                 animationOutTiming={600}
                 backdropTransitionInTiming={600}
                 backdropTransitionOutTiming={600}>
-                <View style={{ flex: 1, justifyContent: 'center' }}>
+                <View style={styles.modalContainer}>
                     <View style={styles.modal}>
                         <View style={{ flex: 1, borderBottomWidth: 2, borderBottomColor: 'black', }}>
                             <View style={{ flex: 1, flexDirection: "row" }}>
@@ -186,7 +186,7 @@ export default Party = (props) => {
                         </View>
                         <View style={{ flex: 3 }}>
                             <FlatGrid
-                                itemDimension={90}
+                                itemDimension={60}
                                 items={data.member}
                                 renderItem={({ item, index }) => (
                                     <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
@@ -200,7 +200,7 @@ export default Party = (props) => {
                                 }
                             />
                         </View>
-                        <View style={{ flex: 1 }}>
+                        <View style={{ flex: 1,justifyContent:'flex-end' }}>
                             <Button title="Join" onPress={() => console.log('join', data.title)} />
                         </View>
                     </View>
