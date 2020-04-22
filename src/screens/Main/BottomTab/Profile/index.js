@@ -65,7 +65,7 @@ export default function Profile() {
     return (
         <>
             {
-                token !== null ?
+                token === null ?
                     navigation.navigate('Login')
                     :
                     <SafeAreaView style={{ flex: 1 }}>

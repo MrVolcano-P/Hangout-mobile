@@ -4,7 +4,7 @@ import AllStore from 'src/screens/Main/BottomTab/AllStore'
 import Profile from 'src/screens/Main/BottomTab/Profile'
 import colors from 'src/themes/colors'
 import Icon from 'react-native-vector-icons/Ionicons'
-
+import PartyBottom from 'src/screens/Main/BottomTab/Party'
 const Tab = createBottomTabNavigator()
 
 export default () => {
@@ -22,6 +22,16 @@ export default () => {
                     title: 'All Store',
                     tabBarIcon: ({ color, size }) => (
                         <Icon name="ios-home" color={color} size={size} />
+                    ),
+                }}
+            />
+            <Tab.Screen
+                name="Party"
+                component={PartyBottom}
+                options={{
+                    title: 'Party',
+                    tabBarIcon: ({ color, size }) => (
+                        <Icon name="ios-beer" color={color} size={size} />
                     ),
                 }}
             />

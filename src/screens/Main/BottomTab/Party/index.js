@@ -1,17 +1,14 @@
 import React, { useState, useRef, useCallback } from 'react'
-import { View, Text, Image, ImageBackground, Dimensions, TouchableOpacity, Button, ScrollView } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Appbar, Searchbar, TextInput } from 'react-native-paper';
 import styles from './styles'
-import Party from '../TabView/Party'
-import Review from '../TabView/Review'
-import { TabView, SceneMap } from 'react-native-tab-view';
-import { useNavigation } from '@react-navigation/native';
+import { Appbar, TextInput } from 'react-native-paper'
 import Modal from 'react-native-modal';
 import { useDispatch } from 'react-redux';
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import moment from 'moment';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/FontAwesome5'
+import PartyList from '../../PartyList'
 
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content
@@ -20,29 +17,10 @@ const ContentTitle = ({ title, style }) => (
     />
 );
 
-const initialLayout = { width: Dimensions.get('window').width };
-
-
-
-export default Detail = (props) => {
-    const [item, setItem] = useState(props.route.params.item)
-    const image = { uri: item.pic }
-    const [index, setIndex] = React.useState(0);
-    const navigation = useNavigation()
-    const [routes] = React.useState([
-        { key: 'first', title: 'Party' },
-        { key: 'second', title: 'Review' },
-    ]);
-    const PartyRoute = () => (
-        <Party nowData={item} />
-    );
-    const renderScene = SceneMap({
-        first: PartyRoute,
-        second: Review,
-    });
+export default PartyBottom = () => {
     const [visible, setVisible] = useState(false)
     const [name, setName] = useState('')
-    const [place, setPlace] = useState(item.title)
+    const [place, setPlace] = useState('')
     const [date, setDate] = useState(new Date())
     const [isLoadingRegister, setIsLoadingRegister] = useState(false)
     const [isDatePickerVisible, setIsDatePickerVisble] = useState(false)
@@ -64,29 +42,16 @@ export default Detail = (props) => {
         setDate(date)
         partyAmountInput.current.focus()
     }, [setDate, setIsTimePickerVisble])
-
     return (
         <>
-            <SafeAreaView style={styles.contentContaier}>
+            <SafeAreaView>
                 <Appbar.Header>
-                    <Appbar.BackAction
-                        onPress={() => navigation.goBack()}
-                    />
-                    <ContentTitle title={item.title} style={styles.contentTitle} />
+                    <Appbar.Action />
+                    <ContentTitle title='Party' style={styles.contentTitle} />
                     <Appbar.Action icon="plus" onPress={() => setVisible(true)} />
                 </Appbar.Header>
             </SafeAreaView>
-            <View style={styles.imgview}>
-                <ImageBackground source={image}
-                    style={styles.img} />
-            </View>
-            <TabView
-                navigationState={{ index, routes }}
-                renderScene={renderScene}
-                onIndexChange={setIndex}
-                initialLayout={initialLayout}
-                style={styles.tabViewContainer}
-            />
+            <PartyList />
             <Modal isVisible={visible}
                 backdropColor='rgba(255, 253, 253, 0.5)'
                 backdropOpacity={2}
@@ -104,7 +69,7 @@ export default Detail = (props) => {
                                 <View style={{ flex: 4, alignItems: 'center', justifyContent: 'center', }}>
                                     <Text style={styles.modaltitle}>Add Party</Text>
                                 </View>
-                                <View style={{ flex: 1,alignItems:'baseline',justifyContent: 'center', }}>
+                                <View style={{ flex: 1, alignItems: 'baseline', justifyContent: 'center', }}>
                                     <TouchableOpacity onPress={() => setVisible(false)}>
                                         <Icon name="times" size={30} color="#000" />
                                     </TouchableOpacity>
@@ -175,17 +140,10 @@ export default Detail = (props) => {
                                 />
                             </ScrollView>
                         </View>
-                        <View style={{ flex: 0.5 }}>
-                            <Button title="Create" onPress={() => console.log({
-                                name,
-                                place,
-                                date,
-                                partyAmount
-                            })} />
-                        </View>
                     </View>
                 </View>
             </Modal>
         </>
     )
 }
+
