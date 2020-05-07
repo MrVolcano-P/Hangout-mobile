@@ -8,6 +8,7 @@ import moment, { months } from 'moment'
 import countdown from 'countdown'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import CountDown from 'react-native-countdown-component';
+import Chat from '../Chat'
 
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content
@@ -47,8 +48,13 @@ const DATA = [
     },
 ];
 
+
+const User = {
+    username: 'boy'
+}
 export default PartyDetail = (props) => {
     const navigation = useNavigation()
+    const [profile, setProfile] = useState(User)
     const [data, setData] = useState(props.route.params.data)
     var dataFilter = DATA.filter(d => d.id === data.placeID)
     var place = dataFilter[0]
@@ -56,6 +62,7 @@ export default PartyDetail = (props) => {
 
     var time = moment().countdown(parseInt(data.date), countdown.SECONDS).toString()
     console.log(time)
+
     return (
         <>
             <SafeAreaView>
@@ -94,20 +101,27 @@ export default PartyDetail = (props) => {
                                 <CountDown
                                     until={10}
                                     size={20}
-                                    onFinish={()=>console.log('adad')}
+                                    onFinish={() => console.log('adad')}
                                     digitStyle={{ backgroundColor: '#FFF', borderWidth: 2, borderColor: '#F8C441' }}
                                     digitTxtStyle={{ color: '#F8C441' }}
                                     timeLabelStyle={{ color: 'red', fontWeight: 'bold' }}
                                     separatorStyle={{ color: '#F8C441' }}
-                                    timeToShow={['D','H', 'M', 'S']}
+                                    timeToShow={['D', 'H', 'M', 'S']}
                                     timeLabels={{ m: null, s: null }}
                                     showSeparator
                                 />
                             </View>
                         </View>
                     </View>
-                    <View style={{ flex: 4,backgroundColor:'red' }}>
-
+                    <View style={{ flex: 5, backgroundColor: 'red' }}>
+                        <View style={styles.chat}>
+                            <View style={styles.headChat}>
+                                <Text style={styles.headChatText}>Chat Room</Text>
+                            </View>
+                            <View style={styles.chatContent}>
+                                <Chat />
+                            </View>
+                        </View>
                     </View>
                 </View>
             </View>

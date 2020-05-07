@@ -53,5 +53,27 @@ export default StyleSheet.create({
         textShadowRadius: 2,
         textShadowColor: '#000',
         fontFamily: 'System',
-    }
+    },
+    chat:{
+        flex:1,
+        margin:20
+    },
+    headChat:{
+        flex:1,
+        backgroundColor: '#464646',
+        alignItems:'center',
+        justifyContent: 'center',
+    },
+    headChatText:{
+        fontSize: 18,
+        color: '#fff',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 1,
+        textShadowColor: '#000',
+        fontFamily: 'System',
+    },
+    chatContent:{
+        flex:7,
+        backgroundColor:'rgba(255, 253, 253, 0.5)'
+    },
 })

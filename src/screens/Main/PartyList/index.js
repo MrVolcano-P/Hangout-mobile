@@ -46,7 +46,7 @@ const DATA = [
     },
 ];
 const User ={
-    username:'boy'
+    username:'Boy'
 }
 function Item({ item, setData, setVisible }) {
     const navigation = useNavigation()
