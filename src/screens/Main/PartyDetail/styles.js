@@ -14,19 +14,44 @@ export default StyleSheet.create({
     },content: {
         flex: 1,
         width: '100%',
-        height: 50,
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'center'
+        flexDirection: 'row'
     },
     contentView1: {
         flex: 0.5,
         borderRightColor: 'black',
         borderRightWidth: 2,
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor:'#464646',
+        justifyContent: 'center',
+        height:'100%'
     },
     contentView2: {
         flex: 3,
-        marginLeft: 10
-    },
+        backgroundColor:'#8A93E2',
+        justifyContent: 'center',
+        height:'100%'
+    },title: {
+        fontSize: 20,
+        color: '#fff',
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 2,
+        textShadowColor: '#000',
+        fontFamily: 'System',
+    },title2:{
+        fontSize: 20,
+        color: '#000',
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 2,
+        textShadowColor: '#fff',
+        fontFamily: 'System',
+        marginLeft: 10,
+        textAlign:'center'
+    },title3: {
+        fontSize: 20,
+        color: '#fff',
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 2,
+        textShadowColor: '#000',
+        fontFamily: 'System',
+    }
 })

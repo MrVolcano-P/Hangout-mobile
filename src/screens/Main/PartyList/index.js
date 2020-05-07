@@ -14,7 +14,7 @@ const DATA = [
         title: 'ใจเหงาๆ',
         member: [{ username: 'boy' }, { username: 'poom' }],
         amount: '5',
-        date: '1587747600000',
+        date: '1587817800000',
         placeID: '1'
 
     },
@@ -25,7 +25,7 @@ const DATA = [
         { username: 'a' }, { username: 'm' },
         ],
         amount: '12',
-        date: '1587747600000',
+        date: '1587817800000',
         placeID: '1'
     },
     {
@@ -33,7 +33,7 @@ const DATA = [
         title: 'ตี้สาวโสด',
         member: [{ username: 'boy' },],
         amount: '7',
-        date: '1587488400000',
+        date: '1588884400000',
         placeID: '2'
     },
     {
@@ -41,7 +41,7 @@ const DATA = [
         title: 'หาสาวโสดนั่งเล่นกันครับ',
         member: [{ username: 'kuy' }],
         amount: '2',
-        date: '1587747600000',
+        date: '1588884400000',
         placeID: '2'
     },
 ];
