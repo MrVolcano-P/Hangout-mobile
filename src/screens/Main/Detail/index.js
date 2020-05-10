@@ -1,8 +1,9 @@
 import React, { useState, useRef, useCallback } from 'react'
-import { View, Text, Image, ImageBackground, Dimensions, TouchableOpacity, Button, ScrollView } from 'react-native'
+import { View, Text, Image, ImageBackground, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Appbar, Searchbar, TextInput } from 'react-native-paper';
 import styles from './styles'
+import { Button } from 'react-native-elements'
 import Party from '../TabView/Party'
 import Review from '../TabView/Review'
 import { TabView, SceneMap } from 'react-native-tab-view';
@@ -12,7 +13,7 @@ import { useDispatch } from 'react-redux';
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
+import partyAPI from 'src/api/party'
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content
         title={<Text style={style}> {title} </Text>}
@@ -28,6 +29,7 @@ export default Detail = (props) => {
     const [item, setItem] = useState(props.route.params.item)
     const image = { uri: item.pic }
     const [index, setIndex] = React.useState(0);
+    const [profile, setProfile] = useState({ username: 'Boy' })
     const navigation = useNavigation()
     const [routes] = React.useState([
         { key: 'first', title: 'Party' },
@@ -40,15 +42,14 @@ export default Detail = (props) => {
         first: PartyRoute,
         second: Review,
     });
+
     const [visible, setVisible] = useState(false)
     const [name, setName] = useState('')
     const [place, setPlace] = useState(item.title)
     const [date, setDate] = useState(new Date())
-    const [isLoadingRegister, setIsLoadingRegister] = useState(false)
+    const [isLoadingAddParty, setIsLoadingAddParty] = useState(false)
     const [isDatePickerVisible, setIsDatePickerVisble] = useState(false)
-    const [isTimePickerVisible, setIsTimePickerVisble] = useState(false)
     const [partyAmount, setPartyAmount] = useState('')
-    const dispatch = useDispatch()
 
     const placeInput = useRef()
     const partyAmountInput = useRef()
@@ -56,15 +57,30 @@ export default Detail = (props) => {
     const changeDate = useCallback((date) => {
         setIsDatePickerVisble(false)
         setDate(date)
-        setIsTimePickerVisble(true)
+        partyAmountInput.current.focus()
     }, [setDate, setIsDatePickerVisble])
 
-    const changeTime = useCallback((date) => {
-        setIsTimePickerVisble(false)
-        setDate(date)
-        partyAmountInput.current.focus()
-    }, [setDate, setIsTimePickerVisble])
-
+    const addParty = useCallback(() => {
+        if (name && place && date && partyAmount) {
+            const unixDate = date.getTime()
+            setIsLoadingAddParty(true)
+            partyAPI.add(name, partyAmount, unixDate.toString(), profile, item.id)
+                .then(() => {
+                    console.log('success')
+                    setVisible(false)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+                .finally(() => {
+                    setIsLoadingAddParty(false)
+                    setName('')
+                    setDate(new Date())
+                    setPartyAmount('')
+                })
+        }
+    }, [name, place, date, partyAmount])
+    
     return (
         <>
             <SafeAreaView style={styles.contentContaier}>
@@ -104,7 +120,7 @@ export default Detail = (props) => {
                                 <View style={{ flex: 4, alignItems: 'center', justifyContent: 'center', }}>
                                     <Text style={styles.modaltitle}>Add Party</Text>
                                 </View>
-                                <View style={{ flex: 1,alignItems:'baseline',justifyContent: 'center', }}>
+                                <View style={{ flex: 1, alignItems: 'baseline', justifyContent: 'center', }}>
                                     <TouchableOpacity onPress={() => setVisible(false)}>
                                         <Icon name="times" size={30} color="#000" />
                                     </TouchableOpacity>
@@ -145,24 +161,16 @@ export default Detail = (props) => {
                                 </TouchableOpacity>
                                 <DateTimePickerModal
                                     isVisible={isDatePickerVisible}
-                                    mode="date"
+                                    mode="datetime"
                                     onConfirm={changeDate}
                                     onCancel={() => setIsDatePickerVisble(false)}
                                 />
-                                <TouchableOpacity onPress={() => setIsTimePickerVisble(true)}>
-                                    <TextInput
-                                        label="Time"
-                                        mode="outlined"
-                                        style={styles.input}
-                                        value={moment(date).format('HH:mm')}
-                                        editable={false}
-                                    />
-                                </TouchableOpacity>
-                                <DateTimePickerModal
-                                    isVisible={isTimePickerVisible}
-                                    mode="time"
-                                    onConfirm={changeTime}
-                                    onCancel={() => setIsTimePickerVisble(false)}
+                                <TextInput
+                                    label="Time"
+                                    mode="outlined"
+                                    style={styles.input}
+                                    value={moment(date).format('HH:mm')}
+                                    editable={false}
                                 />
                                 <TextInput
                                     ref={partyAmountInput}
@@ -176,12 +184,11 @@ export default Detail = (props) => {
                             </ScrollView>
                         </View>
                         <View style={{ flex: 0.5 }}>
-                            <Button title="Create" onPress={() => console.log({
-                                name,
-                                place,
-                                date,
-                                partyAmount
-                            })} />
+                            <Button
+                                title="Create"
+                                onPress={addParty}
+                                loading={isLoadingAddParty}
+                            />
                         </View>
                     </View>
                 </View>
