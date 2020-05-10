@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { View, Text, TouchableOpacity, FlatList } from 'react-native'
 import styles from './styles'
 import moment from 'moment';
@@ -7,44 +7,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
 import CardView from 'react-native-cardview';
 import Modal from 'react-native-modal';
+import partyAPI from 'src/api/party';
 
-const DATA = [
-    {
-        id: '1',
-        title: 'ใจเหงาๆ',
-        member: [{ username: 'boy' }, { username: 'poom' }],
-        amount: '5',
-        date: '1587817800000',
-        placeID: '1'
-
-    },
-    {
-        id: '2',
-        title: 'โซน U คับ',
-        member: [{ username: 'jack' }, { username: 'poom' }, { username: 't' }, { username: 'y' },
-        { username: 'a' }, { username: 'm' },
-        ],
-        amount: '12',
-        date: '1587817800000',
-        placeID: '1'
-    },
-    {
-        id: '3',
-        title: 'ตี้สาวโสด',
-        member: [{ username: 'boy' },],
-        amount: '7',
-        date: '1588884400000',
-        placeID: '2'
-    },
-    {
-        id: '4',
-        title: 'หาสาวโสดนั่งเล่นกันครับ',
-        member: [{ username: 'kuy' }],
-        amount: '2',
-        date: '1588884400000',
-        placeID: '2'
-    },
-];
 const User ={
     username:'Boy'
 }
@@ -83,9 +47,20 @@ function Item({ item, setData, setVisible }) {
 export default PartyList = () => {
     const [user, setUser] = useState(User)
     const [visible, setVisible] = useState(false)
-    const [data, setData] = useState(DATA[0])
     const [date, setDate] = useState(new Date())
     const [show, setShow] = useState(false);
+    const [party, setParty] = useState([])
+    const getParty = useCallback(() => {
+        partyAPI.get()
+            .then((parties) => {
+                setParty(parties)
+            })
+            .catch(error => {})
+    }, [])
+
+    useEffect(() => {
+        getParty()
+    }, [ getParty ])
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -93,10 +68,7 @@ export default PartyList = () => {
         setDate(currentDate);
     };
 
-    
-    console.log(date)
-
-    var datafilter = DATA.filter(data => data.member.some(i => i.username.includes(user.username)))
+    var datafilter = party.filter(data => data.member.some(i => i.username.includes(user.username)))
     console.log(datafilter.length)
     var datefilter = datafilter.filter(d => moment(parseInt(d.date)).format('DD-MM') === moment(date).format('DD-MM'))
     console.log(datefilter)

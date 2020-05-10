@@ -1,5 +1,5 @@
 import axios from 'axios'
 
 export default axios.create({
-    baseURL: 'http://koolpiggybank.unomy.pw',
+    baseURL: 'https://5eb3e2a2974fee0016ecdc59.mockapi.io',
 })

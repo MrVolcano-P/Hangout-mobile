@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useCallback, useEffect, useState } from 'react'
 import { FlatList, View, Text, ImageBackground, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styles from './styles'
@@ -10,7 +10,7 @@ import { fundComma, dateTime } from 'src/helpers/text'
 import { Appbar, Searchbar } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CardView from 'react-native-cardview';
-
+import pubAPI from 'src/api/pub'
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content
         title={<Text style={style}> {title} </Text>}
@@ -18,40 +18,7 @@ const ContentTitle = ({ title, style }) => (
     />
 );
 
-const DATA = [
-    {
-        id: '1',
-        title: 'ท่าช้าง',
-        pic: 'http://www.zocialx.com/wp-content/uploads/2019/03/3-315.jpg',
-        geolocation: {
-            longtitude: "98.994780",
-            latitude: "18.801800"
-        }
-
-    },
-    {
-        id: '2',
-        title: 'ตะวันแดง',
-        pic: 'https://fastly.4sqi.net/img/general/width960/9742015_lEq6GL-DCWFs6L4f7IiUOix9gWkR4Klj4zotztJZjXY.jpg',
-        geolocation: {
-            longtitude: "98.964002",
-            latitude: "18.797269"
-        }
-    },
-    {
-        id: '3',
-        title: 'Warm Up',
-        pic: 'https://fastly.4sqi.net/img/general/width960/14627946_nj42T4POdU07r3XcCy9BAZkYW_Ze6cfiupQQUyvpMls.jpg',
-        geolocation: {
-            longtitude: "98.965086",
-            latitude: "18.795148"
-        }
-    },
-];
-
-
-
-function Item({item }) {
+function Item({ item }) {
     const navigation = useNavigation()
     const image = { uri: item.pic }
     return (
@@ -79,8 +46,19 @@ function Item({item }) {
 }
 
 export default function AllStore() {
+    const [pub, setPub] = useState([])
+    const getPub = useCallback(() => {
+        pubAPI.get()
+            .then((pubs) => {
+                setPub(pubs)
+            })
+            .catch(error => { })
+    }, [])
 
-    // console.log(DATA)
+    useEffect(() => {
+        getPub()
+    }, [ getPub ])
+
     return (
         <SafeAreaView>
             <Appbar.Header>
@@ -93,7 +71,7 @@ export default function AllStore() {
                 style={styles.searchbar}
             />
             <FlatList
-                data={DATA}
+                data={pub}
                 renderItem={({ item }) => <Item item={item} />}
                 keyExtractor={item => item.id}
             />

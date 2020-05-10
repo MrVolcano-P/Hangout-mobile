@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { View, Text, FlatList, TouchableOpacity, ImageBackground, Button, ScrollView, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styles from './styles'
@@ -9,44 +9,7 @@ import { FlatGrid } from 'react-native-super-grid';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DateTimePicker from '@react-native-community/datetimepicker';
-
-const DATA = [
-    {
-        id: '1',
-        title: 'ใจเหงาๆ',
-        member: [{ username: 'boy' }, { username: 'poom' }],
-        amount: '5',
-        date: '1587747600000',
-        placeID: '1'
-
-    },
-    {
-        id: '2',
-        title: 'โซน U คับ',
-        member: [{ username: 'boy' }, { username: 'poom' }, { username: 'boy' }, { username: 'boy' },
-        { username: 'boy' }, { username: 'boy' },
-        ],
-        amount: '12',
-        date: '1587747600000',
-        placeID: '1'
-    },
-    {
-        id: '3',
-        title: 'ตี้สาวโสด',
-        member: [{ username: 'boy' },],
-        amount: '7',
-        date: '1587747600000',
-        placeID: '2'
-    },
-    {
-        id: '4',
-        title: 'หาสาวโสดนั่งเล่นกันครับ',
-        member: [{ username: 'boy' }],
-        amount: '2',
-        date: '1587747600000',
-        placeID: '2'
-    },
-];
+import partyAPI from 'src/api/party'
 
 function Item({ item, setData, setVisible }) {
     const navigation = useNavigation()
@@ -82,10 +45,21 @@ function Item({ item, setData, setVisible }) {
 export default Party = (props) => {
     const [item, setItem] = useState(props.nowData)
     const [visible, setVisible] = useState(false)
-    const [data, setData] = useState(DATA[0])
+    const [data, setData] = useState({})
     const [date, setDate] = useState(new Date())
     const [show, setShow] = useState(false);
+    const [party, setParty] = useState([])
+    const getParty = useCallback(() => {
+        partyAPI.get()
+            .then((parties) => {
+                setParty(parties)
+            })
+            .catch(error => { })
+    }, [])
 
+    useEffect(() => {
+        getParty()
+    }, [getParty])
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');
@@ -95,7 +69,7 @@ export default Party = (props) => {
     console.log('item', item);
     console.log(date)
 
-    var datafilter = DATA.filter(data => data.placeID === item.id)
+    var datafilter = party.filter(data => data.placeID === item.id)
     console.log(datafilter.length)
     var datefilter = datafilter.filter(d => moment(parseInt(d.date)).format('DD-MM') === moment(date).format('DD-MM'))
     console.log(datefilter)
@@ -158,55 +132,60 @@ export default Party = (props) => {
                     onChange={onChange}
                 />
             )}
-            <Modal isVisible={visible}
-                backdropColor='rgba(255, 253, 253, 0.5)'
-                backdropOpacity={2}
-                animationIn="zoomInDown"
-                animationOut="zoomOutUp"
-                animationInTiming={600}
-                animationOutTiming={600}
-                backdropTransitionInTiming={600}
-                backdropTransitionOutTiming={600}>
-                <View style={styles.modalContainer}>
-                    <View style={styles.modal}>
-                        <View style={{ flex: 1, borderBottomWidth: 2, borderBottomColor: 'black', }}>
-                            <View style={{ flex: 1, flexDirection: "row" }}>
-                                <View style={{ flex: 1 }}></View>
-                                <View style={{ flex: 4, alignItems: 'center', justifyContent: 'center', }}>
-                                    <Text style={styles.modaltitle}>{data.title}</Text>
-                                    <Text>{data.member.length}/{data.amount}</Text>
-                                </View>
-                                <View style={{ flex: 1, alignItems: 'flex-end', marginRight: 10 }}>
-                                    <TouchableOpacity onPress={() => setVisible(false)}>
-                                        <Text style={styles.modaltitle}>X</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-
-                        </View>
-                        <View style={{ flex: 3 }}>
-                            <FlatGrid
-                                itemDimension={60}
-                                items={data.member}
-                                renderItem={({ item, index }) => (
-                                    <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
-                                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                                            <Image source={{ uri: 'https://reactjs.org/logo-og.png' }}
-                                                style={{ width: 80, height: 80, borderRadius: 80 / 2 }} />
-                                        </View>
-                                        <Text style={{ fontSize: 18, textAlign: 'center' }}>{item.username}</Text>
+            {data.member !== undefined ?
+                <Modal isVisible={visible}
+                    backdropColor='rgba(255, 253, 253, 0.5)'
+                    backdropOpacity={2}
+                    animationIn="zoomInDown"
+                    animationOut="zoomOutUp"
+                    animationInTiming={600}
+                    animationOutTiming={600}
+                    backdropTransitionInTiming={600}
+                    backdropTransitionOutTiming={600}>
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modal}>
+                            <View style={{ flex: 1, borderBottomWidth: 2, borderBottomColor: 'black', }}>
+                                <View style={{ flex: 1, flexDirection: "row" }}>
+                                    <View style={{ flex: 1 }}></View>
+                                    <View style={{ flex: 4, alignItems: 'center', justifyContent: 'center', }}>
+                                        <Text style={styles.modaltitle}>{data.title}</Text>
+                                        <Text>{data.member.length}/{data.amount}</Text>
                                     </View>
-                                )
-                                }
-                            />
-                        </View>
-                        <View style={{ flex: 1,justifyContent:'flex-end' }}>
-                            <Button title="Join" onPress={() => console.log('join', data.title)} />
-                        </View>
-                    </View>
+                                    <View style={{ flex: 1, alignItems: 'flex-end', marginRight: 10 }}>
+                                        <TouchableOpacity onPress={() => setVisible(false)}>
+                                            <Text style={styles.modaltitle}>X</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
 
-                </View>
-            </Modal>
+                            </View>
+                            <View style={{ flex: 3 }}>
+                                <FlatGrid
+                                    itemDimension={60}
+                                    items={data.member}
+                                    renderItem={({ item, index }) => (
+                                        <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
+                                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                                <Image source={{ uri: 'https://reactjs.org/logo-og.png' }}
+                                                    style={{ width: 80, height: 80, borderRadius: 80 / 2 }} />
+                                            </View>
+                                            <Text style={{ fontSize: 18, textAlign: 'center' }}>{item.username}</Text>
+                                        </View>
+                                    )
+                                    }
+                                />
+                            </View>
+                            <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                                <Button title="Join" onPress={() => console.log('join', data.title)} />
+                            </View>
+                        </View>
+
+                    </View>
+                </Modal>
+                :
+                <></>
+            }
+
         </>
     )
 }
