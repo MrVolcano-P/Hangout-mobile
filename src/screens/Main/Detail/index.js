@@ -38,9 +38,12 @@ export default Detail = (props) => {
     const PartyRoute = () => (
         <Party nowData={item} />
     );
+    const ReviewRoute = () => (
+        <Review nowData={item} />
+    )
     const renderScene = SceneMap({
         first: PartyRoute,
-        second: Review,
+        second: ReviewRoute,
     });
 
     const [visible, setVisible] = useState(false)

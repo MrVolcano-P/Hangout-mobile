@@ -61,8 +61,7 @@ export default PartyDetail = (props) => {
     require('moment-countdown');
 
     var time = moment().countdown(parseInt(data.date), countdown.SECONDS).toString()
-    console.log(time)
-
+    
     return (
         <>
             <SafeAreaView>

@@ -15,7 +15,6 @@ function Item({ item, setData, setVisible }) {
     const navigation = useNavigation()
     return (
         <TouchableOpacity
-            style={styles.button}
             onPress={() => {
                 setData(item)
                 setVisible(true)
@@ -66,13 +65,9 @@ export default Party = (props) => {
         setDate(currentDate);
     };
 
-    console.log('item', item);
-    console.log(date)
-
     var datafilter = party.filter(data => data.placeID === item.id)
-    console.log(datafilter.length)
     var datefilter = datafilter.filter(d => moment(parseInt(d.date)).format('DD-MM') === moment(date).format('DD-MM'))
-    console.log(datefilter)
+
     return (
         <>
             <View style={{ flex: 1, backgroundColor: 'gray', flexDirection: 'row' }}>

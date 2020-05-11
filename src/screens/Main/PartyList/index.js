@@ -69,9 +69,9 @@ export default PartyList = () => {
     };
 
     var datafilter = party.filter(data => data.member.some(i => i.username.includes(user.username)))
-    console.log(datafilter.length)
+    
     var datefilter = datafilter.filter(d => moment(parseInt(d.date)).format('DD-MM') === moment(date).format('DD-MM'))
-    console.log(datefilter)
+    
     return (
         <>
             <View style={{ flex: 1, backgroundColor: 'gray', flexDirection: 'row' }}>
