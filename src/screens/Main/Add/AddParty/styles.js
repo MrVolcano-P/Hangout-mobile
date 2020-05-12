@@ -1,7 +1,14 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-    contentTitle: {
+    container: {
+        flex: 1,
+        backgroundColor: '#FFF',
+    },
+    contentContainerStyle: {
+        flexGrow: 1,
+        paddingBottom: 16,
+    }, contentTitle: {
         fontFamily: 'Roboto',
         // color: 'white',
         fontSize: 26,
@@ -11,12 +18,13 @@ export default StyleSheet.create({
         textShadowColor: '#000',
         fontFamily: 'System'
         // height:40
-    },modalContainer: {
+    }, modalContainer: {
         flex: 1,
         justifyContent: 'center',
         marginHorizontal: 20
     },
     modal: {
+        flex:1,
         width: '100%',
         height: 500,
         backgroundColor: 'white',
@@ -41,34 +49,5 @@ export default StyleSheet.create({
         paddingHorizontal: 0,
         marginHorizontal: 10,
         marginVertical: 10,
-    },content: {
-        flex: 1,
-        width: '100%',
-        height: 50,
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'center'
-    },
-    contentView1: {
-        flex: 0.5,
-        borderRightColor: 'black',
-        borderRightWidth: 2,
-        alignItems: 'center'
-    },
-    contentView2: {
-        flex: 3,
-        marginLeft: 10
-    },
-    item: {
-        marginVertical: 8,
-        marginHorizontal: 16,
-    },
-    title: {
-        fontSize: 18,
-        color: '#000',
-        textShadowOffset: { width: 2, height: 2 },
-        textShadowRadius: 2,
-        textShadowColor: '#fff',
-        fontFamily: 'System',
     }
 })

@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import { View, Text, FlatList, TouchableOpacity, ImageBackground, Button, ScrollView, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styles from './styles'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import CardView from 'react-native-cardview';
 import Modal from 'react-native-modal';
 import { FlatGrid } from 'react-native-super-grid';
@@ -48,18 +48,8 @@ export default Party = (props) => {
     const [data, setData] = useState({})
     const [date, setDate] = useState(new Date())
     const [show, setShow] = useState(false);
-    const [party, setParty] = useState([])
-    const getParty = useCallback(() => {
-        partyAPI.get()
-            .then((parties) => {
-                setParty(parties)
-            })
-            .catch(error => { })
-    }, [])
+    const [party, setParty] = useState(props.party)
 
-    useEffect(() => {
-        getParty()
-    }, [getParty])
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');

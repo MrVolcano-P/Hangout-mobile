@@ -10,6 +10,7 @@ import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { TextInput } from 'react-native-paper'
 import { useSelector } from 'react-redux'
+import { useFocusEffect } from '@react-navigation/native'
 function Item({ item }) {
     console.log(item)
     return (
@@ -87,6 +88,12 @@ export default Review = (props) => {
     useEffect(() => {
         getReview()
     }, [getReview, addReview])
+    useFocusEffect(
+        React.useCallback(() => {
+            getReview();
+        }, [getReview])
+    );
+
     console.log('review', review)
     reviewFilter = review.filter(data => data.pubID === pub.id)
     return (

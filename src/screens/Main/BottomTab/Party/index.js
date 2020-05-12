@@ -1,5 +1,5 @@
-import React, { useState, useRef, useCallback } from 'react'
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
+import React, { useState, useRef, useCallback, useEffect } from 'react'
+import { View, Text, TouchableOpacity, ScrollView, FlatList } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styles from './styles'
 import { Appbar, TextInput } from 'react-native-paper'
@@ -7,8 +7,11 @@ import Modal from 'react-native-modal';
 import { useDispatch } from 'react-redux';
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import moment from 'moment';
-import Icon from 'react-native-vector-icons/FontAwesome5'
-import PartyList from '../../PartyList'
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import CardView from 'react-native-cardview';
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
+import partyAPI from 'src/api/party';
 
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content
@@ -17,132 +20,143 @@ const ContentTitle = ({ title, style }) => (
     />
 );
 
+function Item({ item, setData, setVisible }) {
+    const navigation = useNavigation()
+    return (
+        <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+                navigation.navigate('PartyDetail', {
+                    data: item
+                })
+            }}
+        >
+            <View style={styles.item}>
+                <CardView
+                    cardElevation={5}
+                    cardMaxElevation={5}
+                    cornerRadius={5}>
+                    <View style={styles.content}>
+                        <View style={styles.contentView1}>
+                            <Text style={styles.title}>{item.member.length}/{item.amount}</Text>
+                        </View>
+                        <View style={styles.contentView2}>
+                            <Text style={styles.title}>{item.title}</Text>
+                        </View>
+                    </View>
+                </CardView>
+            </View>
+        </TouchableOpacity>
+
+
+    );
+}
+
 export default PartyBottom = () => {
+    const navigation = useNavigation()
+    const [user, setUser] = useState({
+        username: 'Boy'
+    })
     const [visible, setVisible] = useState(false)
-    const [name, setName] = useState('')
-    const [place, setPlace] = useState('')
     const [date, setDate] = useState(new Date())
-    const [isLoadingRegister, setIsLoadingRegister] = useState(false)
-    const [isDatePickerVisible, setIsDatePickerVisble] = useState(false)
-    const [isTimePickerVisible, setIsTimePickerVisble] = useState(false)
-    const [partyAmount, setPartyAmount] = useState('')
-    const dispatch = useDispatch()
+    const [show, setShow] = useState(false);
+    const [party, setParty] = useState([])
+    const getParty = useCallback(() => {
+        partyAPI.get()
+            .then((parties) => {
+                setParty(parties)
+            })
+            .catch(error => { })
+    }, [])
 
-    const placeInput = useRef()
-    const partyAmountInput = useRef()
+    useEffect(() => {
+        getParty()
+    }, [getParty, navigation])
 
-    const changeDate = useCallback((date) => {
-        setIsDatePickerVisble(false)
-        setDate(date)
-        setIsTimePickerVisble(true)
-    }, [setDate, setIsDatePickerVisble])
+    useFocusEffect(
+        React.useCallback(() => {
+            getParty();
+        }, [getParty])
+    );
 
-    const changeTime = useCallback((date) => {
-        setIsTimePickerVisble(false)
-        setDate(date)
-        partyAmountInput.current.focus()
-    }, [setDate, setIsTimePickerVisble])
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShow(Platform.OS === 'ios');
+        setDate(currentDate);
+    };
+
+    var datafilter = party.filter(data => data.member.some(i => i.username.includes(user.username)))
+
+    var datefilter = datafilter.filter(d => moment(parseInt(d.date)).format('DD-MM') === moment(date).format('DD-MM'))
+
     return (
         <>
             <SafeAreaView>
                 <Appbar.Header>
                     <Appbar.Action />
                     <ContentTitle title='Party' style={styles.contentTitle} />
-                    <Appbar.Action icon="plus" onPress={() => setVisible(true)} />
+                    <Appbar.Action icon="plus" onPress={() => navigation.navigate('AddParty')} />
                 </Appbar.Header>
             </SafeAreaView>
-            <PartyList />
-            <Modal isVisible={visible}
-                backdropColor='rgba(255, 253, 253, 0.5)'
-                backdropOpacity={2}
-                animationIn="zoomInDown"
-                animationOut="zoomOutUp"
-                animationInTiming={600}
-                animationOutTiming={600}
-                backdropTransitionInTiming={600}
-                backdropTransitionOutTiming={600}>
-                <View style={styles.modalContainer}>
-                    <View style={styles.modal}>
-                        <View style={styles.modalTop}>
-                            <View style={{ flex: 1, flexDirection: "row" }}>
-                                <View style={{ flex: 1 }}></View>
-                                <View style={{ flex: 4, alignItems: 'center', justifyContent: 'center', }}>
-                                    <Text style={styles.modaltitle}>Add Party</Text>
-                                </View>
-                                <View style={{ flex: 1, alignItems: 'baseline', justifyContent: 'center', }}>
-                                    <TouchableOpacity onPress={() => setVisible(false)}>
-                                        <Icon name="times" size={30} color="#000" />
+
+            <View style={{ flex: 1, backgroundColor: 'gray', flexDirection: 'row' }}>
+                <View style={{ flex: 1 }}></View>
+                <View style={{ flex: 5 }}>
+                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
+                            {console.log(date)}
+                            {
+                                date <= moment() ?
+                                    <TouchableOpacity onPress={() => setDate(moment(date).subtract(1, 'days'))} disabled={true}>
+                                        <Icon name="chevron-left" size={24} color="#900" />
                                     </TouchableOpacity>
-                                </View>
-                            </View>
+                                    :
+                                    <TouchableOpacity onPress={() => setDate(moment(date).subtract(1, 'days'))}>
+                                        <Icon name="chevron-left" size={24} color="#900" />
+                                    </TouchableOpacity>
+                            }
                         </View>
-                        <View style={styles.formContainer}>
-                            <ScrollView>
-                                <TextInput
-                                    label="Party Name"
-                                    mode="outlined"
-                                    style={styles.input}
-                                    value={name}
-                                    onChangeText={setName}
-                                    textContentType="name"
-                                    returnKeyType="next"
-                                    onSubmitEditing={() => setIsDatePickerVisble(true)}
-                                />
-                                <TextInput
-                                    ref={placeInput}
-                                    label="Place"
-                                    mode="outlined"
-                                    style={styles.input}
-                                    value={place}
-                                    onChangeText={setPlace}
-                                    textContentType="location"
-                                    returnKeyType="next"
-                                    editable={false}
-                                />
-                                <TouchableOpacity onPress={() => setIsDatePickerVisble(true)}>
-                                    <TextInput
-                                        label="Date"
-                                        mode="outlined"
-                                        style={styles.input}
-                                        value={moment(date).format('DD-MM-YYYY')}
-                                        editable={false}
-                                    />
-                                </TouchableOpacity>
-                                <DateTimePickerModal
-                                    isVisible={isDatePickerVisible}
-                                    mode="date"
-                                    onConfirm={changeDate}
-                                    onCancel={() => setIsDatePickerVisble(false)}
-                                />
-                                <TouchableOpacity onPress={() => setIsTimePickerVisble(true)}>
-                                    <TextInput
-                                        label="Time"
-                                        mode="outlined"
-                                        style={styles.input}
-                                        value={moment(date).format('HH:mm')}
-                                        editable={false}
-                                    />
-                                </TouchableOpacity>
-                                <DateTimePickerModal
-                                    isVisible={isTimePickerVisible}
-                                    mode="time"
-                                    onConfirm={changeTime}
-                                    onCancel={() => setIsTimePickerVisble(false)}
-                                />
-                                <TextInput
-                                    ref={partyAmountInput}
-                                    label="Party Amount"
-                                    mode="outlined"
-                                    style={styles.input}
-                                    value={partyAmount}
-                                    onChangeText={setPartyAmount}
-                                    keyboardType={'numeric'}
-                                />
-                            </ScrollView>
+                        <View style={{ flex: 3, alignItems: 'center', justifyContent: 'center', }}>
+                            {date <= moment() ?
+                                <Text style={{ fontSize: 24 }}>Today</Text>
+                                :
+                                <Text style={{ fontSize: 24 }}>{moment(date).format('DD-MM')}</Text>
+                            }
+                        </View>
+                        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
+                            <TouchableOpacity onPress={() => setDate(moment(date).add(1, 'days'))}>
+                                <Icon name="chevron-right" size={24} color="#900" />
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>
-            </Modal>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
+                    <TouchableOpacity onPress={() => setShow(true)}>
+                        <Icon name="calendar-alt" size={30} color="#900" />
+                    </TouchableOpacity>
+                </View>
+            </View>
+            {datefilter.length === 0 ?
+                <View style={{ flex: 10, justifyContent: 'center', alignItems: 'center', }}>
+                    <Text>No Party</Text>
+                </View>
+                :
+                <View style={{ flex: 10 }}>
+                    <FlatList
+                        data={datefilter}
+                        renderItem={({ item }) => <Item item={item} setData={(data) => setData(data)} setVisible={(value) => setVisible(value)} />}
+                        keyExtractor={item => item.id}
+                    />
+                </View>
+            }
+            {show && (
+                <DateTimePicker
+                    value={new Date(date)}
+                    display="default"
+                    onChange={onChange}
+                />
+            )}
+
         </>
     )
 }

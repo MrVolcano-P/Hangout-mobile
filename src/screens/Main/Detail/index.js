@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react'
+import React, { useState, useRef, useCallback, useEffect } from 'react'
 import { View, Text, Image, ImageBackground, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Appbar, Searchbar, TextInput } from 'react-native-paper';
@@ -7,7 +7,7 @@ import { Button } from 'react-native-elements'
 import Party from '../TabView/Party'
 import Review from '../TabView/Review'
 import { TabView, SceneMap } from 'react-native-tab-view';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
@@ -30,13 +30,14 @@ export default Detail = (props) => {
     const image = { uri: pub.pic }
     const [index, setIndex] = React.useState(0);
     const [profile, setProfile] = useState({ username: 'Boy' })
+    const [party, setParty] = useState([])
     const navigation = useNavigation()
     const [routes] = React.useState([
         { key: 'first', title: 'Party' },
         { key: 'second', title: 'Review' },
     ]);
     const PartyRoute = () => (
-        <Party />
+        <Party party={party} />
     );
     const ReviewRoute = () => (
         <Review />
@@ -84,6 +85,23 @@ export default Detail = (props) => {
         }
     }, [name, place, date, partyAmount])
 
+    const getParty = useCallback(() => {
+        partyAPI.get()
+            .then((parties) => {
+                setParty(parties)
+            })
+            .catch(error => { })
+    }, [])
+
+    useEffect(() => {
+        getParty()
+    }, [getParty])
+
+    useFocusEffect(
+        React.useCallback(() => {
+            getParty();
+        }, [getParty])
+    );
     return (
         <>
             <SafeAreaView style={styles.contentContaier}>
@@ -92,7 +110,7 @@ export default Detail = (props) => {
                         onPress={() => navigation.goBack()}
                     />
                     <ContentTitle title={pub.title} style={styles.contentTitle} />
-                    <Appbar.Action icon="plus" onPress={() => setVisible(true)} />
+                    <Appbar.Action icon="plus" onPress={() => navigation.navigate('AddParty', { pubNow: pub, dis: true })} />
                 </Appbar.Header>
             </SafeAreaView>
             <View style={styles.imgview}>
