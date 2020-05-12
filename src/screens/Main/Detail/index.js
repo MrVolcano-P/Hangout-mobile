@@ -9,7 +9,7 @@ import Review from '../TabView/Review'
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { useNavigation } from '@react-navigation/native';
 import Modal from 'react-native-modal';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -26,8 +26,8 @@ const initialLayout = { width: Dimensions.get('window').width };
 
 
 export default Detail = (props) => {
-    const [item, setItem] = useState(props.route.params.item)
-    const image = { uri: item.pic }
+    const pub = useSelector(state => state.pub)
+    const image = { uri: pub.pic }
     const [index, setIndex] = React.useState(0);
     const [profile, setProfile] = useState({ username: 'Boy' })
     const navigation = useNavigation()
@@ -36,10 +36,10 @@ export default Detail = (props) => {
         { key: 'second', title: 'Review' },
     ]);
     const PartyRoute = () => (
-        <Party nowData={item} />
+        <Party />
     );
     const ReviewRoute = () => (
-        <Review nowData={item} />
+        <Review />
     )
     const renderScene = SceneMap({
         first: PartyRoute,
@@ -48,7 +48,7 @@ export default Detail = (props) => {
 
     const [visible, setVisible] = useState(false)
     const [name, setName] = useState('')
-    const [place, setPlace] = useState(item.title)
+    const [place, setPlace] = useState(pub.title)
     const [date, setDate] = useState(new Date())
     const [isLoadingAddParty, setIsLoadingAddParty] = useState(false)
     const [isDatePickerVisible, setIsDatePickerVisble] = useState(false)
@@ -67,7 +67,7 @@ export default Detail = (props) => {
         if (name && place && date && partyAmount) {
             const unixDate = date.getTime()
             setIsLoadingAddParty(true)
-            partyAPI.add(name, partyAmount, unixDate.toString(), profile, item.id)
+            partyAPI.add(name, partyAmount, unixDate.toString(), profile, pub.id)
                 .then(() => {
                     console.log('success')
                     setVisible(false)
@@ -83,7 +83,7 @@ export default Detail = (props) => {
                 })
         }
     }, [name, place, date, partyAmount])
-    
+
     return (
         <>
             <SafeAreaView style={styles.contentContaier}>
@@ -91,7 +91,7 @@ export default Detail = (props) => {
                     <Appbar.BackAction
                         onPress={() => navigation.goBack()}
                     />
-                    <ContentTitle title={item.title} style={styles.contentTitle} />
+                    <ContentTitle title={pub.title} style={styles.contentTitle} />
                     <Appbar.Action icon="plus" onPress={() => setVisible(true)} />
                 </Appbar.Header>
             </SafeAreaView>
@@ -111,10 +111,7 @@ export default Detail = (props) => {
                 backdropOpacity={2}
                 animationIn="zoomInDown"
                 animationOut="zoomOutUp"
-                animationInTiming={600}
-                animationOutTiming={600}
-                backdropTransitionInTiming={600}
-                backdropTransitionOutTiming={600}>
+            >
                 <View style={styles.modalContainer}>
                     <View style={styles.modal}>
                         <View style={styles.modalTop}>

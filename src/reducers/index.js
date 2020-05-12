@@ -1,10 +1,9 @@
 import { combineReducers } from 'redux'
-import store from './store'
 import authToken from './authToken'
 import profile from './profile'
-
+import pub from './pub'
 export default combineReducers({
     authToken,
     profile,
-    store
+    pub
 })

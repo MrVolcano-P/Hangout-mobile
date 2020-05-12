@@ -3,7 +3,7 @@ import { FlatList, View, Text, ImageBackground, TouchableOpacity } from 'react-n
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styles from './styles'
 import { Chip } from 'react-native-paper'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useNavigation } from '@react-navigation/native'
 import { Avatar } from 'react-native-paper'
 import { fundComma, dateTime } from 'src/helpers/text'
@@ -11,6 +11,7 @@ import { Appbar, Searchbar } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CardView from 'react-native-cardview';
 import pubAPI from 'src/api/pub'
+import { setPub } from 'src/actions/pub'
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content
         title={<Text style={style}> {title} </Text>}
@@ -20,13 +21,16 @@ const ContentTitle = ({ title, style }) => (
 
 function Item({ item }) {
     const navigation = useNavigation()
+    const dispatch = useDispatch()
     const image = { uri: item.pic }
     return (
         <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('Detail', {
-                item: item
-            })}
+            onPress={() => {
+                dispatch(setPub(item))
+                navigation.navigate('Detail')
+
+            }}
         >
             <View style={styles.item}>
                 <CardView
@@ -57,7 +61,7 @@ export default function AllStore() {
 
     useEffect(() => {
         getPub()
-    }, [ getPub ])
+    }, [getPub])
 
     return (
         <SafeAreaView>

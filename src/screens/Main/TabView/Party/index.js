@@ -10,6 +10,7 @@ import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import partyAPI from 'src/api/party'
+import { useSelector } from 'react-redux';
 
 function Item({ item, setData, setVisible }) {
     const navigation = useNavigation()
@@ -42,7 +43,7 @@ function Item({ item, setData, setVisible }) {
 }
 
 export default Party = (props) => {
-    const [item, setItem] = useState(props.nowData)
+    const pub = useSelector(state => state.pub)
     const [visible, setVisible] = useState(false)
     const [data, setData] = useState({})
     const [date, setDate] = useState(new Date())
@@ -65,7 +66,7 @@ export default Party = (props) => {
         setDate(currentDate);
     };
 
-    var datafilter = party.filter(data => data.placeID === item.id)
+    var datafilter = party.filter(data => data.placeID === pub.id)
     var datefilter = datafilter.filter(d => moment(parseInt(d.date)).format('DD-MM') === moment(date).format('DD-MM'))
 
     return (
@@ -133,10 +134,7 @@ export default Party = (props) => {
                     backdropOpacity={2}
                     animationIn="zoomInDown"
                     animationOut="zoomOutUp"
-                    animationInTiming={600}
-                    animationOutTiming={600}
-                    backdropTransitionInTiming={600}
-                    backdropTransitionOutTiming={600}>
+                >
                     <View style={styles.modalContainer}>
                         <View style={styles.modal}>
                             <View style={{ flex: 1, borderBottomWidth: 2, borderBottomColor: 'black', }}>
