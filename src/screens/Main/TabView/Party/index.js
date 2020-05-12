@@ -56,7 +56,7 @@ export default Party = (props) => {
         setDate(currentDate);
     };
 
-    var datafilter = party.filter(data => data.placeID === pub.id)
+    var datafilter = party?.filter(data => data.placeID === pub.id)
     var datefilter = datafilter.filter(d => moment(parseInt(d.date)).format('DD-MM') === moment(date).format('DD-MM'))
 
     return (
@@ -127,20 +127,19 @@ export default Party = (props) => {
                 >
                     <View style={styles.modalContainer}>
                         <View style={styles.modal}>
-                            <View style={{ flex: 1, borderBottomWidth: 2, borderBottomColor: 'black', }}>
+                            <View style={styles.modalTop}>
                                 <View style={{ flex: 1, flexDirection: "row" }}>
                                     <View style={{ flex: 1 }}></View>
                                     <View style={{ flex: 4, alignItems: 'center', justifyContent: 'center', }}>
                                         <Text style={styles.modaltitle}>{data.title}</Text>
                                         <Text>{data.member.length}/{data.amount}</Text>
                                     </View>
-                                    <View style={{ flex: 1, alignItems: 'flex-end', marginRight: 10 }}>
+                                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
                                         <TouchableOpacity onPress={() => setVisible(false)}>
-                                            <Text style={styles.modaltitle}>X</Text>
+                                            <Icon name="times" size={20} color="#000" />
                                         </TouchableOpacity>
                                     </View>
                                 </View>
-
                             </View>
                             <View style={{ flex: 3 }}>
                                 <FlatGrid

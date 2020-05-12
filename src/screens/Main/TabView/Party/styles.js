@@ -21,7 +21,7 @@ export default StyleSheet.create({
     },
     item: {
         marginVertical: 8,
-        marginHorizontal: 16,
+        marginHorizontal: 8,
     },
     title: {
         fontSize: 18,
@@ -40,6 +40,12 @@ export default StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         marginHorizontal:20
+    },
+    modalTop: {
+        flex: 0.5,
+        borderBottomWidth: 2,
+        borderBottomColor: 'black',
+        justifyContent: 'flex-start'
     },
     modaltitle: {
         fontSize: 18,

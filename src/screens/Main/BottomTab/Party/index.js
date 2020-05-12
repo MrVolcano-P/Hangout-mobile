@@ -104,7 +104,6 @@ export default PartyBottom = () => {
                 <View style={{ flex: 5 }}>
                     <View style={{ flex: 1, flexDirection: 'row' }}>
                         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
-                            {console.log(date)}
                             {
                                 date <= moment() ?
                                     <TouchableOpacity onPress={() => setDate(moment(date).subtract(1, 'days'))} disabled={true}>

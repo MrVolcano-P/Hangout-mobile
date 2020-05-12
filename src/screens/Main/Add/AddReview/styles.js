@@ -1,38 +1,14 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-    headReview: {
+    container: {
         flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        height: 50,
+        backgroundColor: '#FFF',
     },
-    contentReview: {
-        flex: 2,
-        flexDirection: 'row',
-        height: 100
-    },
-    imgProfile: {
-        marginHorizontal: 10,
-        borderRadius: 5,
-        width: 50,
-        height: 50,
-    },
-    item: {
-        marginVertical: 8,
-        marginHorizontal: 8,
-    },
-    hr: {
-        marginHorizontal: 10,
-        borderBottomColor: 'black',
-        borderBottomWidth: 1,
-    },
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        marginHorizontal: 20
-    },
-    modal: {
+    contentContainerStyle: {
+        flexGrow: 1,
+        paddingBottom: 16,
+    },modal: {
         width: '100%',
         height: 325,
         backgroundColor: 'white',
@@ -57,6 +33,7 @@ export default StyleSheet.create({
         paddingHorizontal: 0,
         marginHorizontal: 10,
         marginVertical: 10,
+        // height:200
     },
     textLength:{
         paddingHorizontal: 0,

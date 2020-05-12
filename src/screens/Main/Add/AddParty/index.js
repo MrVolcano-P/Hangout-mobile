@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react'
-import { View, Text, Image, TouchableOpacity, ScrollView, Button } from 'react-native'
+import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native'
 import styles from './styles'
+import { Button } from 'react-native-elements'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Appbar, TextInput, Menu } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
