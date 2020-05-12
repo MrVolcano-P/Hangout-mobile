@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import { View, Text, FlatList, TouchableOpacity, ImageBackground, Button, ScrollView, Image } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, ImageBackground, ScrollView, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styles from './styles'
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -11,9 +11,11 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import partyAPI from 'src/api/party'
 import { useSelector } from 'react-redux';
-
+import _ from 'lodash'
+import { Button } from 'react-native-elements';
 function Item({ item, setData, setVisible }) {
     const navigation = useNavigation()
+
     return (
         <TouchableOpacity
             onPress={() => {
@@ -49,6 +51,8 @@ export default Party = (props) => {
     const [date, setDate] = useState(new Date())
     const [show, setShow] = useState(false);
     const [party, setParty] = useState(props.party)
+    const [profile, setProfile] = useState({ username: "Boy" })
+    const [isLoadingJoinParty, setIsLoadingJoinParty] = useState(false)
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -59,6 +63,29 @@ export default Party = (props) => {
     var datafilter = party?.filter(data => data.placeID === pub.id)
     var datefilter = datafilter.filter(d => moment(parseInt(d.date)).format('DD-MM') === moment(date).format('DD-MM'))
 
+    const getParty = useCallback(() => {
+        partyAPI.get()
+            .then((parties) => {
+                setParty(parties)
+            })
+            .catch(error => { })
+    }, [])
+
+    const join = useCallback(() => {
+        setIsLoadingJoinParty(true)
+        partyAPI.join(_.concat(data.member, profile), data.id)
+            .then(() => {
+                console.log('join')
+                setVisible(false)
+                getParty()
+            })
+            .catch(error => {
+                console.log(error)
+            })
+            .finally(() => {
+                setIsLoadingJoinParty(false)
+            })
+    }, [data])
     return (
         <>
             <View style={{ flex: 1, backgroundColor: 'gray', flexDirection: 'row' }}>
@@ -158,7 +185,16 @@ export default Party = (props) => {
                                 />
                             </View>
                             <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-                                <Button title="Join" onPress={() => console.log('join', data.title)} />
+                                {_.includes(_.map(data?.member, 'username'), profile.username) || _.eq(data?.owner?.username, profile.username) ?
+                                    <Button title="Chat" onPress={() => console.log('chat', data.title)} />
+                                    :
+                                    <Button
+                                        title="Join"
+                                        onPress={join}
+                                        loading={isLoadingJoinParty}
+                                    />
+                                }
+
                             </View>
                         </View>
 
