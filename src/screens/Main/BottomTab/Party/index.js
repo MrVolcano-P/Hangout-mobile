@@ -26,7 +26,7 @@ function Item({ item, setData, setVisible }) {
         <TouchableOpacity
             style={styles.button}
             onPress={() => {
-                navigation.navigate('PartyDetail', {
+                navigation.navigate('DetailParty', {
                     data: item
                 })
             }}

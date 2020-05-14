@@ -1,56 +1,57 @@
-import React from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
+import partyAPI from 'src/api/party'
 
-export default class Chat extends React.Component {
-    state = {
-        messages: [],
+export default PartyDetail = (props) => {
+
+    const [text, setText] = useState('');
+    const [messages, setMessages] = useState([]);
+    const getParty = useCallback(() => {
+        partyAPI.getById(props.id)
+            .then((party) => {
+                setMessages(party.message)
+            })
+            .catch(error => { })
+    }, [])
+
+    const update = useCallback((newMessage = []) => {
+        setMessages(GiftedChat.append(messages, newMessage));
+        console.log(GiftedChat.append(messages, newMessage))
+        partyAPI.sendMsg(GiftedChat.append(messages, newMessage), props.id)
+            .then(() => {
+                console.log('sent')
+            })
+            .catch(error => { })
+    }, [])
+
+    useEffect(() => {
+        getParty()
+    }, [getParty])
+
+    function handleSend(newMessage = []) {
+        setMessages(GiftedChat.append(messages, newMessage));
+        console.log(GiftedChat.append(messages, newMessage))
+        partyAPI.sendMsg(GiftedChat.append(messages, newMessage), props.id)
+            .then(() => {
+                console.log('sent')
+            })
+            .catch(error => { })
     }
 
-    componentDidMount() {
-        this.setState({
-            messages: [
-                {
-                    _id: 1,
-                    text: 'Hello developer',
-                    createdAt: new Date().getTime(),
-                    user: {
-                        _id: 'Boy',
-                        name: 'React Native',
-                        avatar: 'https://placeimg.com/140/140/any',
-                    },
-                },
-                {
-                    _id: 2,
-                    text: 'Fuck',
-                    createdAt: new Date().getTime(),
-                    user: {
-                        _id: 'Top',
-                        name: 'Addd Native',
-                        // avatar: 'https://placeimg.com/140/140/any',
-                    },
-                },
-            ],
-            
-        })
-    }  
+    // console.log(messages)
 
-    onSend(messages = []) {
-        this.setState(previousState => ({
-            messages: GiftedChat.append(previousState.messages, messages),
-        }))
-    }
+    return (
+        <GiftedChat
+            messages={messages}
+            text={text}
+            onInputTextChanged={setText}
+            onSend={newMessage => handleSend(newMessage)}
+            user={{
+                _id: 1,
+                name: 'Aaron',
+                avatar: 'https://placeimg.com/150/150/any',
+            }}
+        />
+    )
 
-    render() {
-        console.log(this.state.messages)
-        return (
-            <GiftedChat
-                messages={this.state.messages}
-                onSend={messages => this.onSend(messages)}
-                user={{
-                    _id: 'Boy',
-                    name: 'Rd Asss',
-                }}
-            />
-        )
-    }
 }

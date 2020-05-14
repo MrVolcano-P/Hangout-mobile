@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { View, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Appbar } from 'react-native-paper'
@@ -9,59 +9,36 @@ import countdown from 'countdown'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import CountDown from 'react-native-countdown-component';
 import Chat from '../Chat'
-
+import pubAPI from 'src/api/pub'
+import _ from 'lodash'
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content
         title={<Text style={style}> {title} </Text>}
         style={{ alignItems: 'center' }}
     />
 );
-
-const DATA = [
-    {
-        id: '1',
-        title: 'ท่าช้าง',
-        pic: 'http://www.zocialx.com/wp-content/uploads/2019/03/3-315.jpg',
-        geolocation: {
-            longtitude: "98.994780",
-            latitude: "18.801800"
-        }
-
-    },
-    {
-        id: '2',
-        title: 'ตะวันแดง',
-        pic: 'https://fastly.4sqi.net/img/general/width960/9742015_lEq6GL-DCWFs6L4f7IiUOix9gWkR4Klj4zotztJZjXY.jpg',
-        geolocation: {
-            longtitude: "98.964002",
-            latitude: "18.797269"
-        }
-    },
-    {
-        id: '3',
-        title: 'Warm Up',
-        pic: 'https://fastly.4sqi.net/img/general/width960/14627946_nj42T4POdU07r3XcCy9BAZkYW_Ze6cfiupQQUyvpMls.jpg',
-        geolocation: {
-            longtitude: "98.965086",
-            latitude: "18.795148"
-        }
-    },
-];
-
-
 const User = {
     username: 'boy'
 }
-export default PartyDetail = (props) => {
-    const navigation = useNavigation()
-    const [profile, setProfile] = useState(User)
-    const [data, setData] = useState(props.route.params.data)
-    var dataFilter = DATA.filter(d => d.id === data.placeID)
-    var place = dataFilter[0]
+export default DetailParty = (props) => {
     require('moment-countdown');
+    const navigation = useNavigation()
+    const [pub, setPub] = useState([])
+    const [data, setData] = useState(props.route.params.data)
+    const place = _.find(pub, function (o) { return o.id === data.placeID })
 
-    var time = moment().countdown(parseInt(data.date), countdown.SECONDS).toString()
-    
+    const getPub = useCallback(() => {
+        pubAPI.get()
+            .then((pubs) => {
+                setPub(pubs)
+            })
+            .catch(error => { })
+    }, [])
+
+    useEffect(() => {
+        getPub()
+    }, [getPub])
+
     return (
         <>
             <SafeAreaView>
@@ -84,7 +61,7 @@ export default PartyDetail = (props) => {
                 </View>
                 <View style={styles.content}>
                     <View style={[styles.contentView2, { backgroundColor: '#5F67B1' }]}>
-                        <Text style={styles.title3}>{place.title}</Text>
+                        <Text style={styles.title3}>{place?.title}</Text>
                     </View>
                     <View style={[styles.contentView1, { backgroundColor: '#F8C441' }]}>
                         <TouchableOpacity>
@@ -118,7 +95,7 @@ export default PartyDetail = (props) => {
                                 <Text style={styles.headChatText}>Chat Room</Text>
                             </View>
                             <View style={styles.chatContent}>
-                                <Chat />
+                                <Chat id={data.id} />
                             </View>
                         </View>
                     </View>
@@ -127,5 +104,3 @@ export default PartyDetail = (props) => {
         </>
     )
 }
-
-

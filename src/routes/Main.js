@@ -5,9 +5,9 @@ import Detail from '../screens/Main/Detail'
 import Login from 'src/screens/Auth/Login'
 import Register from 'src/screens/Auth/Register'
 import EditProfile from '../screens/Main/EditProfile'
-import PartyDetail from '../screens/Main/PartyDetail'
 import AddParty from '../screens/Main/Add/AddParty'
 import AddReview from '../screens/Main/Add/AddReview'
+import DetailParty from '../screens/Main/DetailParty'
 
 const Stack = createStackNavigator()
 
@@ -19,7 +19,7 @@ export default () => {
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="EditProfile" component={EditProfile} />
-            <Stack.Screen name="PartyDetail" component={PartyDetail} />
+            <Stack.Screen name="DetailParty" component={DetailParty} />
             <Stack.Screen name="AddParty" component={AddParty} />
             <Stack.Screen name="AddReview" component={AddReview} />
         </Stack.Navigator>
