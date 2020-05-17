@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import { GiftedChat } from 'react-native-gifted-chat'
+import { GiftedChat, Bubble } from 'react-native-gifted-chat'
 import partyAPI from 'src/api/party'
 import { useSelector } from 'react-redux'
 
@@ -30,7 +30,12 @@ export default PartyDetail = (props) => {
     }
 
     // console.log(messages)
-
+    const renderBubble = (props) => (
+        <Bubble
+            {...props}
+            usernameStyle={{ color: 'tomato', fontWeight: 'bold' }}
+        />
+    );
     return (
         <GiftedChat
             messages={messages}
@@ -42,6 +47,10 @@ export default PartyDetail = (props) => {
                 name: profile.username,
                 avatar: profile.img,
             }}
+            alwaysShowSend
+            scrollToBottom
+            renderUsernameOnMessage
+            renderBubble={renderBubble}
         />
     )
 

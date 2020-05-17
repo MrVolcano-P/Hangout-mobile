@@ -17,14 +17,13 @@ const ContentTitle = ({ title, style }) => (
         style={{ alignItems: 'center' }}
     />
 );
-const User = {
-    username: 'boy'
-}
 export default DetailParty = (props) => {
     require('moment-countdown');
     const navigation = useNavigation()
     const [pub, setPub] = useState([])
     const [data, setData] = useState(props.route.params.data)
+    const [timeleft, setTimeleft] = useState(Math.floor((parseInt(data.date) - +new Date()) / 1000))
+    const [finish, setFinish] = useState(false)
     const place = _.find(pub, function (o) { return o.id === data.placeID })
 
     const getPub = useCallback(() => {
@@ -71,21 +70,36 @@ export default DetailParty = (props) => {
                 </View>
                 <View style={{ flex: 12 }}>
                     <View style={{ flex: 1 }}>
-                        <View>
-                            <Text>Countdown</Text>
-                            <View>
-                                <CountDown
-                                    until={10}
-                                    size={20}
-                                    onFinish={() => console.log('adad')}
-                                    digitStyle={{ backgroundColor: '#FFF', borderWidth: 2, borderColor: '#F8C441' }}
-                                    digitTxtStyle={{ color: '#F8C441' }}
-                                    timeLabelStyle={{ color: 'red', fontWeight: 'bold' }}
-                                    separatorStyle={{ color: '#F8C441' }}
-                                    timeToShow={['D', 'H', 'M', 'S']}
-                                    timeLabels={{ m: null, s: null }}
-                                    showSeparator
-                                />
+                        <View style={styles.headChat}>
+                            <Text style={styles.headChatText}>Countdown</Text>
+                            <View >
+                                {timeleft < 0 || finish ?
+                                    <CountDown
+                                        until={timeleft}
+                                        size={20}
+                                        digitStyle={{ backgroundColor: '#FFF', borderWidth: 2, borderColor: 'red' }}
+                                        digitTxtStyle={{ color: 'red' }}
+                                        timeLabelStyle={{ color: 'red', fontWeight: 'bold' }}
+                                        separatorStyle={{ color: 'red' }}
+                                        timeToShow={['D', 'H', 'M', 'S']}
+                                        timeLabels={{ m: null, s: null }}
+                                        showSeparator
+                                    />
+                                    :
+                                    <CountDown
+                                        until={timeleft}
+                                        size={20}
+                                        onFinish={() => setFinish(true)}
+                                        digitStyle={{ backgroundColor: '#FFF', borderWidth: 2, borderColor: '#F8C441' }}
+                                        digitTxtStyle={{ color: '#F8C441' }}
+                                        timeLabelStyle={{ color: 'red', fontWeight: 'bold' }}
+                                        separatorStyle={{ color: '#F8C441' }}
+                                        timeToShow={['D', 'H', 'M', 'S']}
+                                        timeLabels={{ m: null, s: null }}
+                                        showSeparator
+                                    />
+                                }
+
                             </View>
                         </View>
                     </View>

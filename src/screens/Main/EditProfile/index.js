@@ -67,7 +67,7 @@ export default EditProfile = () => {
     }, [profile])
 
     return (
-        <View style={{ flex: 1 }}>
+        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
             <SafeAreaView style={styles.contentContaier}>
                 <Appbar.Header>
                     <Appbar.BackAction
@@ -76,79 +76,50 @@ export default EditProfile = () => {
                     <ContentTitle title={'Edit Profile'} style={styles.contentTitle} />
                     <Appbar.Action />
                 </Appbar.Header>
-            </SafeAreaView>
-            <View style={styles.formContainer}>
-                <TextInput
-                    label="Name"
-                    mode="outlined"
-                    style={styles.input}
-                    value={name}
-                    onChangeText={setName}
-                    textContentType="name"
-                />
-                <TouchableOpacity onPress={() => setIsDatePickerVisble(true)}>
+                <View style={styles.formContainer}>
                     <TextInput
-                        label="Date of Birth"
+                        label="Name"
                         mode="outlined"
                         style={styles.input}
-                        value={dateMonth(dob)}
-                        editable={false}
+                        value={name}
+                        onChangeText={setName}
+                        textContentType="name"
+                        returnKeyType="next"
+                        onSubmitEditing={() => setIsDatePickerVisble(true)}
                     />
-                </TouchableOpacity>
-                <DateTimePickerModal
-                    isVisible={isDatePickerVisible}
-                    mode="date"
-                    onConfirm={changeDOB}
-                    onCancel={() => setIsDatePickerVisble(false)}
-                />
-            </View>
-            <View style={styles.actionContainer}>
-                <Button
-                    title="CHANGE PROFILE"
-                    raised
-                    buttonStyle={styles.changeProfileButton}
-                    onPress={submit}
-                    loading={isLoadingSubmit}
-                />
-            </View>
+                    <TouchableOpacity onPress={() => setIsDatePickerVisble(true)}>
+                        <TextInput
+                            label="Date of Birth"
+                            mode="outlined"
+                            style={styles.input}
+                            value={dateMonth(dob)}
+                            editable={false}
+                        />
+                    </TouchableOpacity>
+                    <DateTimePickerModal
+                        isVisible={isDatePickerVisible}
+                        mode="date"
+                        onConfirm={changeDOB}
+                        onCancel={() => setIsDatePickerVisble(false)}
+                    />
 
-        </View>
-        // <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
-        //     <SafeAreaView style={styles.contentContaier}>
-        //         <Image
-        //             source={require('src/assets/editprofile.png')}
-        //             resizeMode="cover"
-        //             style={styles.editProfileImage}
-        //         />
-        //         <View style={styles.formContainer}>
-        //             <TextInput
-        //                 label="Name"
-        //                 mode="outlined"
-        //                 style={styles.input}
-        //                 value={name}
-        //                 onChangeText={setName}
-        //                 textContentType="name"
-        //                 returnKeyType="next"
-        //                 onSubmitEditing={() => setIsDatePickerVisble(true)}
-        //             />
-        //             <TouchableOpacity onPress={() => setIsDatePickerVisble(true)}>
-        //                 <TextInput
-        //                     label="Date of Birth"
-        //                     mode="outlined"
-        //                     style={styles.input}
-        //                     value={dateMonth(dob)}
-        //                     editable={false}
-        //                 />
-        //             </TouchableOpacity>
-        //             <DateTimePickerModal
-        //                 isVisible={isDatePickerVisible}
-        //                 mode="date"
-        //                 onConfirm={changeDOB}
-        //                 onCancel={() => setIsDatePickerVisble(false)}
-        //             />
-
-        // </View>
-        //     </SafeAreaView>
-        // </ScrollView>
+                    <View style={styles.actionContainer}>
+                        <Button
+                            title="CHANGE PROFILE"
+                            // ViewComponent={LinearGradient}
+                            // linearGradientProps={{
+                            //     colors: [colors.secondary, colors.primary],
+                            //     start: { x: 0, y: 0 },
+                            //     end: { x: 1, y: 1 },
+                            // }}
+                            raised
+                            buttonStyle={styles.changeProfileButton}
+                            onPress={submit}
+                            loading={isLoadingSubmit}
+                        />
+                    </View>
+                </View>
+            </SafeAreaView>
+        </ScrollView>
     )
 }

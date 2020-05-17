@@ -8,6 +8,7 @@ import EditProfile from '../screens/Main/EditProfile'
 import AddParty from '../screens/Main/Add/AddParty'
 import AddReview from '../screens/Main/Add/AddReview'
 import DetailParty from '../screens/Main/DetailParty'
+import ChangePassword from '../screens/Main/ChangePassword'
 
 const Stack = createStackNavigator()
 
@@ -22,6 +23,7 @@ export default () => {
             <Stack.Screen name="DetailParty" component={DetailParty} />
             <Stack.Screen name="AddParty" component={AddParty} />
             <Stack.Screen name="AddReview" component={AddReview} />
+            <Stack.Screen name="ChangePassword" component={ChangePassword} />
         </Stack.Navigator>
     )
 }
