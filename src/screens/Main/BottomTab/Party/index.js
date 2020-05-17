@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import styles from './styles'
 import { Appbar, TextInput } from 'react-native-paper'
 import Modal from 'react-native-modal';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -54,9 +54,7 @@ function Item({ item, setData, setVisible }) {
 
 export default PartyBottom = () => {
     const navigation = useNavigation()
-    const [user, setUser] = useState({
-        username: 'Boy'
-    })
+    const profile = useSelector(state => state.profile)
     const [visible, setVisible] = useState(false)
     const [date, setDate] = useState(new Date())
     const [show, setShow] = useState(false);
@@ -85,7 +83,7 @@ export default PartyBottom = () => {
         setDate(currentDate);
     };
 
-    var datafilter = party.filter(data => data.member.some(i => i.username.includes(user.username)))
+    var datafilter = party.filter(data => data.member.some(i => i.username.includes(profile.username)))
 
     var datefilter = datafilter.filter(d => moment(parseInt(d.date)).format('DD-MM') === moment(date).format('DD-MM'))
 

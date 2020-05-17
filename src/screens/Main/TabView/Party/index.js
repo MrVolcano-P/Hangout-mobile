@@ -46,12 +46,12 @@ function Item({ item, setData, setVisible }) {
 
 export default Party = (props) => {
     const pub = useSelector(state => state.pub)
+    const profile = useSelector(state => state.profile)
     const [visible, setVisible] = useState(false)
     const [data, setData] = useState({})
     const [date, setDate] = useState(new Date())
     const [show, setShow] = useState(false);
     const [party, setParty] = useState(props.party)
-    const [profile, setProfile] = useState({ username: "Boy" })
     const [isLoadingJoinParty, setIsLoadingJoinParty] = useState(false)
 
     const onChange = (event, selectedDate) => {
@@ -175,8 +175,14 @@ export default Party = (props) => {
                                     renderItem={({ item, index }) => (
                                         <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
                                             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                                                <Image source={{ uri: 'https://reactjs.org/logo-og.png' }}
-                                                    style={{ width: 80, height: 80, borderRadius: 80 / 2 }} />
+                                                {item.img === undefined || item.img === '' ?
+                                                    <Image source={require('src/assets/no-avatar.jpg')}
+                                                        style={{ width: 80, height: 80, borderRadius: 5 }} />
+                                                    :
+                                                    <Image source={{ uri: item.img }}
+                                                        style={{ width: 80, height: 80, borderRadius: 5 }} />
+                                                }
+
                                             </View>
                                             <Text style={{ fontSize: 18, textAlign: 'center' }}>{item.username}</Text>
                                         </View>

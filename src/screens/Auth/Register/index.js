@@ -20,28 +20,25 @@ const showWarningPopup = (message) => Alert.alert(
     message,
 )
 
-export default function Register () {
+export default function Register() {
     const navigation = useNavigation()
-    const [ username, setUsername ] = useState('')
-    const [ password, setPassword ] = useState('')
-    const [ passwordConfirm, setPasswordConfirm ] = useState('')
-    const [ name, setName ] = useState('')
-    const [ phone, setPhone ] = useState('')
-    const [ dob, setDOB ] = useState(new Date('1990-01-01'))
-    const [ isLoadingRegister, setIsLoadingRegister ] = useState(false)
-    const [ isDatePickerVisible, setIsDatePickerVisble ] = useState(false)
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    const [passwordConfirm, setPasswordConfirm] = useState('')
+    const [name, setName] = useState('')
+    const [dob, setDOB] = useState(new Date('1990-01-01'))
+    const [isLoadingRegister, setIsLoadingRegister] = useState(false)
+    const [isDatePickerVisible, setIsDatePickerVisble] = useState(false)
     const dispatch = useDispatch()
 
     const usernameInput = useRef()
     const passwordInput = useRef()
     const passwordConfirmInput = useRef()
-    const phoneInput = useRef()
 
     const changeDOB = useCallback((date) => {
         setIsDatePickerVisble(false)
         setDOB(date)
-        usernameInput.current.focus()
-    }, [ setDOB, setIsDatePickerVisble ])
+    }, [setDOB, setIsDatePickerVisble])
 
     const validateForm = useCallback(() => {
         if (!name) {
@@ -62,37 +59,36 @@ export default function Register () {
         else if (password !== passwordConfirm) {
             showWarningPopup('Password และ Password Confirmation ไม่ตรงกัน')
         }
-        else if (!phone) {
-            showWarningPopup('กรุณากรอกเบอร์')
-        }
         else {
             return true
         }
         return false
-    }, [ phone, dob, name, password, username, passwordConfirm ])
+    }, [dob, name, password, username, passwordConfirm])
 
     const callRegisterAPI = useCallback(() => {
+        const date = dob.getTime()
         authAPI.register({
             username,
             password,
             name,
-            phone,
+            date,
         })
             .then(() => {
-                authAPI.login(username, password)
-                    .then(({ token }) => {
-                        dispatch(setAuthToken(token))
-                        profileAPI.get(token)
-                            .then((profile) => {
-                                dispatch(setProfile(profile))
-                                navigation.navigate('ChangeProfileImage')
-                            })
-                    })
+                // authAPI.login(username, password)
+                //     .then(({ token }) => {
+                //         dispatch(setAuthToken(token))
+                //         profileAPI.get(token)
+                //             .then((profile) => {
+                //                 dispatch(setProfile(profile))
+                //                 navigation.navigate('ChangeProfileImage')
+                //             })
+                //     })
+                navigation.goBack()
             })
             .finally(() => {
                 setIsLoadingRegister(false)
             })
-    }, [ phone, dispatch, name, navigation, password, username ])
+    }, [dob, dispatch, name, navigation, password, username])
 
     const register = useCallback(() => {
         if (validateForm()) {
@@ -111,7 +107,7 @@ export default function Register () {
                     }
                 })
         }
-    }, [ callRegisterAPI, username, validateForm ])
+    }, [callRegisterAPI, username, validateForm])
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
@@ -121,7 +117,7 @@ export default function Register () {
                 </Text>
                 <View style={styles.formContainer}>
                     <TextInput
-                        label="Name On Yark Hangout"
+                        label="Name"
                         mode="outlined"
                         style={styles.input}
                         value={name}
@@ -168,39 +164,44 @@ export default function Register () {
                         returnKeyType="next"
                         onSubmitEditing={() => phoneInput.current.focus()}
                     />
-                    <TextInput
-                        ref={phoneInput}
-                        label="Phone"
-                        mode="outlined"
-                        style={styles.input}
-                        value={phone}
-                        onChangeText={setPhone}
-                        textContentType="telephoneNumber"
-                        keyboardType={'numeric'}
+                    <TouchableOpacity onPress={() => setIsDatePickerVisble(true)}>
+                        <TextInput
+                            label="Date of Birth"
+                            mode="outlined"
+                            style={styles.input}
+                            value={dateMonth(dob)}
+                            editable={false}
+                        />
+                    </TouchableOpacity>
+                    <DateTimePickerModal
+                        isVisible={isDatePickerVisible}
+                        mode="date"
+                        onConfirm={changeDOB}
+                        onCancel={() => setIsDatePickerVisble(false)}
                     />
                 </View>
                 <View style={styles.actionContainer}>
-                        <Button
-                            title="REGISTER"
-                            ViewComponent={LinearGradient}
-                            linearGradientProps={{
-                                colors: [ colors.secondary, colors.primary ],
-                                start: { x: 0, y: 0 },
-                                end: { x: 1, y: 1 },
-                            }}
-                            raised
-                            containerStyle={styles.registerButtonContainer}
-                            buttonStyle={styles.registerButton}
-                            onPress={register}
-                            loading={isLoadingRegister}
-                        />
-                        <TouchableOpacity
-                            style={styles.backButton}
-                            onPress={() => navigation.navigate('Login')}
-                        >
-                            <Text style={styles.backText}>BACK TO LOGIN</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <Button
+                        title="REGISTER"
+                        ViewComponent={LinearGradient}
+                        linearGradientProps={{
+                            colors: [colors.secondary, colors.primary],
+                            start: { x: 0, y: 0 },
+                            end: { x: 1, y: 1 },
+                        }}
+                        raised
+                        containerStyle={styles.registerButtonContainer}
+                        buttonStyle={styles.registerButton}
+                        onPress={register}
+                        loading={isLoadingRegister}
+                    />
+                    <TouchableOpacity
+                        style={styles.backButton}
+                        onPress={() => navigation.navigate('Login')}
+                    >
+                        <Text style={styles.backText}>BACK TO LOGIN</Text>
+                    </TouchableOpacity>
+                </View>
             </SafeAreaView>
         </ScrollView>
     )

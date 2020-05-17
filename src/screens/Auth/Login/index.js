@@ -29,10 +29,12 @@ export default function Login() {
             authAPI.login(username, password)
                 .then(({ token }) => {
                     dispatch(setAuthToken(token))
-                    profileAPI.get(token)
-                        .then((profile) => {
-                            dispatch(setProfile(profile))
-                            navigation.navigate('AllWallet')
+                    console.log(token)
+                    profileAPI.getFull()
+                        .then((data) => {
+                            console.log(data.find(d => d.username === username))
+                            dispatch(setProfile(data.find(d => d.username === username)))
+                            navigation.goBack()
                         })
                 })
                 .catch(error => {
@@ -114,7 +116,7 @@ export default function Login() {
                         title="LOGIN"
                         ViewComponent={LinearGradient}
                         linearGradientProps={{
-                            colors: [ colors.secondary, colors.primary ],
+                            colors: [colors.secondary, colors.primary],
                             start: { x: 0, y: 0 },
                             end: { x: 1, y: 1 },
                         }}

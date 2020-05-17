@@ -16,6 +16,8 @@ import LinearGradient from 'react-native-linear-gradient'
 import colors from 'src/themes/colors'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import Modal from 'react-native-modal';
+import Login from '../../../Auth/Login'
+import moment from 'moment'
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content
         title={<Text style={style}> {title} </Text>}
@@ -26,13 +28,14 @@ const ContentTitle = ({ title, style }) => (
 export default function Profile() {
     const token = useSelector(state => state.authToken)
     const profile = useSelector(state => state.profile)
-    const [profileImage, setProfileImage] = useState({ uri: profile.profileImage })
+    const [profileImage, setProfileImage] = useState({ uri: profile.img })
     const navigation = useNavigation()
     const dispatch = useDispatch()
     const logout = useCallback(() => {
         // authAPI.logout(token)
         //     .finally(() => {
-        //         dispatch(setAuthToken(null))
+        dispatch(setAuthToken(null))
+        dispatch(setProfile(null))
         //     })
         console.log('logout')
     }, [dispatch, token])
@@ -51,11 +54,17 @@ export default function Profile() {
     }, [getProfile, token])
 
     const getProfile = useCallback(() => {
-        profileAPI.get(token)
-            .then((profile) => {
-                dispatch(setProfile(profile))
-            })
-            .catch(error => { })
+        // profileAPI.get(token)
+        //     .then((profile) => {
+        //         dispatch(setProfile(profile))
+        //     })
+        //     .catch(error => { })
+        // profileAPI.getFull()
+        //     .then((data) => {
+        //         console.log(data.find(d => d.username === 'edyth'))
+        //         dispatch(setProfile(data.find(d => d.username === 'edyth')))
+        //     })
+        //     .catch(error => console.log(error))
     }, [dispatch, token])
 
     useEffect(() => {
@@ -66,37 +75,65 @@ export default function Profile() {
         <>
             {
                 token === null ?
-                    navigation.navigate('Login')
+                    <SafeAreaView style={{ flex: 1 }}>
+                        <Appbar.Header>
+                            <ContentTitle title={'Profile'} style={styles.contentTitle} />
+                        </Appbar.Header>
+                        {/* <View style={{ flex: 3 }}>
+
+                        </View> */}
+                        <View style={styles.bottomContainer}>
+                            <Text>Pls Login first</Text>
+                            <Button
+                                title="Login"
+                                color="#555"
+                                onPress={() => navigation.navigate('Login')}
+                            />
+                        </View>
+                    </SafeAreaView>
                     :
                     <SafeAreaView style={{ flex: 1 }}>
                         <Appbar.Header>
                             <ContentTitle title={'Profile'} style={styles.contentTitle} />
                         </Appbar.Header>
-                        <View style={styles.picContainer}>
-                            <Image
-                                style={styles.pic}
-                                resizeMode="contain"
-                                source={{ uri: 'https://reactjs.org/logo-og.png' }}
-                            />
-                            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                                <View style={{ flex: 1 }}></View>
-                                <View style={{ flex: 2, alignItems: 'flex-end',marginRight:5 }}>
-                                    <Text style={{ fontSize: 24 }}>Name</Text>
-                                </View>
-                                <TouchableOpacity style={{ flex: 1 }} onPress={() => navigation.navigate('EditProfile')}>
-                                    <Icon name="edit" size={25} color="#000" />
+                        <View style={styles.headerInsetContainer}>
+                            {profile.img === undefined || profile.img === '' ?
+                                <TouchableOpacity onPress={changeProfileImage}>
+                                    <Avatar.Image size={150} source={require('src/assets/no-avatar.jpg')} />
                                 </TouchableOpacity>
-                                <View style={{ flex: 1 }}></View>
-                            </View>
-    
-                        </View>
-                        <View style={{ flex: 3 }}>
+                                :
+                                <TouchableOpacity onPress={changeProfileImage}>
+                                    <Avatar.Image size={150} source={profileImage} />
+                                </TouchableOpacity>
+                            }
 
                         </View>
-                        <View style={styles.bottomContainer}>
-                            <Button
-                                title="LOGOUT"
-                                color="#900"
+                        <View style={styles.profileContainer}>
+                            <Text style={styles.profileUsernameText}>{profile.username}</Text>
+                            <Text style={styles.profileNameText}>{profile.name}</Text>
+                            <View style={styles.profileInfoContainer}>
+                                <Chip icon="cake" style={styles.profileInfoChip}>
+                                    {dateMonth(profile.DOB)}
+                                </Chip>
+                            </View>
+                        </View>
+                        <View style={styles.listContainer}>
+                            <List.Item
+                                title="Edit Profile"
+                                description="Edit the your profile information"
+                                left={props => <List.Icon {...props} icon="account-edit" />}
+                                onPress={() => navigation.navigate('EditProfile')}
+                            />
+                            <List.Item
+                                title="Change Password"
+                                description="Change your current password"
+                                left={props => <List.Icon {...props} icon="key" />}
+                                onPress={() => navigation.navigate('ChangePassword')}
+                            />
+                            <List.Item
+                                title="Logout"
+                                description="Sign out from the system"
+                                left={props => <List.Icon {...props} icon="logout-variant" />}
                                 onPress={logout}
                             />
                         </View>

@@ -1,25 +1,16 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { GiftedChat } from 'react-native-gifted-chat'
 import partyAPI from 'src/api/party'
+import { useSelector } from 'react-redux'
 
 export default PartyDetail = (props) => {
-
+    const profile = useSelector(state => state.profile)
     const [text, setText] = useState('');
     const [messages, setMessages] = useState([]);
     const getParty = useCallback(() => {
         partyAPI.getById(props.id)
             .then((party) => {
                 setMessages(party.message)
-            })
-            .catch(error => { })
-    }, [])
-
-    const update = useCallback((newMessage = []) => {
-        setMessages(GiftedChat.append(messages, newMessage));
-        console.log(GiftedChat.append(messages, newMessage))
-        partyAPI.sendMsg(GiftedChat.append(messages, newMessage), props.id)
-            .then(() => {
-                console.log('sent')
             })
             .catch(error => { })
     }, [])
@@ -47,9 +38,9 @@ export default PartyDetail = (props) => {
             onInputTextChanged={setText}
             onSend={newMessage => handleSend(newMessage)}
             user={{
-                _id: 1,
-                name: 'Aaron',
-                avatar: 'https://placeimg.com/150/150/any',
+                _id: profile.id,
+                name: profile.username,
+                avatar: profile.img,
             }}
         />
     )

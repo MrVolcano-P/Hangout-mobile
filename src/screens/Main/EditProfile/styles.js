@@ -9,29 +9,26 @@ export default StyleSheet.create({
         flexGrow: 1,
         paddingBottom: 16,
     },
-    picContainer:{
-        flex: 1,
-        alignItems:'center'
+    editProfileImage: {
+        marginTop: 12,
+        width: '100%',
+        height: 150,
     },
-    pic: {
-        width: 180,
-        height: 200
-    },
-    bottomContainer:{
-        flex:1,
-        justifyContent:'center',
-        alignItems: 'center'
+    contentContaier: {
+        marginBottom: 32,
     },
     formContainer: {
         marginTop: 18,
         marginHorizontal: 32,
-        marginBottom: 22,
-        backgroundColor: 'rgba(255, 253, 253, 0.5)',
-        borderRadius:5
     },
     input: {
         paddingHorizontal: 0,
-        marginHorizontal:10,
-        marginVertical: 10,
-    }
+        marginBottom: 18,
+    },
+    actionContainer: {
+        marginTop: 24,
+    },
+    changeProfileButton: {
+        borderRadius: 999,
+    },
 })

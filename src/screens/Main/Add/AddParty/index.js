@@ -30,7 +30,7 @@ export default AddParty = (props) => {
     const [isDatePickerVisible, setIsDatePickerVisble] = useState(false)
     const [partyAmount, setPartyAmount] = useState('')
     const [pubId, setPubId] = useState(props.route.params?.pubNow.id)
-    const [profile, setProfile] = useState({ username: 'Boy' })
+    const profile = useSelector(state => state.profile)
     const [dis, setDis] = useState(props.route.params?.dis)
     const [disable, setDisable] = useState(false)
     const placeInput = useRef()

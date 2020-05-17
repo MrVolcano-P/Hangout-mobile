@@ -26,10 +26,7 @@ export default AddReview = (props) => {
     const [visible, setVisible] = useState(false)
     const [text, setText] = useState('')
     const [isLoadingAddReview, setIsLoadingAddReview] = useState(false)
-    const [profile, setProfile] = useState({
-        username: 'Boy',
-        img: "http://cdn30.us1.fansshare.com/image/loverwallpapers/love-paint-wide-950279070.jpg"
-    })
+    const profile = useSelector(state => state.profile)
     const addReview = useCallback(() => {
         if (text) {
             const unixDate = new Date().getTime()

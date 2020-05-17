@@ -11,6 +11,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { TextInput } from 'react-native-paper'
 import { useSelector } from 'react-redux'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
+import { dateTime } from 'src/helpers/text'
+
 function Item({ item }) {
     return (
         <View style={styles.item}>
@@ -27,11 +29,11 @@ function Item({ item }) {
                                 source={{ uri: item.profile.img }}
                             />
                         </View>
-                        <View style={{ flex: 3 }}>
+                        <View style={{ flex: 2 }}>
                             <Text>{item.profile.username}</Text>
                         </View>
-                        <View style={{ flex: 1 }}>
-                            <Text style={{ marginHorizontal: 10, }}>{moment(parseInt(item.date)).format('DD-MM')}</Text>
+                        <View style={{ flex: 2 }}>
+                            <Text style={{ textAlign: "right" }} >{moment(parseInt(item.date)).startOf('seconds').fromNow()}</Text>
                         </View>
                     </View>
                     <View style={styles.hr} />

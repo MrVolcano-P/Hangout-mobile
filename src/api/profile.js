@@ -9,6 +9,10 @@ export default {
         })
             .then(response => response.data)
     },
+    getFull: () => {
+        return api.get('/profile')
+            .then(response => response.data)
+    },
     update: (data, token) => {
         return api.put('/user/profile', data, {
             headers: {
