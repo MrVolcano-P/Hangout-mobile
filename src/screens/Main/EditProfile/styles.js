@@ -28,7 +28,8 @@ export default StyleSheet.create({
     actionContainer: {
         marginTop: 24,
     },
-    changeProfileButton: {
-        borderRadius: 999,
-    },
+    btn: {
+        backgroundColor: '#321069',
+        marginHorizontal: 40
+    }
 })

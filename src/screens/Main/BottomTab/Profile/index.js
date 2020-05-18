@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import { ScrollView, View, Text, ImageBackground, TouchableOpacity, Image, Button } from 'react-native'
+import { ScrollView, View, Text, ImageBackground, TouchableOpacity, Image, Button, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styles from './styles'
 import { Avatar, Chip, Appbar, TextInput, } from 'react-native-paper'
@@ -99,11 +99,11 @@ export default function Profile() {
                         <View style={styles.headerInsetContainer}>
                             {profile?.img === undefined || profile?.img === '' ?
                                 <TouchableOpacity onPress={changeProfileImage}>
-                                    <Avatar.Image size={150} source={require('src/assets/no-avatar.jpg')} />
+                                    <Image style={{ width: 150, height: 150, borderRadius: 2 }} source={require('src/assets/no-avatar.jpg')} />
                                 </TouchableOpacity>
                                 :
                                 <TouchableOpacity onPress={changeProfileImage}>
-                                    <Avatar.Image size={150} source={profileImage} />
+                                    <Image style={{ width: 150, height: 150, borderRadius: 2 }} source={profileImage} />
                                 </TouchableOpacity>
                             }
 

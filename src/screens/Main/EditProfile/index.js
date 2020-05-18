@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import { View, Text, Image, TouchableOpacity, Button, ScrollView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import styles from './styles'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Appbar, TextInput, } from 'react-native-paper'
@@ -7,8 +7,13 @@ import { useNavigation } from '@react-navigation/native'
 import { useSelector, useDispatch } from 'react-redux'
 import { dateMonth } from 'src/helpers/text'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
+import LinearGradient from 'react-native-linear-gradient'
+import { Button } from 'react-native-elements'
 
-
+const showWarningPopup = (message) => Alert.alert(
+    'กรุณาตรวจสอบข้อมูล',
+    message,
+)
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content
         title={<Text style={style}> {title} </Text>}
@@ -106,14 +111,8 @@ export default EditProfile = () => {
                     <View style={styles.actionContainer}>
                         <Button
                             title="CHANGE PROFILE"
-                            // ViewComponent={LinearGradient}
-                            // linearGradientProps={{
-                            //     colors: [colors.secondary, colors.primary],
-                            //     start: { x: 0, y: 0 },
-                            //     end: { x: 1, y: 1 },
-                            // }}
-                            raised
-                            buttonStyle={styles.changeProfileButton}
+                            color="#F2F1F0"
+                            buttonStyle={styles.btn}
                             onPress={submit}
                             loading={isLoadingSubmit}
                         />
