@@ -13,6 +13,7 @@ import CardView from 'react-native-cardview';
 import pubAPI from 'src/api/pub'
 import { setPub } from 'src/actions/pub'
 import SearchInput, { createFilter } from 'react-native-search-filter';
+import Spinner from 'react-native-spinkit'
 
 const KEYS_TO_FILTERS = ['title'];
 
@@ -56,10 +57,13 @@ function Item({ item }) {
 export default function AllStore() {
     const [pub, setPub] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
+    const [loading, setLoading] = useState(true)
     const getPub = useCallback(() => {
+        console.log('fetch')
         pubAPI.get()
             .then((pubs) => {
                 setPub(pubs)
+                setLoading(false)
             })
             .catch(error => { })
     }, [])
@@ -77,19 +81,27 @@ export default function AllStore() {
                     <ContentTitle title={'Yark Hangout'} style={styles.contentTitle} />
                 </Appbar.Header>
             </SafeAreaView>
-            <View style={styles.container}>
-                <Searchbar
-                    placeholder="Search"
-                    onChangeText={(text) => setSearchTerm(text)}
-                    value={searchTerm}
-                    style={styles.searchbar}
-                />
-                <FlatList
-                    data={filteredPub}
-                    renderItem={({ item }) => <Item item={item} />}
-                    keyExtractor={item => item.id}
-                />
-            </View>
+            {loading ?
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F2F1F0' }}>
+                    <Spinner color="#321069" type="9CubeGrid" />
+                </View>
+                :
+                <View style={styles.container}>
+                    <Searchbar
+                        placeholder="Search"
+                        onChangeText={(text) => setSearchTerm(text)}
+                        value={searchTerm}
+                        style={styles.searchbar}
+                    />
+                    <FlatList
+                        data={filteredPub}
+                        renderItem={({ item }) => <Item item={item} />}
+                        keyExtractor={item => item.id}
+                        refreshing={filteredPub.networkStatus === 4}
+                        onRefresh={() => getPub()}
+                    />
+                </View>
+            }
         </>
     )
 }

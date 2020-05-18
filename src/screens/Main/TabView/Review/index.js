@@ -12,6 +12,8 @@ import { TextInput } from 'react-native-paper'
 import { useSelector } from 'react-redux'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { dateTime } from 'src/helpers/text'
+import Spinner from 'react-native-spinkit'
+import reviewAPI from 'src/api/review'
 
 function Item({ item }) {
     return (
@@ -54,18 +56,41 @@ function Item({ item }) {
 export default Review = (props) => {
     const navigation = useNavigation()
     const pub = useSelector(state => state.pub)
-    const [review, setReview] = useState(props.review)
+    const [review, setReview] = useState([])
+    const [loading, setLoading] = useState(true)
+    const getReview = useCallback(() => {
+        console.log('fetch')
+        reviewAPI.get()
+            .then((reviews) => {
+                setReview(reviews)
+                setLoading(false)
+            })
+            .catch(error => { })
+    }, [])
 
     reviewFilter = review.filter(data => data.pubID === pub.id)
+
+    useEffect(() => {
+        getReview()
+    }, [getReview, navigation])
+
     return (
         <>
-            <View style={{ flex: 1, }}>
-                <FlatList
-                    data={reviewFilter.reverse()}
-                    renderItem={({ item }) => <Item item={item} />}
-                    keyExtractor={item => item.id}
-                />
-            </View>
+            {loading ?
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F2F1F0' }}>
+                    <Spinner color="#321069" type="9CubeGrid" />
+                </View>
+                :
+                <View style={{ flex: 1, }}>
+                    <FlatList
+                        data={reviewFilter.reverse()}
+                        renderItem={({ item }) => <Item item={item} />}
+                        keyExtractor={item => item.id}
+                        refreshing={reviewFilter.networkStatus === 4}
+                        onRefresh={() => getReview()}
+                    />
+                </View>
+            }
         </>
     )
 }
