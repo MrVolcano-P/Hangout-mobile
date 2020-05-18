@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
-import { View, Text, TouchableOpacity, ScrollView, FlatList } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView, FlatList, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styles from './styles'
 import { Appbar, TextInput } from 'react-native-paper'
@@ -96,16 +96,23 @@ export default PartyBottom = () => {
                     <Appbar.Header>
                         <ContentTitle title={'Party'} style={styles.contentTitle} />
                     </Appbar.Header>
-                    {/* <View style={{ flex: 3 }}>
-
-                        </View> */}
-                    <View style={{ justifyContent: 'center', flex: 1 }}>
-                        <Text>Pls Login first</Text>
-                        <Button
-                            title="Login"
-                            color="#555"
-                            onPress={() => navigation.navigate('Login')}
+                    <View style={{ flex: 1, backgroundColor: '#F2F1F0' }}>
+                        <Image
+                            source={require('src/assets/party.jpg')}
+                            resizeMode="cover"
+                            style={styles.editProfileImage}
                         />
+                        <View style={{ flex: 1, alignItems: 'center' }}>
+                            <View style={{ marginVertical: 10 }}>
+                                <Text>Please Login first</Text>
+                            </View>
+                            <Button
+                                title="Login"
+                                color="#F2F1F0"
+                                buttonStyle={styles.btn}
+                                onPress={() => navigation.navigate('Login')}
+                            />
+                        </View>
                     </View>
                 </SafeAreaView>
                 :

@@ -54,5 +54,12 @@ export default StyleSheet.create({
         textShadowColor: '#fff',
         fontFamily: 'System'
         // height:40
+    }, editProfileImage: {
+        marginTop: 12,
+        width: '100%',
+        height: 150,
+    },btn: {
+        backgroundColor: '#321069',
+        marginHorizontal: 40
     }
 })

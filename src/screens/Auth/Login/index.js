@@ -114,15 +114,10 @@ export default function Login() {
                 <View style={styles.actionContainer}>
                     <Button
                         title="LOGIN"
-                        ViewComponent={LinearGradient}
-                        linearGradientProps={{
-                            colors: [colors.secondary, colors.primary],
-                            start: { x: 0, y: 0 },
-                            end: { x: 1, y: 1 },
-                        }}
                         raised
                         containerStyle={styles.loginButtonContainer}
-                        buttonStyle={styles.loginButton}
+                        color="#F2F1F0"
+                        buttonStyle={styles.btn}
                         onPress={login}
                         loading={isLoadingLogin}
                     />

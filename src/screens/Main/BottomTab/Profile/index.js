@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import { ScrollView, View, Text, ImageBackground, TouchableOpacity, Image, Button, Alert } from 'react-native'
+import { ScrollView, View, Text, ImageBackground, TouchableOpacity, Image, Alert } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styles from './styles'
 import { Avatar, Chip, Appbar, TextInput, } from 'react-native-paper'
@@ -18,6 +18,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 import Modal from 'react-native-modal';
 import Login from '../../../Auth/Login'
 import moment from 'moment'
+import { Button } from 'react-native-elements'
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content
         title={<Text style={style}> {title} </Text>}
@@ -79,16 +80,23 @@ export default function Profile() {
                         <Appbar.Header>
                             <ContentTitle title={'Profile'} style={styles.contentTitle} />
                         </Appbar.Header>
-                        {/* <View style={{ flex: 3 }}>
-
-                        </View> */}
-                        <View style={{ justifyContent: 'center', flex: 1 }}>
-                            <Text>Pls Login first</Text>
-                            <Button
-                                title="Login"
-                                color="#555"
-                                onPress={() => navigation.navigate('Login')}
+                        <View style={{ flex: 1, backgroundColor: '#F2F1F0' }}>
+                            <Image
+                                source={require('src/assets/party.jpg')}
+                                resizeMode="cover"
+                                style={styles.editProfileImage}
                             />
+                            <View style={{ flex: 1, alignItems: 'center' }}>
+                                <View style={{ marginVertical: 10 }}>
+                                    <Text>Please Login first</Text>
+                                </View>
+                                <Button
+                                    title="Login"
+                                    color="#F2F1F0"
+                                    buttonStyle={styles.btn}
+                                    onPress={() => navigation.navigate('Login')}
+                                />
+                            </View>
                         </View>
                     </SafeAreaView>
                     :

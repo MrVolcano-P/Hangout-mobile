@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#900',
+        backgroundColor: '#f2f1f0',
     },
     contentContainerStyle: {
         flexGrow: 1,
@@ -13,7 +13,7 @@ export default StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 24,
         marginHorizontal: 32,
-        textAlign:'center'
+        textAlign: 'center'
     },
     subText: {
         fontSize: 20,
@@ -32,17 +32,17 @@ export default StyleSheet.create({
         marginTop: 18,
         marginHorizontal: 32,
         marginBottom: 22,
-        backgroundColor: 'rgba(255, 253, 253, 0.5)',
-        borderRadius:5
+        backgroundColor: 'rgba(50, 16, 105, 0.5)',
+        borderRadius: 5
     },
     input: {
         paddingHorizontal: 0,
-        marginHorizontal:10,
+        marginHorizontal: 10,
         marginVertical: 10,
     },
     actionContainer: {
         marginTop: 24,
-        alignItems:'center'
+        alignItems: 'center'
     },
     registerButtonContainer: {
         width: '70%',
@@ -56,7 +56,9 @@ export default StyleSheet.create({
         justifyContent: 'center',
     },
     backText: {
-        color: '#BBB',
+        color: '#321069',
         fontSize: 12,
-    },
+    }, btn: {
+        backgroundColor: '#321069',
+    }
 })

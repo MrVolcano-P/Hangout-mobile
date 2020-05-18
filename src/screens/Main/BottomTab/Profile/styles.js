@@ -25,6 +25,17 @@ export default StyleSheet.create({
     // modaltitle: {
     //     fontSize: 18,
     // },
+    contentTitle: {
+        fontFamily: 'Roboto',
+        // color: 'white',
+        fontSize: 26,
+        color: '#fff',
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 2,
+        textShadowColor: '#000',
+        fontFamily: 'System'
+        // height:40
+    },
     container: {
         flex: 1,
         backgroundColor: '#FFF',
@@ -67,5 +78,12 @@ export default StyleSheet.create({
     listContainer: {
         marginHorizontal: 16,
         marginTop: 0,
-    },
+    }, editProfileImage: {
+        marginTop: 12,
+        width: '100%',
+        height: 150,
+    }, btn: {
+        backgroundColor: '#321069',
+        marginHorizontal: 40
+    }
 });
