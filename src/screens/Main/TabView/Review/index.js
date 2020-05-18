@@ -33,7 +33,7 @@ function Item({ item }) {
                             <Text>{item.profile.username}</Text>
                         </View>
                         <View style={{ flex: 2 }}>
-                            <Text style={{ textAlign: "right" }} >{moment(parseInt(item.date)).startOf('seconds').fromNow()}</Text>
+                            <Text style={{ textAlign: "right", marginRight: 10 }} >{moment(parseInt(item.date)).startOf('seconds').fromNow()}</Text>
                         </View>
                     </View>
                     <View style={styles.hr} />

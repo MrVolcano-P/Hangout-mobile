@@ -3,15 +3,15 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFF',
     },
     contentContainerStyle: {
         flexGrow: 1,
         paddingBottom: 16,
-    },modal: {
+    }, modal: {
+        flex: 1,
         width: '100%',
-        height: 325,
-        backgroundColor: 'white',
+        // height: 325,
+        backgroundColor: '#F2F1F0',
     },
     modalTop: {
         flex: 0.5,
@@ -26,18 +26,20 @@ export default StyleSheet.create({
         marginTop: 18,
         marginHorizontal: 32,
         marginBottom: 22,
-        backgroundColor: 'rgba(255, 253, 253, 0.5)',
+        // backgroundColor: 'rgba(255, 253, 253, 0.5)',
         borderRadius: 5
     },
     input: {
         paddingHorizontal: 0,
         marginHorizontal: 10,
         marginVertical: 10,
-        // height:200
     },
-    textLength:{
+    textLength: {
         paddingHorizontal: 0,
         marginHorizontal: 10,
-        alignItems:'flex-end'
+        alignItems: 'flex-end'
+    }, btn: {
+        backgroundColor: '#321069',
+        marginHorizontal: 40
     }
 })

@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react'
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import styles from './styles'
 import { Button } from 'react-native-elements'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -18,6 +18,11 @@ const ContentTitle = ({ title, style }) => (
         style={{ alignItems: 'center' }}
     />
 );
+
+const showWarningPopup = (message) => Alert.alert(
+    'กรุณาตรวจสอบข้อมูล',
+    message,
+)
 
 export default AddParty = (props) => {
     const [visible, setVisible] = useState(false)
@@ -39,17 +44,38 @@ export default AddParty = (props) => {
     const changeDate = useCallback((date) => {
         setIsDatePickerVisble(false)
         setDate(date)
-        partyAmountInput.current.focus()
+        // partyAmountInput.current.focus()
     }, [setDate, setIsDatePickerVisble])
 
+    const validateForm = useCallback(() => {
+        if (!name) {
+            showWarningPopup('กรุณากรอกชื่อปาตี้')
+        }
+        else if (!place) {
+            showWarningPopup('กรุณาเลือกสถานที่')
+        }
+        else if (!date) {
+            showWarningPopup('กรุณาเลือกวันและเวลา')
+        }
+        else if (!partyAmount) {
+            showWarningPopup('กรุณากรอกจำนวนคนในปาตี้')
+        }
+        else if (partyAmount < 2) {
+            showWarningPopup('จำนวนคนในปาตี้ต้องมากกว่า1คน')
+        }
+        else {
+            return true
+        }
+        return false
+    }, [name, place, date, partyAmount])
+
     const addParty = useCallback(() => {
-        if (name && place && date && partyAmount) {
+        if (validateForm()) {
             const unixDate = date.getTime()
             setIsLoadingAddParty(true)
             partyAPI.add(name, partyAmount, unixDate.toString(), profile, pubId)
                 .then(() => {
                     console.log('success')
-                    setVisible(false)
                     navigation.goBack()
                 })
                 .catch(error => {
@@ -101,7 +127,8 @@ export default AddParty = (props) => {
                             onChangeText={setName}
                             textContentType="name"
                             returnKeyType="next"
-                            onSubmitEditing={() => setIsDatePickerVisble(true)}
+                            maxLength={16}
+                        // onSubmitEditing={() => setIsDatePickerVisble(true)}
                         />
                         <Menu
                             visible={visible}
@@ -168,6 +195,8 @@ export default AddParty = (props) => {
                         title="Create"
                         onPress={addParty}
                         loading={isLoadingAddParty}
+                        color="#F2F1F0"
+                        buttonStyle={styles.btn}
                     />
                 </View>
             </View>

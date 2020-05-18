@@ -90,7 +90,20 @@ export default Party = (props) => {
     console.log(token)
     return (
         <>
-            <View style={{ flex: 1, backgroundColor: 'gray', flexDirection: 'row' }}>
+            {datefilter.length === 0 ?
+                <View style={{ flex: 7, justifyContent: 'center', alignItems: 'center', }}>
+                    <Text>No Party</Text>
+                </View>
+                :
+                <View style={{ flex: 7 }}>
+                    <FlatList
+                        data={datefilter}
+                        renderItem={({ item }) => <Item item={item} setData={(data) => setData(data)} setVisible={(value) => setVisible(value)} />}
+                        keyExtractor={item => item.id}
+                    />
+                </View>
+            }
+            <View style={{ flex: 1, backgroundColor: '#321069', flexDirection: 'row' }}>
                 <View style={{ flex: 1 }}></View>
                 <View style={{ flex: 5 }}>
                     <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -99,47 +112,34 @@ export default Party = (props) => {
                             {
                                 date <= moment() ?
                                     <TouchableOpacity onPress={() => setDate(moment(date).subtract(1, 'days'))} disabled={true}>
-                                        <Icon name="chevron-left" size={24} color="#900" />
+                                        <Icon name="chevron-left" size={22} color="gray" />
                                     </TouchableOpacity>
                                     :
                                     <TouchableOpacity onPress={() => setDate(moment(date).subtract(1, 'days'))}>
-                                        <Icon name="chevron-left" size={24} color="#900" />
+                                        <Icon name="chevron-left" size={22} color="#F2F1F0" />
                                     </TouchableOpacity>
                             }
                         </View>
                         <View style={{ flex: 3, alignItems: 'center', justifyContent: 'center', }}>
                             {date <= moment() ?
-                                <Text style={{ fontSize: 24 }}>Today</Text>
+                                <Text style={{ fontSize: 24, color: '#F2F1F0' }}>Today</Text>
                                 :
-                                <Text style={{ fontSize: 24 }}>{moment(date).format('DD-MM')}</Text>
+                                <Text style={{ fontSize: 24, color: '#F2F1F0' }}>{moment(date).format('DD MMM')}</Text>
                             }
                         </View>
                         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
                             <TouchableOpacity onPress={() => setDate(moment(date).add(1, 'days'))}>
-                                <Icon name="chevron-right" size={24} color="#900" />
+                                <Icon name="chevron-right" size={22} color="#F2F1F0" />
                             </TouchableOpacity>
                         </View>
                     </View>
                 </View>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
                     <TouchableOpacity onPress={() => setShow(true)}>
-                        <Icon name="calendar-alt" size={30} color="#900" />
+                        <Icon name="calendar-alt" size={24} color="#F2F1F0" />
                     </TouchableOpacity>
                 </View>
             </View>
-            {datefilter.length === 0 ?
-                <View style={{ flex: 6, justifyContent: 'center', alignItems: 'center', }}>
-                    <Text>No Party</Text>
-                </View>
-                :
-                <View style={{ flex: 6 }}>
-                    <FlatList
-                        data={datefilter}
-                        renderItem={({ item }) => <Item item={item} setData={(data) => setData(data)} setVisible={(value) => setVisible(value)} />}
-                        keyExtractor={item => item.id}
-                    />
-                </View>
-            }
             {show && (
                 <DateTimePicker
                     value={new Date(date)}
@@ -170,6 +170,13 @@ export default Party = (props) => {
                                     </View>
                                 </View>
                             </View>
+                            <View
+                                style={{
+                                    borderBottomColor: 'black',
+                                    borderBottomWidth: 2,
+                                    marginHorizontal: 15
+                                }}
+                            />
                             <View style={{ flex: 3 }}>
                                 <FlatGrid
                                     itemDimension={60}
@@ -200,6 +207,8 @@ export default Party = (props) => {
                                             navigation.navigate('Login')
                                             setVisible(false)
                                         }}
+                                        color="#F2F1F0"
+                                        buttonStyle={styles.btn}
                                     />
                                     :
                                     _.includes(_.map(data?.member, 'username'), profile?.username) || _.eq(data?.owner?.username, profile?.username) ?
@@ -208,12 +217,17 @@ export default Party = (props) => {
                                                 data: data
                                             })
                                             setVisible(false)
-                                        }} />
+                                        }}
+                                            color="#F2F1F0"
+                                            buttonStyle={styles.btn}
+                                        />
                                         :
                                         <Button
                                             title="Join"
                                             onPress={join}
                                             loading={isLoadingJoinParty}
+                                            color="#F2F1F0"
+                                            buttonStyle={styles.btn}
                                         />
                                 }
                             </View>

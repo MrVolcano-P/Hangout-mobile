@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react'
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import styles from './styles'
 import { Button } from 'react-native-elements'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -19,22 +19,35 @@ const ContentTitle = ({ title, style }) => (
     />
 );
 
+const showWarningPopup = (message) => Alert.alert(
+    'กรุณาตรวจสอบข้อมูล',
+    message,
+)
+
 export default AddReview = (props) => {
     const navigation = useNavigation()
     const pub = useSelector(state => state.pub)
-    const [review, setReview] = useState([])
-    const [visible, setVisible] = useState(false)
     const [text, setText] = useState('')
     const [isLoadingAddReview, setIsLoadingAddReview] = useState(false)
     const profile = useSelector(state => state.profile)
+
+    const validateForm = useCallback(() => {
+        if (!text) {
+            showWarningPopup('กรุณากรอกรีวิว')
+        }
+        else {
+            return true
+        }
+        return false
+    }, [text])
+
     const addReview = useCallback(() => {
-        if (text) {
+        if (validateForm()) {
             const unixDate = new Date().getTime()
             setIsLoadingAddReview(true)
             reviewAPI.add(text, profile, pub.id, unixDate.toString())
                 .then(() => {
                     console.log('success')
-                    setVisible(false)
                     navigation.goBack()
                 })
                 .catch(error => {
@@ -67,6 +80,7 @@ export default AddReview = (props) => {
                         onChangeText={setText}
                         multiline
                         maxLength={123}
+                        numberOfLines={4}
                     />
                     <View style={styles.textLength}>
                         {text.length === 123 ?
@@ -79,15 +93,17 @@ export default AddReview = (props) => {
                         }
 
                     </View>
+                    <View style={{ flex: 0.5, marginVertical: 10 }}>
+                        <Button
+                            title="Add"
+                            onPress={addReview}
+                            loading={isLoadingAddReview}
+                            color="#F2F1F0"
+                            buttonStyle={styles.btn}
+                        />
+                    </View>
+                </View>
 
-                </View>
-                <View style={{ flex: 0.5, justifyContent: 'flex-end' }}>
-                    <Button
-                        title="Add"
-                        onPress={addReview}
-                        loading={isLoadingAddReview}
-                    />
-                </View>
             </View>
         </View>
     )

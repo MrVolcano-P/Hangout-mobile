@@ -34,24 +34,27 @@ export default StyleSheet.create({
     , modal: {
         width: '100%',
         height: 500,
-        backgroundColor: 'white',
+        backgroundColor: '#F2F1F0',
     },
     modalContainer: {
         flex: 1,
         justifyContent: 'center',
-        marginHorizontal:20
+        marginHorizontal: 20
     },
     modalTop: {
         flex: 0.5,
-        borderBottomWidth: 2,
-        borderBottomColor: 'black',
         justifyContent: 'flex-start'
     },
     modaltitle: {
         fontSize: 18,
+        fontWeight: 'bold'
     },
     itemContainer: {
         flex: 1,
         height: 110,
     },
+    btn: {
+        backgroundColor: '#321069',
+        marginHorizontal: 20
+    }
 });

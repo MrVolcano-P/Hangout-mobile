@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFF',
+        
     },
     contentContainerStyle: {
         flexGrow: 1,
@@ -24,10 +24,10 @@ export default StyleSheet.create({
         marginHorizontal: 20
     },
     modal: {
-        flex:1,
+        flex: 1,
         width: '100%',
         height: 500,
-        backgroundColor: 'white',
+        backgroundColor: '#F2F1F0',
     },
     modalTop: {
         flex: 0.5,
@@ -42,12 +42,16 @@ export default StyleSheet.create({
         marginTop: 18,
         marginHorizontal: 32,
         marginBottom: 22,
-        backgroundColor: 'rgba(255, 253, 253, 0.5)',
+        // backgroundColor: 'rgba(255, 253, 253, 0.5)',
         borderRadius: 5
     },
     input: {
         paddingHorizontal: 0,
         marginHorizontal: 10,
         marginVertical: 10,
+    },
+    btn: {
+        backgroundColor: '#321069',
+        marginHorizontal: 40
     }
 })

@@ -6,7 +6,7 @@ import styles from './styles'
 import { Button } from 'react-native-elements'
 import Party from '../TabView/Party'
 import Review from '../TabView/Review'
-import { TabView, SceneMap } from 'react-native-tab-view';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -99,7 +99,14 @@ export default Detail = (props) => {
             getReview();
         }, [getParty, getReview])
     );
-    console.log(index)
+
+    const renderTabBar = props => (
+        <TabBar
+            {...props}
+            indicatorStyle={{ backgroundColor: '#F2F1F0' }}
+            style={{ backgroundColor: '#321069' }}
+        />
+    );
 
     return (
         <>
@@ -112,17 +119,22 @@ export default Detail = (props) => {
                     <BtnNavigate index={index} />
                 </Appbar.Header>
             </SafeAreaView>
-            <View style={styles.imgview}>
-                <ImageBackground source={image}
-                    style={styles.img} />
+            <View style={styles.container}>
+                <View style={styles.imgview}>
+                    <ImageBackground source={image}
+                        style={styles.img} />
+                </View>
+                <TabView
+                    navigationState={{ index, routes }}
+                    renderScene={renderScene}
+                    renderTabBar={renderTabBar}
+                    onIndexChange={setIndex}
+                    initialLayout={initialLayout}
+                    style={styles.tabViewContainer}
+                    lazy={true}
+                // tabBarPosition='bottom'
+                />
             </View>
-            <TabView
-                navigationState={{ index, routes }}
-                renderScene={renderScene}
-                onIndexChange={setIndex}
-                initialLayout={initialLayout}
-                style={styles.tabViewContainer}
-            />
         </>
     )
 }
