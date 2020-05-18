@@ -11,7 +11,7 @@ export default StyleSheet.create({
         textShadowColor: '#000',
         fontFamily: 'System'
         // height:40
-    },content: {
+    }, content: {
         flex: 1,
         width: '100%',
         height: 50,
@@ -40,5 +40,19 @@ export default StyleSheet.create({
         textShadowRadius: 2,
         textShadowColor: '#fff',
         fontFamily: 'System',
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '#F2F1F0'
+    }, nopartyTitle: {
+        fontFamily: 'Roboto',
+        // color: 'white',
+        fontSize: 26,
+        color: '#000',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 2,
+        textShadowColor: '#fff',
+        fontFamily: 'System'
+        // height:40
     }
 })

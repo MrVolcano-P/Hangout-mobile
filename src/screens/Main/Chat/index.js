@@ -29,7 +29,6 @@ export default PartyDetail = (props) => {
             .catch(error => { })
     }
 
-    // console.log(messages)
     const renderBubble = (props) => (
         <Bubble
             {...props}

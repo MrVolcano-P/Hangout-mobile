@@ -117,56 +117,57 @@ export default PartyBottom = () => {
                             <Appbar.Action icon="plus" onPress={() => navigation.navigate('AddParty')} />
                         </Appbar.Header>
                     </SafeAreaView>
-
-                    <View style={{ flex: 1, backgroundColor: 'gray', flexDirection: 'row' }}>
-                        <View style={{ flex: 1 }}></View>
-                        <View style={{ flex: 5 }}>
-                            <View style={{ flex: 1, flexDirection: 'row' }}>
-                                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
-                                    {
-                                        date <= moment() ?
-                                            <TouchableOpacity onPress={() => setDate(moment(date).subtract(1, 'days'))} disabled={true}>
-                                                <Icon name="chevron-left" size={24} color="#900" />
-                                            </TouchableOpacity>
+                    <View style={styles.container}>
+                        {datefilter.length === 0 ?
+                            <View style={{ flex: 11, justifyContent: 'center', alignItems: 'center', }}>
+                                <Text style={styles.nopartyTitle}>No Party</Text>
+                            </View>
+                            :
+                            <View style={{ flex: 11 }}>
+                                <FlatList
+                                    data={datefilter}
+                                    renderItem={({ item }) => <Item item={item} setData={(data) => setData(data)} setVisible={(value) => setVisible(value)} />}
+                                    keyExtractor={item => item.id}
+                                />
+                            </View>
+                        }
+                        <View style={{ flex: 1, backgroundColor: '#321069', flexDirection: 'row' }}>
+                            <View style={{ flex: 1 }}></View>
+                            <View style={{ flex: 5 }}>
+                                <View style={{ flex: 1, flexDirection: 'row' }}>
+                                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
+                                        {
+                                            date <= moment() ?
+                                                <TouchableOpacity onPress={() => setDate(moment(date).subtract(1, 'days'))} disabled={true}>
+                                                    <Icon name="chevron-left" size={22} color="gray" />
+                                                </TouchableOpacity>
+                                                :
+                                                <TouchableOpacity onPress={() => setDate(moment(date).subtract(1, 'days'))}>
+                                                    <Icon name="chevron-left" size={22} color="#F2F1F0" />
+                                                </TouchableOpacity>
+                                        }
+                                    </View>
+                                    <View style={{ flex: 3, alignItems: 'center', justifyContent: 'center', }}>
+                                        {date <= moment() ?
+                                            <Text style={{ fontSize: 24, color: '#F2F1F0' }}>Today</Text>
                                             :
-                                            <TouchableOpacity onPress={() => setDate(moment(date).subtract(1, 'days'))}>
-                                                <Icon name="chevron-left" size={24} color="#900" />
-                                            </TouchableOpacity>
-                                    }
-                                </View>
-                                <View style={{ flex: 3, alignItems: 'center', justifyContent: 'center', }}>
-                                    {date <= moment() ?
-                                        <Text style={{ fontSize: 24 }}>Today</Text>
-                                        :
-                                        <Text style={{ fontSize: 24 }}>{moment(date).format('DD-MM')}</Text>
-                                    }
-                                </View>
-                                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
-                                    <TouchableOpacity onPress={() => setDate(moment(date).add(1, 'days'))}>
-                                        <Icon name="chevron-right" size={24} color="#900" />
-                                    </TouchableOpacity>
+                                            <Text style={{ fontSize: 24, color: '#F2F1F0' }}>{moment(date).format('DD MMM')}</Text>
+                                        }
+                                    </View>
+                                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
+                                        <TouchableOpacity onPress={() => setDate(moment(date).add(1, 'days'))}>
+                                            <Icon name="chevron-right" size={22} color="#F2F1F0" />
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
                             </View>
-                        </View>
-                        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
-                            <TouchableOpacity onPress={() => setShow(true)}>
-                                <Icon name="calendar-alt" size={30} color="#900" />
-                            </TouchableOpacity>
+                            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
+                                <TouchableOpacity onPress={() => setShow(true)}>
+                                    <Icon name="calendar-alt" size={24} color="#F2F1F0" />
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
-                    {datefilter.length === 0 ?
-                        <View style={{ flex: 10, justifyContent: 'center', alignItems: 'center', }}>
-                            <Text>No Party</Text>
-                        </View>
-                        :
-                        <View style={{ flex: 10 }}>
-                            <FlatList
-                                data={datefilter}
-                                renderItem={({ item }) => <Item item={item} setData={(data) => setData(data)} setVisible={(value) => setVisible(value)} />}
-                                keyExtractor={item => item.id}
-                            />
-                        </View>
-                    }
                 </>
             }
             {show && (
