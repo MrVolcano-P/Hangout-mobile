@@ -12,6 +12,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import CardView from 'react-native-cardview';
 import pubAPI from 'src/api/pub'
 import { setPub } from 'src/actions/pub'
+import SearchInput, { createFilter } from 'react-native-search-filter';
+
+const KEYS_TO_FILTERS = ['title'];
+
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content
         title={<Text style={style}> {title} </Text>}
@@ -51,6 +55,7 @@ function Item({ item }) {
 
 export default function AllStore() {
     const [pub, setPub] = useState([])
+    const [searchTerm, setSearchTerm] = useState('')
     const getPub = useCallback(() => {
         pubAPI.get()
             .then((pubs) => {
@@ -63,22 +68,28 @@ export default function AllStore() {
         getPub()
     }, [getPub])
 
+    const filteredPub = pub?.filter(createFilter(searchTerm, KEYS_TO_FILTERS))
+
     return (
-        <SafeAreaView>
-            <Appbar.Header>
-                <ContentTitle title={'Yark Hangout'} style={styles.contentTitle} />
-            </Appbar.Header>
-            <Searchbar
-                placeholder="Search"
-                // onChangeText={this._onChangeSearch}
-                // value={searchQuery}
-                style={styles.searchbar}
-            />
-            <FlatList
-                data={pub}
-                renderItem={({ item }) => <Item item={item} />}
-                keyExtractor={item => item.id}
-            />
-        </SafeAreaView>
+        <>
+            <SafeAreaView >
+                <Appbar.Header>
+                    <ContentTitle title={'Yark Hangout'} style={styles.contentTitle} />
+                </Appbar.Header>
+            </SafeAreaView>
+            <View style={styles.container}>
+                <Searchbar
+                    placeholder="Search"
+                    onChangeText={(text) => setSearchTerm(text)}
+                    value={searchTerm}
+                    style={styles.searchbar}
+                />
+                <FlatList
+                    data={filteredPub}
+                    renderItem={({ item }) => <Item item={item} />}
+                    keyExtractor={item => item.id}
+                />
+            </View>
+        </>
     )
 }

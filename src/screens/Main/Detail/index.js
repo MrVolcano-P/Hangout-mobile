@@ -29,6 +29,7 @@ const initialLayout = { width: Dimensions.get('window').width };
 export default Detail = (props) => {
     const pub = useSelector(state => state.pub)
     const image = { uri: pub.pic }
+    const token = useSelector(state => state.authToken)
     const [index, setIndex] = React.useState(0);
     const [party, setParty] = useState([])
     const [review, setReview] = useState([])
@@ -65,9 +66,25 @@ export default Detail = (props) => {
     }, [])
     const BtnNavigate = ({ index }) => {
         if (index === 0) {
-            return <Appbar.Action icon="plus" color='white' onPress={() => navigation.navigate('AddParty', { pubNow: pub, dis: true })} />
+            return <Appbar.Action icon="plus" color='white' onPress={() => {
+                if (token === null) {
+                    alert('Login First')
+                    navigation.navigate('Login')
+                } else {
+                    navigation.navigate('AddParty', { pubNow: pub, dis: true })
+                }
+            }
+            } />
         } else if (index === 1) {
-            return <Appbar.Action icon="plus" color='white' onPress={() => navigation.navigate('AddReview')} />
+            return <Appbar.Action icon="plus" color='white' onPress={() => {
+                if (token === null) {
+                    alert('Login First')
+                    navigation.navigate('Login')
+                } else {
+                    navigation.navigate('AddReview')
+                }
+            }}
+            />
         }
     }
 

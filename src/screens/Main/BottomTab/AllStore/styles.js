@@ -13,10 +13,10 @@ export default StyleSheet.create({
         // height:40
     },
     searchbar: {
-        marginVertical:5,
+        marginVertical: 5,
         borderRadius: 8,
         marginHorizontal: 16,
-        height:40
+        height: 40
     }, item: {
         // backgroundColor: '#f9c2ff',
         // padding: 20,
@@ -37,5 +37,9 @@ export default StyleSheet.create({
         width: '100%',
         height: 100,
         justifyContent: 'center',
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '#F2F1F0'
     }
 });

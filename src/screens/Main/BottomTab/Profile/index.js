@@ -28,7 +28,7 @@ const ContentTitle = ({ title, style }) => (
 export default function Profile() {
     const token = useSelector(state => state.authToken)
     const profile = useSelector(state => state.profile)
-    const [profileImage, setProfileImage] = useState({ uri: profile.img })
+    const [profileImage, setProfileImage] = useState({ uri: profile?.img })
     const navigation = useNavigation()
     const dispatch = useDispatch()
     const logout = useCallback(() => {
@@ -82,7 +82,7 @@ export default function Profile() {
                         {/* <View style={{ flex: 3 }}>
 
                         </View> */}
-                        <View style={styles.bottomContainer}>
+                        <View style={{ justifyContent: 'center', flex: 1 }}>
                             <Text>Pls Login first</Text>
                             <Button
                                 title="Login"
@@ -97,7 +97,7 @@ export default function Profile() {
                             <ContentTitle title={'Profile'} style={styles.contentTitle} />
                         </Appbar.Header>
                         <View style={styles.headerInsetContainer}>
-                            {profile.img === undefined || profile.img === '' ?
+                            {profile?.img === undefined || profile?.img === '' ?
                                 <TouchableOpacity onPress={changeProfileImage}>
                                     <Avatar.Image size={150} source={require('src/assets/no-avatar.jpg')} />
                                 </TouchableOpacity>
@@ -109,11 +109,11 @@ export default function Profile() {
 
                         </View>
                         <View style={styles.profileContainer}>
-                            <Text style={styles.profileUsernameText}>{profile.username}</Text>
-                            <Text style={styles.profileNameText}>{profile.name}</Text>
+                            <Text style={styles.profileUsernameText}>{profile?.username}</Text>
+                            <Text style={styles.profileNameText}>{profile?.name}</Text>
                             <View style={styles.profileInfoContainer}>
                                 <Chip icon="cake" style={styles.profileInfoChip}>
-                                    {dateMonth(profile.DOB)}
+                                    {dateMonth(profile?.DOB)}
                                 </Chip>
                             </View>
                         </View>

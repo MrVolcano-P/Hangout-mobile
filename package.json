@@ -45,6 +45,7 @@
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "^2.4.0",
     "react-native-scrollable-tab-view": "^1.0.0",
+    "react-native-search-filter": "^0.1.5",
     "react-native-super-grid": "^3.2.0",
     "react-native-tab-view": "^2.14.0",
     "react-native-uuid": "^1.4.9",

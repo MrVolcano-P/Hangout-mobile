@@ -45,6 +45,7 @@ function Item({ item, setData, setVisible }) {
 }
 
 export default Party = (props) => {
+    const token = useSelector(state => state.authToken)
     const pub = useSelector(state => state.pub)
     const profile = useSelector(state => state.profile)
     const [visible, setVisible] = useState(false)
@@ -53,7 +54,7 @@ export default Party = (props) => {
     const [show, setShow] = useState(false);
     const [party, setParty] = useState(props.party)
     const [isLoadingJoinParty, setIsLoadingJoinParty] = useState(false)
-
+    const navigation = useNavigation()
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');
@@ -86,6 +87,7 @@ export default Party = (props) => {
                 setIsLoadingJoinParty(false)
             })
     }, [data])
+    console.log(token)
     return (
         <>
             <View style={{ flex: 1, backgroundColor: 'gray', flexDirection: 'row' }}>
@@ -175,11 +177,11 @@ export default Party = (props) => {
                                     renderItem={({ item, index }) => (
                                         <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
                                             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                                                {item.img === undefined || item.img === '' ?
+                                                {item?.img === undefined || item?.img === '' ?
                                                     <Image source={require('src/assets/no-avatar.jpg')}
                                                         style={{ width: 80, height: 80, borderRadius: 5 }} />
                                                     :
-                                                    <Image source={{ uri: item.img }}
+                                                    <Image source={{ uri: item?.img }}
                                                         style={{ width: 80, height: 80, borderRadius: 5 }} />
                                                 }
 
@@ -191,16 +193,29 @@ export default Party = (props) => {
                                 />
                             </View>
                             <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-                                {_.includes(_.map(data?.member, 'username'), profile.username) || _.eq(data?.owner?.username, profile.username) ?
-                                    <Button title="Chat" onPress={() => console.log('chat', data.title)} />
-                                    :
+                                {token === null ?
                                     <Button
-                                        title="Join"
-                                        onPress={join}
-                                        loading={isLoadingJoinParty}
+                                        title="Login"
+                                        onPress={() => {
+                                            navigation.navigate('Login')
+                                            setVisible(false)
+                                        }}
                                     />
+                                    :
+                                    _.includes(_.map(data?.member, 'username'), profile?.username) || _.eq(data?.owner?.username, profile?.username) ?
+                                        <Button title="Chat" onPress={() => {
+                                            navigation.navigate('DetailParty', {
+                                                data: data
+                                            })
+                                            setVisible(false)
+                                        }} />
+                                        :
+                                        <Button
+                                            title="Join"
+                                            onPress={join}
+                                            loading={isLoadingJoinParty}
+                                        />
                                 }
-
                             </View>
                         </View>
 
