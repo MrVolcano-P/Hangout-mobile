@@ -166,7 +166,7 @@ export default Party = (props) => {
                     )}
                     {data.member !== undefined ?
                         <Modal isVisible={visible}
-                            backdropColor='rgba(255, 253, 253, 0.5)'
+                            backdropColor='rgba(51, 51, 51, 1)'
                             backdropOpacity={2}
                             animationIn="zoomInDown"
                             animationOut="zoomOutUp"

@@ -6,11 +6,11 @@ const test = Axios.create({
 })
 export default {
     login: (username, password) => {
-        return test.post('/auth/login', { username, password })
+        return test.post('/login', { username, password })
             .then(response => response.data)
     },
     register: (data) => {
-        return api.post('/profile', data)
+        return api.post('/signup', data)
             .then(response => response.data)
     },
     checkUsernameAvailability: (username) => {
