@@ -85,7 +85,9 @@ export default function Login() {
     const register = useCallback(() => {
         navigation.navigate('Register')
     }, [navigation])
-
+    const pubregister = useCallback(() => {
+        navigation.navigate('PubRegister')
+    }, [navigation])
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.containerContent}>
@@ -143,6 +145,12 @@ export default function Login() {
                         onPress={register}
                     >
                         <Text style={styles.registerText}>REGISTER A NEW ACCOUNT</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.registerButton}
+                        onPress={pubregister}
+                    >
+                        <Text style={styles.registerText}>BECOME PARTNER</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
