@@ -53,7 +53,7 @@ export default AddParty = (props) => {
     const pubNow = useSelector(state => state.pub)
 
     const [membership, setMembership] = useState('')
-    const checkMembership = membership && membership.length > 0;
+    const checkMembership = membership && membership.length > 0
     const [membershipFocus, setMembershipFocus] = useState(false);
 
     const [date, setDate] = useState(new Date())
@@ -154,12 +154,12 @@ export default AddParty = (props) => {
                         <Input
                             style={styles.input}
                             label='Member Amount'
-                            status={!membershipFocus || checkMembership ? 'info' : 'danger'}
-                            caption={!membershipFocus || checkMembership ? null : 'Can not be empty'}
+                            status={!membershipFocus ? 'info' : checkMembership ? parseInt(membership) > 1 ? 'info' : 'danger' : 'danger'}
+                            caption={!membershipFocus ? null : checkMembership ? parseInt(membership) > 1 ? null : 'More than 1' : 'Can not be empty'}
                             autoCapitalize='none'
                             placeholder='example'
-                            accessoryRight={!membershipFocus ? null : checkMembership ? CorrectIcon : WrongIcon}
-                            captionIcon={!membershipFocus || checkMembership ? null : AlertIcon}
+                            accessoryRight={!membershipFocus ? null : checkMembership ? parseInt(membership) > 1 ? CorrectIcon : WrongIcon : WrongIcon}
+                            captionIcon={!membershipFocus ? null : checkMembership ? parseInt(membership) > 1 ? null : AlertIcon : AlertIcon}
                             value={membership}
                             onChangeText={setMembership}
                             onFocus={() => { setMembershipFocus(true); }}
@@ -220,6 +220,7 @@ export default AddParty = (props) => {
                         loading={isLoadingAddParty}
                         color="#F2F1F0"
                         buttonStyle={styles.btn}
+                        disabled={!checkName || !checkMembership || !changeDate}
                     />
                 </View>
             </View>

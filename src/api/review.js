@@ -5,12 +5,12 @@ export default {
         return api.get(`/review/${id}`)
             .then(response => response.data)
     },
-    add: (text, username, pubID, date) => {
-        return api.post('/review', {
-            text: text,
-            profile: username,
-            pubID: pubID,
-            date: date
+    add: (id, data, token) => {
+        return api.post(`/user/review/${id}`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         })
+            .then(response => response.data)
     }
 }

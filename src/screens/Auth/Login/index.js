@@ -39,54 +39,6 @@ export default function Login() {
     const dispatch = useDispatch()
     const navigation = useNavigation()
     const [isLoadingLogin, setIsLoadingLogin] = useState(false)
-
-    // const login = useCallback(() => {
-    //     if (username && password) {
-    //         setIsLoadingLogin(true)
-    //         authAPI.login(username, password)
-    //             .then(({ token }) => {
-    //                 dispatch(setAuthToken(token))
-    //                 console.log(token)
-    //                 profileAPI.getFull()
-    //                     .then((data) => {
-    //                         console.log(data.find(d => d.username === username))
-    //                         dispatch(setProfile(data.find(d => d.username === username)))
-    //                         navigation.goBack()
-    //                     })
-    //             })
-    //             .catch(error => {
-    //                 if (error.response) {
-    //                     if (error.response.data.messages.includes('incorrect/username')) {
-    //                         Alert.alert(
-    //                             'กรุณาตรวจสอบข้อมูล',
-    //                             'Username ไม่ถูกต้อง',
-    //                         )
-    //                     }
-    //                     if (error.response.data.messages.includes('incorrect/password')) {
-    //                         Alert.alert(
-    //                             'กรุณาตรวจสอบข้อมูล',
-    //                             'Password ไม่ถูกต้อง',
-    //                         )
-    //                     }
-    //                 }
-    //                 else {
-    //                     Alert.alert(
-    //                         'ไม่สามารถเชื่อมต่ออินเทอร์เน็ต',
-    //                         'ไม่สามารถเชื่อมต่ออินเทอร์เน็ตได้ กรุณาตรวจสอบการเชื่อมต่อของท่านอีกครั้ง',
-    //                     )
-    //                 }
-    //             })
-    //             .finally(() => {
-    //                 setIsLoadingLogin(false)
-    //             })
-    //     }
-    //     else {
-    //         Alert.alert(
-    //             'กรุณาตรวจสอบข้อมูล',
-    //             'กรุณากรอก Username และ Password ให้ครบถ้วน',
-    //         )
-    //     }
-    // }, [username, password, navigation, dispatch])
     const Login = useCallback(() => {
         setIsLoadingLogin(true)
         console.log({ username, password })

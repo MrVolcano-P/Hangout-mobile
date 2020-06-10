@@ -28,8 +28,8 @@ function Item({ item }) {
         <View {...props} style={styles.commentHeader}>
             <Avatar />
             <View style={styles.commentAuthorContainer}>
-                <Text category='s2'>{item.user.username}</Text>
-                <Text appearance='hint' category='c1'>{moment(parseInt(item.date)).startOf('seconds').fromNow()}</Text>
+                <Text category='s2'>{item.user.name}</Text>
+                <Text appearance='hint' category='c1'>{moment(item.date).startOf('seconds').fromNow()}</Text>
             </View>
         </View>
     );

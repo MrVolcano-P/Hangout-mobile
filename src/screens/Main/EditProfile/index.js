@@ -196,6 +196,7 @@ export default EditProfile = () => {
                             buttonStyle={styles.btn}
                             onPress={submit}
                             loading={isLoadingSubmit}
+                            disabled={!checkName || !checkFirstName || !checkLastName || !checkEmail}
                         />
                     </View>
                 </View>
