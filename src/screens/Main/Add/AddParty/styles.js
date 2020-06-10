@@ -53,5 +53,12 @@ export default StyleSheet.create({
     btn: {
         backgroundColor: '#321069',
         marginHorizontal: 40
+    },
+    inputDate: {
+        paddingHorizontal: 0,
+        marginHorizontal: 10,
+        marginVertical: 10,
+        // backgroundColor:'red'
+        borderColor: '#2E8AD8',
     }
 })

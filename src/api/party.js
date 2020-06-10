@@ -10,15 +10,13 @@ export default {
             .then(response => response.data)
     }
     ,
-    add: (title, amount, date, username, placeId) => {
-        return api.post('/party', {
-            title: title,
-            owner: username,
-            member: [username],
-            amount: amount,
-            date: date,
-            placeID: placeId
+    add: (id, data,token) => {
+        return api.post(`/user/party/${id}`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         })
+            .then(response => response.data)
     },
     join: (member, id) => {
         return api.put('/party/' + id, {

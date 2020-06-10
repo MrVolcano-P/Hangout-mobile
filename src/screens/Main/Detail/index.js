@@ -73,7 +73,7 @@ export default Detail = (props) => {
                     alert('Login First')
                     navigation.navigate('Login')
                 } else {
-                    navigation.navigate('AddParty', { pubNow: pub, dis: true })
+                    navigation.navigate('AddParty', { fromPub: true })
                 }
             }
             } />
