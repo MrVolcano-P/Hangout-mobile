@@ -80,19 +80,21 @@ export default Party = (props) => {
 
     const join = useCallback(() => {
         setIsLoadingJoinParty(true)
-        partyAPI.join(_.concat(data.member, profile), data.id)
+        partyAPI.join(data.id, token)
             .then(() => {
                 console.log('join')
-                setVisible(false)
-                getParty()
+                navigation.navigate('DetailParty', {
+                    data: data
+                })
             })
             .catch(error => {
                 console.log(error)
             })
             .finally(() => {
+                setVisible(false)
                 setIsLoadingJoinParty(false)
             })
-    }, [data])
+    }, [data, token])
 
     useEffect(() => {
         getParty()

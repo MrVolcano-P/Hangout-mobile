@@ -86,15 +86,13 @@ export default AddParty = (props) => {
                 :
                 id = placeData?.id
         }
-        // if (validateForm()) {
-        //     const unixDate = date.getTime()
-        console.log('test', id)
-        console.log(data)
         setIsLoadingAddParty(true)
-        partyAPI.add(id, data,token)
-            .then(() => {
+        partyAPI.add(id, data, token)
+            .then(res => {
                 console.log('success')
-                navigation.goBack()
+                navigation.navigate('DetailParty', {
+                    data: res
+                })
             })
             .catch(error => {
                 console.log(error)

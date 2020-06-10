@@ -18,10 +18,13 @@ export default {
         })
             .then(response => response.data)
     },
-    join: (member, id) => {
-        return api.put('/party/' + id, {
-            member: member
+    join: (id, token) => {
+        return api.post(`/user/party/${id}/join`, null, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         })
+            .then(response => response.data)
     },
     //   sendMsg: (msg, id) => {
     //         console.log(msg)

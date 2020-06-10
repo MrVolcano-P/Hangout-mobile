@@ -46,7 +46,7 @@ export default DetailParty = (props) => {
             <SafeAreaView>
                 <Appbar.Header>
                     <Appbar.BackAction
-                        onPress={() => navigation.goBack()}
+                        onPress={() => navigation.navigate('BottomTab')}
                     />
                     <ContentTitle title={data.name} style={styles.contentTitle} />
                     <Appbar.Action />
