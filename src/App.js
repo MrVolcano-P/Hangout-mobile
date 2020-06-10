@@ -1,19 +1,23 @@
 import React from 'react';
-import {StatusBar} from 'react-native';
+import { StatusBar } from 'react-native';
 import Router from './routes';
 import 'react-native-gesture-handler';
-import {Provider as ReduxProvider} from 'react-redux';
-import {Provider as PaperProvider} from 'react-native-paper';
+import { Provider as ReduxProvider } from 'react-redux';
+import { Provider as PaperProvider } from 'react-native-paper';
 import reduxStore from './store';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import paperTheme from './themes/paper';
-import {PersistGate} from 'redux-persist/integration/react';
-
+import { PersistGate } from 'redux-persist/integration/react';
+import { ApplicationProvider, Layout, Text, IconRegistry } from '@ui-kitten/components';
+import * as eva from '@eva-design/eva';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
 export default () => {
   return (
     <ReduxProvider store={reduxStore.store}>
       <PersistGate loading={null} persistor={reduxStore.persistor}>
-        <PaperProvider theme={paperTheme}>
+        {/* <PaperProvider theme={paperTheme}> */}
+        <IconRegistry icons={EvaIconsPack} />
+        <ApplicationProvider {...eva} theme={eva.light}>
           <StatusBar
             translucent
             backgroundColor="transparent"
@@ -22,7 +26,8 @@ export default () => {
           <SafeAreaProvider>
             <Router />
           </SafeAreaProvider>
-        </PaperProvider>
+        </ApplicationProvider>
+        {/* </PaperProvider> */}
       </PersistGate>
     </ReduxProvider>
   );

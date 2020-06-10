@@ -1,8 +1,8 @@
 import api from './instance'
 
 export default {
-    get: () => {
-        return api.get('/review')
+    get: (id) => {
+        return api.get(`/review/${id}`)
             .then(response => response.data)
     },
     add: (text, username, pubID, date) => {

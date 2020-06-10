@@ -85,5 +85,13 @@ export default StyleSheet.create({
     }, btn: {
         backgroundColor: '#321069',
         marginHorizontal: 40
+    }, icon: {
+        backgroundColor: 'rgba(52, 52, 52, 0.8)',
+        position: 'absolute',
+        bottom: -12,
+        right: -12,
+        height:30,
+        width:30,
+        borderRadius:2
     }
 });

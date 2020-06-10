@@ -32,7 +32,8 @@ export default StyleSheet.create({
         marginTop: 18,
         marginHorizontal: 32,
         marginBottom: 22,
-        backgroundColor: 'rgba(50, 16, 105, 0.5)',
+        // backgroundColor: 'rgba(50, 16, 105, 0.5)',
+
         borderRadius: 5
     },
     input: {
@@ -60,5 +61,12 @@ export default StyleSheet.create({
         fontSize: 12,
     }, btn: {
         backgroundColor: '#321069',
+    },
+    inputDate: {
+        paddingHorizontal: 0,
+        marginHorizontal: 10,
+        marginVertical: 10,
+        // backgroundColor:'red'
+        borderColor: '#2E8AD8',
     }
 })

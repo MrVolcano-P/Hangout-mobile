@@ -69,9 +69,9 @@ export default Party = (props) => {
 
     const getParty = useCallback(() => {
         console.log('fetch')
-        partyAPI.get()
-            .then((parties) => {
-                setParty(parties)
+        partyAPI.getById(pub.id)
+            .then(res => {
+                setParty(res)
                 setLoading(false)
             })
             .catch(error => { })

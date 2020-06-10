@@ -14,7 +14,21 @@ import profileAPI from 'src/api/profile'
 import { setAuthToken } from 'src/actions/authToken'
 import { setProfile } from 'src/actions/profile'
 import { dateMonth } from 'src/helpers/text'
-
+import { TouchableWithoutFeedback } from 'react-native';
+import { Icon, Input } from '@ui-kitten/components';
+import moment from 'moment'
+const AlertIcon = (props) => (
+    <Icon {...props} name='alert-circle-outline' />
+);
+const WrongIcon = (props) => (
+    <Icon {...props} name='close-outline' />
+);
+const CorrectIcon = (props) => (
+    <Icon {...props} name='checkmark-outline' />
+);
+const CalenderIcon = (props) => (
+    <Icon {...props} name='calendar-outline' />
+);
 const showWarningPopup = (message) => Alert.alert(
     'กรุณาตรวจสอบข้อมูล',
     message,
@@ -22,92 +36,120 @@ const showWarningPopup = (message) => Alert.alert(
 
 export default function Register() {
     const navigation = useNavigation()
+
     const [username, setUsername] = useState('')
+    const checkUsername = username && username.length > 0;
+    const [checkUsernameAvailable, setCheckUsernameAvailable] = useState(false)
+    const [userFocus, setUserFocus] = useState(false);
+
     const [password, setPassword] = useState('')
+    const checkPassword = password && password.length > 4
+    const [passwordFocus, setPasswordFocus] = useState(false);
+    const [secureTextEntry, setSecureTextEntry] = React.useState(true);
+
+    const toggleSecureEntry = () => {
+        setSecureTextEntry(!secureTextEntry);
+    };
+
+    const renderIcon = (props) => (
+        <TouchableWithoutFeedback onPress={toggleSecureEntry}>
+            <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
+        </TouchableWithoutFeedback>
+    );
+
     const [passwordConfirm, setPasswordConfirm] = useState('')
+    const checkPasswordConfirm = passwordConfirm && passwordConfirm.length > 4 && password === passwordConfirm
+    const [passwordConfirmFocus, setPasswordConfirmFocus] = useState(false);
+    const [secureTextPassConEntry, setSecureTextPassConEntry] = React.useState(true);
+    const toggleSecureConEntry = () => {
+        setSecureTextPassConEntry(!secureTextPassConEntry);
+    };
+
+    const renderIconCon = (props) => (
+        <TouchableWithoutFeedback onPress={toggleSecureConEntry}>
+            <Icon {...props} name={secureTextPassConEntry ? 'eye-off' : 'eye'} />
+        </TouchableWithoutFeedback>
+    );
+
     const [name, setName] = useState('')
-    const [dob, setDOB] = useState(new Date('1990-01-01'))
+    const checkName = name && name.length > 0;
+    const [nameFocus, setNameFocus] = useState(false);
+
+    const [email, setEmail] = useState('')
+    const checkEmail = email && email.length > 0
+    const [emailFocus, setEmailFocus] = useState(false);
+    const [checkFormatEmail, setCheckFormatEmail] = useState(false)
+    const checkEmailIsValid = (mail) => {
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        return reg.test(mail)
+    }
+
+    const [firstName, setFirstName] = useState('')
+    const checkFirstName = firstName && firstName.length > 0;
+    const [firstNameFocus, setfirstNameFocus] = useState(false);
+
+    const [lastName, setLastName] = useState('')
+    const checkLastName = lastName && lastName.length > 0;
+    const [lastNameFocus, setLastNameFocus] = useState(false);
+
+    const [dob, setDOB] = useState(new Date())
     const [isLoadingRegister, setIsLoadingRegister] = useState(false)
     const [isDatePickerVisible, setIsDatePickerVisble] = useState(false)
     const dispatch = useDispatch()
-
-    const usernameInput = useRef()
-    const passwordInput = useRef()
-    const passwordConfirmInput = useRef()
 
     const changeDOB = useCallback((date) => {
         setIsDatePickerVisble(false)
         setDOB(date)
     }, [setDOB, setIsDatePickerVisble])
 
-    const validateForm = useCallback(() => {
-        if (!name) {
-            showWarningPopup('กรุณากรอกชื่อ')
-        }
-        else if (!dob) {
-            showWarningPopup('กรุณากรอกวันเกิด')
-        }
-        else if (!username) {
-            showWarningPopup('กรุณากรอก Username')
-        }
-        else if (!password) {
-            showWarningPopup('กรุณากรอก Password')
-        }
-        else if (!passwordConfirm) {
-            showWarningPopup('กรุณากรอก Password Confirmation')
-        }
-        else if (password !== passwordConfirm) {
-            showWarningPopup('Password และ Password Confirmation ไม่ตรงกัน')
-        }
-        else {
-            return true
-        }
-        return false
-    }, [dob, name, password, username, passwordConfirm])
-
     const callRegisterAPI = useCallback(() => {
-        const date = dob.getTime()
-        authAPI.register({
+        setIsLoadingRegister(true)
+        const parseDate = moment.utc(dob, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        console.log({
             username,
             password,
             name,
-            date,
+            firstName,
+            lastName,
+            email,
+            parseDate,
         })
-            .then(() => {
-                // authAPI.login(username, password)
-                //     .then(({ token }) => {
-                //         dispatch(setAuthToken(token))
-                //         profileAPI.get(token)
-                //             .then((profile) => {
-                //                 dispatch(setProfile(profile))
-                //                 navigation.navigate('ChangeProfileImage')
-                //             })
-                //     })
-                navigation.goBack()
+        const data = {
+            "username": username,
+            "password": password,
+            "name": name,
+            "firstName": firstName,
+            "lastName": lastName,
+            "email": email,
+            "dob": parseDate
+        }
+        authAPI.register(data)
+            .then(({ token }) => {
+                dispatch(setAuthToken(token))
+                console.log(token)
+                profileAPI.get(token)
+                    .then(res => {
+                        console.log(res)
+                        dispatch(setProfile(res))
+                        navigation.navigate('BottomTab')
+                    })
+                    .catch(err => console.log(err))
             })
             .finally(() => {
                 setIsLoadingRegister(false)
             })
-    }, [dob, dispatch, name, navigation, password, username])
 
-    const register = useCallback(() => {
-        if (validateForm()) {
-            setIsLoadingRegister(true)
-            authAPI.checkUsernameAvailability(username)
-                .then(response => {
-                    if (response.isAvailable) {
-                        callRegisterAPI()
-                    }
-                    else {
-                        Alert.alert(
-                            'กรุณาตรวจสอบข้อมูล',
-                            'Username ที่คุณระบุ มีการใช้งานอยู่แล้ว โปรดใช้ Username อื่น'
-                        )
-                        setIsLoadingRegister(false)
-                    }
-                })
-        }
-    }, [callRegisterAPI, username, validateForm])
+    }, [dispatch, navigation, username, password, name, firstName, lastName, dob])
+
+    const checkUsernameAfterEnd = () => {
+        console.log('run')
+        authAPI.checkUsernameAvailability(username)
+            .then(res => {
+                console.log('res', res.is_Available)
+                setCheckUsernameAvailable(res.is_Available)
+            })
+            .catch(err => console.log(err))
+    }
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
@@ -116,61 +158,123 @@ export default function Register() {
                     REGISTER
                 </Text>
                 <View style={styles.formContainer}>
-                    <TextInput
-                        label="Name"
-                        mode="outlined"
+                    {/* username */}
+                    <Input
                         style={styles.input}
-                        value={name}
-                        onChangeText={setName}
-                        textContentType="name"
-                        returnKeyType="next"
-                        onSubmitEditing={() => usernameInput.current.focus()}
-                    />
-                    <TextInput
-                        ref={usernameInput}
-                        label="Username"
-                        mode="outlined"
-                        style={styles.input}
+                        label='Username'
+                        status={!userFocus ? 'info' : !checkUsername ? 'danger' : checkUsernameAvailable ? 'info' : 'danger'}
+                        caption={!userFocus ? null : !checkUsername ? 'Can not be empty' : checkUsernameAvailable ? null : 'username already exist'}
+                        autoCapitalize='none'
+                        placeholder='example'
+                        accessoryRight={!userFocus ? null : !checkUsername ? WrongIcon : checkUsernameAvailable ? CorrectIcon : WrongIcon}
+                        captionIcon={!userFocus || checkUsername ? null : AlertIcon}
                         value={username}
                         onChangeText={setUsername}
-                        textContentType="username"
-                        autoCapitalize="none"
-                        returnKeyType="next"
-                        onSubmitEditing={() => passwordInput.current.focus()}
+                        onFocus={() => { setUserFocus(true); }}
+                        onEndEditing={checkUsernameAfterEnd}
                     />
-                    <TextInput
-                        ref={passwordInput}
-                        label="Password"
-                        mode="outlined"
+                    {/* password */}
+                    <Input
                         style={styles.input}
-                        secureTextEntry
+                        label='Password'
+                        status={!passwordFocus || checkPassword ? 'info' : 'danger'}
+                        caption={!passwordFocus || checkPassword ? null : 'more than 4'}
+                        autoCapitalize='none'
+                        placeholder='password'
+                        accessoryRight={renderIcon}
+                        captionIcon={!passwordFocus || checkPassword ? null : AlertIcon}
+                        secureTextEntry={secureTextEntry}
                         value={password}
                         onChangeText={setPassword}
-                        textContentType="password"
-                        autoCapitalize="none"
-                        returnKeyType="next"
-                        onSubmitEditing={() => passwordConfirmInput.current.focus()}
+                        onFocus={() => { setPasswordFocus(true); }}
                     />
-                    <TextInput
-                        ref={passwordConfirmInput}
-                        label="Password Confirmation"
-                        mode="outlined"
+                    {/* confirmpassword */}
+                    <Input
                         style={styles.input}
-                        secureTextEntry
+                        label='Confirm Password'
+                        status={!passwordConfirmFocus || checkPasswordConfirm ? 'info' : 'danger'}
+                        caption={!passwordConfirmFocus || checkPasswordConfirm ? null : 'must equal password'}
+                        autoCapitalize='none'
+                        placeholder='confirm password'
+                        accessoryRight={renderIconCon}
+                        captionIcon={!passwordConfirmFocus || checkPasswordConfirm ? null : AlertIcon}
+                        secureTextEntry={secureTextPassConEntry}
                         value={passwordConfirm}
                         onChangeText={setPasswordConfirm}
-                        textContentType="password"
-                        autoCapitalize="none"
-                        returnKeyType="next"
-                        onSubmitEditing={() => phoneInput.current.focus()}
+                        onFocus={() => { setPasswordConfirmFocus(true); }}
                     />
+                    {/* name */}
+                    <Input
+                        style={styles.input}
+                        label='Name'
+                        status={!nameFocus || checkName ? 'info' : 'danger'}
+                        caption={!nameFocus || checkName ? null : 'Can not be empty'}
+                        autoCapitalize='none'
+                        placeholder='example'
+                        accessoryRight={!nameFocus ? null : checkName ? CorrectIcon : WrongIcon}
+                        captionIcon={!nameFocus || checkName ? null : AlertIcon}
+                        value={name}
+                        onChangeText={setName}
+                        onFocus={() => { setNameFocus(true); }}
+                    />
+                    {/* firstname */}
+                    <Input
+                        style={styles.input}
+                        label='FirstName'
+                        status={!firstNameFocus || checkFirstName ? 'info' : 'danger'}
+                        caption={!firstNameFocus || checkFirstName ? null : 'Can not be empty'}
+                        autoCapitalize='none'
+                        placeholder='example'
+                        accessoryRight={!firstNameFocus ? null : checkFirstName ? CorrectIcon : WrongIcon}
+                        captionIcon={!firstNameFocus || checkFirstName ? null : AlertIcon}
+                        value={firstName}
+                        onChangeText={setFirstName}
+                        onFocus={() => { setfirstNameFocus(true); }}
+                    />
+                    {/* lastname */}
+                    <Input
+                        style={styles.input}
+                        label='LastName'
+                        status={!lastNameFocus || checkLastName ? 'info' : 'danger'}
+                        caption={!lastNameFocus || checkLastName ? null : 'Can not be empty'}
+                        autoCapitalize='none'
+                        placeholder='example'
+                        accessoryRight={!lastNameFocus ? null : checkLastName ? CorrectIcon : WrongIcon}
+                        captionIcon={!lastNameFocus || checkLastName ? null : AlertIcon}
+                        value={lastName}
+                        onChangeText={setLastName}
+                        onFocus={() => { setLastNameFocus(true); }}
+                    />
+                    {/* email */}
+                    <Input
+                        style={styles.input}
+                        label='Email'
+                        status={!emailFocus ? 'info' : !checkEmail ? 'danger' : checkFormatEmail ? 'info' : 'danger'}
+                        caption={!emailFocus ? null : !checkEmail ? 'Can not be empty' : checkFormatEmail ? null : 'email not valid'}
+                        autoCapitalize='none'
+                        placeholder='example@hangout.com'
+                        accessoryRight={!emailFocus ? null : !checkEmail ? WrongIcon : checkFormatEmail ? CorrectIcon : WrongIcon}
+                        captionIcon={!emailFocus || checkEmail ? null : AlertIcon}
+                        value={email}
+                        onChangeText={(email) => {
+                            setEmail(email)
+                            setCheckFormatEmail(checkEmailIsValid(email))
+                        }}
+                        onFocus={() => { setEmailFocus(true); }}
+                    />
+                    {/* dob */}
                     <TouchableOpacity onPress={() => setIsDatePickerVisble(true)}>
-                        <TextInput
-                            label="Date of Birth"
-                            mode="outlined"
-                            style={styles.input}
+                        <Input
+                            style={styles.inputDate}
+                            label='Date OF Birth'
+                            status={'info'}
+                            caption={"Tap to Select"}
+                            autoCapitalize='none'
+                            accessoryRight={CalenderIcon}
+                            captionIcon={AlertIcon}
                             value={dateMonth(dob)}
-                            editable={false}
+                            disabled
+
                         />
                     </TouchableOpacity>
                     <DateTimePickerModal
@@ -187,8 +291,9 @@ export default function Register() {
                         containerStyle={styles.registerButtonContainer}
                         color="#F2F1F0"
                         buttonStyle={styles.btn}
-                        onPress={register}
+                        onPress={callRegisterAPI}
                         loading={isLoadingRegister}
+                        disabled={!checkUsername || !checkPassword || !checkPasswordConfirm || !checkName || !checkFirstName || !checkLastName}
                     />
                     <TouchableOpacity
                         style={styles.backButton}

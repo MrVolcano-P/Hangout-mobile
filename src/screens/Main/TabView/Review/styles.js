@@ -19,8 +19,8 @@ export default StyleSheet.create({
         height: 50,
     },
     item: {
-        marginVertical: 8,
-        marginHorizontal: 8,
+        marginVertical: 4,
+        // marginHorizontal: 8,
     },
     hr: {
         marginHorizontal: 10,
@@ -62,5 +62,25 @@ export default StyleSheet.create({
         paddingHorizontal: 0,
         marginHorizontal: 10,
         alignItems:'flex-end'
-    }
+    },commentItem: {
+        marginVertical: 4,
+        marginHorizontal: 16,
+    },
+    commentHeader: {
+        flexDirection: 'row',
+        padding: 10,
+    },
+    commentAuthorContainer: {
+        flex: 1,
+        marginHorizontal: 16,
+    },
+    commentReactionsContainer: {
+        flexDirection: 'row',
+        marginTop: 8,
+        marginHorizontal: -8,
+        marginVertical: -8,
+    },
+    iconButton: {
+        paddingHorizontal: 0,
+    },
 })

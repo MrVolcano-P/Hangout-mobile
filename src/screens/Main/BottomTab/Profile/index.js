@@ -15,10 +15,12 @@ import { setAuthToken } from 'src/actions/authToken'
 import LinearGradient from 'react-native-linear-gradient'
 import colors from 'src/themes/colors'
 import Icon from 'react-native-vector-icons/FontAwesome5'
+import { Icon as IconElements } from 'react-native-elements'
 import Modal from 'react-native-modal';
 import Login from '../../../Auth/Login'
 import moment from 'moment'
 import { Button } from 'react-native-elements'
+import { host } from 'src/api/instance'
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content
         title={<Text style={style}> {title} </Text>}
@@ -29,7 +31,7 @@ const ContentTitle = ({ title, style }) => (
 export default function Profile() {
     const token = useSelector(state => state.authToken)
     const profile = useSelector(state => state.profile)
-    const [profileImage, setProfileImage] = useState({ uri: profile?.img })
+    const [profileImage, setProfileImage] = useState({ uri: `${host}/${profile?.image}` })
     const navigation = useNavigation()
     const dispatch = useDispatch()
     const logout = useCallback(() => {
@@ -44,38 +46,29 @@ export default function Profile() {
     const changeProfileImage = useCallback(async () => {
         try {
             const image = await imagePicker()
+            console.log(image)
+            var blob = new Blob(image.data)
+            var file = new File([blob], image.fileName, { type: image.type, lastModified: Date.now() });
+            var form = new FormData();
+            form.append("photos", file)
             setProfileImage(image)
-            profileAPI.updateImage(image, token)
-                .then(() => {
-                    getProfile()
+            await profileAPI.updateImage(form, token)
+                .then(res => {
+                    console.log('sss')
                 })
                 .catch(error => { })
         }
         catch (error) { }
-    }, [getProfile, token])
-
-    const getProfile = useCallback(() => {
-        // profileAPI.get(token)
-        //     .then((profile) => {
-        //         dispatch(setProfile(profile))
-        //     })
-        //     .catch(error => { })
-        // profileAPI.getFull()
-        //     .then((data) => {
-        //         console.log(data.find(d => d.username === 'edyth'))
-        //         dispatch(setProfile(data.find(d => d.username === 'edyth')))
-        //     })
-        //     .catch(error => console.log(error))
-    }, [dispatch, token])
+    }, [token])
 
     useEffect(() => {
-        getProfile()
-    }, [getProfile])
-
+    }, [])
+    console.log(`${host}/${profile?.image}`)
+    console.log(profile)
     return (
         <>
             {
-                token === null ?
+                token === null && profile === null ?
                     <SafeAreaView style={{ flex: 1 }}>
                         <Appbar.Header>
                             <ContentTitle title={'Profile'} style={styles.contentTitle} />
@@ -105,13 +98,25 @@ export default function Profile() {
                             <ContentTitle title={'Profile'} style={styles.contentTitle} />
                         </Appbar.Header>
                         <View style={styles.headerInsetContainer}>
-                            {profile?.img === undefined || profile?.img === '' ?
+                            {profile?.image === undefined || profile?.image === '' ?
                                 <TouchableOpacity onPress={changeProfileImage}>
-                                    <Image style={{ width: 150, height: 150, borderRadius: 2 }} source={require('src/assets/no-avatar.jpg')} />
+                                    <View>
+                                        <Image
+                                            source={require('src/assets/no-avatar.jpg')}
+                                            style={{ width: 150, height: 150, borderRadius: 2 }}
+                                        />
+                                        <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' onPress={console.log('I was clicked')} />
+                                    </View>
                                 </TouchableOpacity>
                                 :
                                 <TouchableOpacity onPress={changeProfileImage}>
-                                    <Image style={{ width: 150, height: 150, borderRadius: 2 }} source={profileImage} />
+                                    <View>
+                                        <Image
+                                            source={profileImage}
+                                            style={{ width: 150, height: 150, borderRadius: 2 }}
+                                        />
+                                        <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' onPress={console.log('I was clicked')} />
+                                    </View>
                                 </TouchableOpacity>
                             }
 
@@ -121,7 +126,7 @@ export default function Profile() {
                             <Text style={styles.profileNameText}>{profile?.name}</Text>
                             <View style={styles.profileInfoContainer}>
                                 <Chip icon="cake" style={styles.profileInfoChip}>
-                                    {dateMonth(profile?.DOB)}
+                                    {dateMonth(profile?.dob)}
                                 </Chip>
                             </View>
                         </View>

@@ -1,12 +1,9 @@
 import api from './instance'
-import Axios from 'axios'
 
-const test = Axios.create({
-    baseURL: 'https://b0fe3e19-d4c5-40c3-969f-d8328dbefa01.mock.pstmn.io'
-})
 export default {
-    login: (username, password) => {
-        return test.post('/login', { username, password })
+    login: (data) => {
+        console.log(data)
+        return api.post('/login', data)
             .then(response => response.data)
     },
     register: (data) => {
@@ -14,7 +11,7 @@ export default {
             .then(response => response.data)
     },
     checkUsernameAvailability: (username) => {
-        return api.get('/auth/checkAvailability', { params: { username } })
+        return api.get(`/checkUsername/${username}`)
             .then(response => response.data)
     },
     logout: (token) => {

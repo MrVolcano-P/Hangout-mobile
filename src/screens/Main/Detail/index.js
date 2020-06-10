@@ -28,7 +28,7 @@ const initialLayout = { width: Dimensions.get('window').width };
 
 export default Detail = (props) => {
     const pub = useSelector(state => state.pub)
-    const image = { uri: pub.pic }
+    const image = { uri: pub.image }
     const token = useSelector(state => state.authToken)
     const [index, setIndex] = React.useState(0);
     const [party, setParty] = useState([])
@@ -50,17 +50,19 @@ export default Detail = (props) => {
     });
 
     const getParty = useCallback(() => {
-        partyAPI.get()
-            .then((parties) => {
-                setParty(parties)
+        partyAPI.getById(pub.id)
+            .then(res => {
+                setParty(res)
+                // console.log(res)
             })
             .catch(error => { })
     }, [])
 
     const getReview = useCallback(() => {
-        reviewAPI.get()
-            .then((reviews) => {
-                setReview(reviews)
+        reviewAPI.get(pub.id)
+            .then(res => {
+                // console.log(res)
+                setReview(res)
             })
             .catch(error => { })
     }, [])
@@ -115,7 +117,7 @@ export default Detail = (props) => {
                     <Appbar.BackAction
                         onPress={() => navigation.goBack()}
                     />
-                    <ContentTitle title={pub.title} style={styles.contentTitle} />
+                    <ContentTitle title={pub.name} style={styles.contentTitle} />
                     <BtnNavigate index={index} />
                 </Appbar.Header>
             </SafeAreaView>

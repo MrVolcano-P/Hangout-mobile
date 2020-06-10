@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native'
+import { View, FlatList, Image, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button } from 'react-native-elements'
 import styles from './styles'
@@ -14,43 +14,33 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { dateTime } from 'src/helpers/text'
 import Spinner from 'react-native-spinkit'
 import reviewAPI from 'src/api/review'
-
+import {
+    Avatar,
+    Card,
+    CardHeaderElement,
+    List,
+    ListProps,
+    Text,
+} from '@ui-kitten/components';
 function Item({ item }) {
-    return (
-        <View style={styles.item}>
-            <CardView
-                cardElevation={5}
-                cardMaxElevation={5}
-                cornerRadius={5}>
-                <View style={{ flex: 1 }}>
-                    <View style={styles.headReview}>
-                        <View style={{ flex: 1 }}>
-                            <Image
-                                style={styles.imgProfile}
-                                resizeMode="contain"
-                                source={{ uri: item.profile.img }}
-                            />
-                        </View>
-                        <View style={{ flex: 2 }}>
-                            <Text>{item.profile.username}</Text>
-                        </View>
-                        <View style={{ flex: 2 }}>
-                            <Text style={{ textAlign: "right", marginRight: 10 }} >{moment(parseInt(item.date)).startOf('seconds').fromNow()}</Text>
-                        </View>
-                    </View>
-                    <View style={styles.hr} />
-                    <View style={styles.contentReview}>
-                        <View style={{ flex: 1 }}>
-
-                        </View>
-                        <View style={{ flex: 4 }}>
-                            <Text >{item.text}</Text>
-                        </View>
-                    </View>
-                </View>
-            </CardView>
+    console.log(item)
+    const Header = (props) => (
+        <View {...props} style={styles.commentHeader}>
+            <Avatar />
+            <View style={styles.commentAuthorContainer}>
+                <Text category='s2'>{item.user.username}</Text>
+                <Text appearance='hint' category='c1'>{moment(parseInt(item.date)).startOf('seconds').fromNow()}</Text>
+            </View>
         </View>
     );
+    return (
+        <View style={styles.item}>
+            <Card style={styles.commentItem} header={Header}>
+                <Text>{item.text}</Text>
+            </Card>
+        </View>
+
+    )
 }
 
 export default Review = (props) => {
@@ -60,15 +50,14 @@ export default Review = (props) => {
     const [loading, setLoading] = useState(true)
     const getReview = useCallback(() => {
         console.log('fetch')
-        reviewAPI.get()
-            .then((reviews) => {
-                setReview(reviews)
+        reviewAPI.get(pub.id)
+            .then(res => {
+                // console.log(res)
+                setReview(res)
                 setLoading(false)
             })
             .catch(error => { })
     }, [])
-
-    reviewFilter = review.filter(data => data.pubID === pub.id)
 
     useEffect(() => {
         getReview()
@@ -83,10 +72,10 @@ export default Review = (props) => {
                 :
                 <View style={{ flex: 1, }}>
                     <FlatList
-                        data={reviewFilter.reverse()}
+                        data={review.reverse()}
                         renderItem={({ item }) => <Item item={item} />}
                         keyExtractor={item => item.id}
-                        refreshing={reviewFilter.networkStatus === 4}
+                        refreshing={review.networkStatus === 4}
                         onRefresh={() => getReview()}
                     />
                 </View>

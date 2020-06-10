@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react'
+import React, { useState, useCallback, useRef, Fragment } from 'react'
 import { ScrollView, View, Text, Image, TouchableOpacity, Alert } from 'react-native'
 import styles from './styles'
 import { Button } from 'react-native-elements'
@@ -12,68 +12,128 @@ import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TextInput } from 'react-native-paper'
 import colors from 'src/themes/colors'
+import { TouchableWithoutFeedback } from 'react-native';
+import { Icon, Input } from '@ui-kitten/components';
 
+const AlertIcon = (props) => (
+    <Icon {...props} name='alert-circle-outline' />
+);
 
 export default function Login() {
     const [username, setUsername] = useState('')
+    const checkUsername = username && username.length > 0;
+    const [userFocus, setUserFocus] = useState(false);
     const [password, setPassword] = useState('')
+    const checkPassword = password && password.length > 4
+    const [passwordFocus, setPasswordFocus] = useState(false);
+    const [secureTextEntry, setSecureTextEntry] = React.useState(true);
+    const toggleSecureEntry = () => {
+        setSecureTextEntry(!secureTextEntry);
+    };
+
+    const renderIcon = (props) => (
+        <TouchableWithoutFeedback onPress={toggleSecureEntry}>
+            <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
+        </TouchableWithoutFeedback>
+    );
     const dispatch = useDispatch()
     const navigation = useNavigation()
     const [isLoadingLogin, setIsLoadingLogin] = useState(false)
 
-    const passwordInput = useRef()
-
-    const login = useCallback(() => {
-        if (username && password) {
-            setIsLoadingLogin(true)
-            authAPI.login(username, password)
-                .then(({ token }) => {
-                    dispatch(setAuthToken(token))
-                    console.log(token)
-                    profileAPI.getFull()
-                        .then((data) => {
-                            console.log(data.find(d => d.username === username))
-                            dispatch(setProfile(data.find(d => d.username === username)))
-                            navigation.goBack()
-                        })
-                })
-                .catch(error => {
-                    if (error.response) {
-                        if (error.response.data.messages.includes('incorrect/username')) {
-                            Alert.alert(
-                                'กรุณาตรวจสอบข้อมูล',
-                                'Username ไม่ถูกต้อง',
-                            )
-                        }
-                        if (error.response.data.messages.includes('incorrect/password')) {
-                            Alert.alert(
-                                'กรุณาตรวจสอบข้อมูล',
-                                'Password ไม่ถูกต้อง',
-                            )
-                        }
-                    }
-                    else {
-                        Alert.alert(
-                            'ไม่สามารถเชื่อมต่ออินเทอร์เน็ต',
-                            'ไม่สามารถเชื่อมต่ออินเทอร์เน็ตได้ กรุณาตรวจสอบการเชื่อมต่อของท่านอีกครั้ง',
-                        )
-                    }
-                })
-                .finally(() => {
-                    setIsLoadingLogin(false)
-                })
-        }
-        else {
-            Alert.alert(
-                'กรุณาตรวจสอบข้อมูล',
-                'กรุณากรอก Username และ Password ให้ครบถ้วน',
-            )
-        }
+    // const login = useCallback(() => {
+    //     if (username && password) {
+    //         setIsLoadingLogin(true)
+    //         authAPI.login(username, password)
+    //             .then(({ token }) => {
+    //                 dispatch(setAuthToken(token))
+    //                 console.log(token)
+    //                 profileAPI.getFull()
+    //                     .then((data) => {
+    //                         console.log(data.find(d => d.username === username))
+    //                         dispatch(setProfile(data.find(d => d.username === username)))
+    //                         navigation.goBack()
+    //                     })
+    //             })
+    //             .catch(error => {
+    //                 if (error.response) {
+    //                     if (error.response.data.messages.includes('incorrect/username')) {
+    //                         Alert.alert(
+    //                             'กรุณาตรวจสอบข้อมูล',
+    //                             'Username ไม่ถูกต้อง',
+    //                         )
+    //                     }
+    //                     if (error.response.data.messages.includes('incorrect/password')) {
+    //                         Alert.alert(
+    //                             'กรุณาตรวจสอบข้อมูล',
+    //                             'Password ไม่ถูกต้อง',
+    //                         )
+    //                     }
+    //                 }
+    //                 else {
+    //                     Alert.alert(
+    //                         'ไม่สามารถเชื่อมต่ออินเทอร์เน็ต',
+    //                         'ไม่สามารถเชื่อมต่ออินเทอร์เน็ตได้ กรุณาตรวจสอบการเชื่อมต่อของท่านอีกครั้ง',
+    //                     )
+    //                 }
+    //             })
+    //             .finally(() => {
+    //                 setIsLoadingLogin(false)
+    //             })
+    //     }
+    //     else {
+    //         Alert.alert(
+    //             'กรุณาตรวจสอบข้อมูล',
+    //             'กรุณากรอก Username และ Password ให้ครบถ้วน',
+    //         )
+    //     }
+    // }, [username, password, navigation, dispatch])
+    const Login = useCallback(() => {
+        setIsLoadingLogin(true)
+        console.log({ username, password })
+        authAPI.login({ "username": username, "password": password })
+            .then(({ token }) => {
+                dispatch(setAuthToken(token))
+                console.log(token)
+                profileAPI.get(token)
+                    .then(res => {
+                        console.log(res)
+                        dispatch(setProfile(res))
+                        navigation.navigate('BottomTab')
+                    })
+                    .catch(err => console.log(err))
+            })
+            .catch(error => {
+                // if (error.response) {
+                //     if (error.response.data.messages.includes('incorrect/username')) {
+                //         Alert.alert(
+                //             'กรุณาตรวจสอบข้อมูล',
+                //             'Username ไม่ถูกต้อง',
+                //         )
+                //     }
+                //     if (error.response.data.messages.includes('incorrect/password')) {
+                //         Alert.alert(
+                //             'กรุณาตรวจสอบข้อมูล',
+                //             'Password ไม่ถูกต้อง',
+                //         )
+                //     }
+                // }
+                // else {
+                //     Alert.alert(
+                //         'ไม่สามารถเชื่อมต่ออินเทอร์เน็ต',
+                //         'ไม่สามารถเชื่อมต่ออินเทอร์เน็ตได้ กรุณาตรวจสอบการเชื่อมต่อของท่านอีกครั้ง',
+                //     )
+                // }
+                console.log(error)
+            })
+            .finally(() => {
+                setIsLoadingLogin(false)
+            })
     }, [username, password, navigation, dispatch])
 
     const register = useCallback(() => {
         navigation.navigate('Register')
     }, [navigation])
+
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.containerContent}>
@@ -86,29 +146,33 @@ export default function Login() {
                     />
                 </View>
                 <View style={styles.formContainer}>
-                    <TextInput
-                        label="Username"
-                        mode="outlined"
+                    <Input
                         style={styles.input}
+                        label='Username'
+                        status={!userFocus || checkUsername ? 'info' : 'danger'}
+                        caption={!userFocus || checkUsername ? null : 'Can not be empty'}
+                        autoCapitalize='none'
+                        placeholder='example'
+                        // accessoryRight={PersonIcon}
+                        captionIcon={!userFocus || checkUsername ? null : AlertIcon}
                         value={username}
                         onChangeText={setUsername}
-                        returnKeyType="next"
-                        textContentType="username"
-                        autoCapitalize="none"
-                        onSubmitEditing={() => passwordInput.current.focus()}
+                        onFocus={() => { setUserFocus(true); }}
                     />
-                    <TextInput
-                        ref={passwordInput}
-                        label="Password"
-                        mode="outlined"
-                        secureTextEntry
+                    <Input
                         style={styles.input}
+                        label='Password'
+                        status={!passwordFocus || checkPassword ? 'info' : 'danger'}
+                        caption={!passwordFocus || checkPassword ? null : 'Can not be empty'}
+                        autoCapitalize='none'
+                        placeholder='password'
+                        // accessoryRight={PersonIcon}
+                        accessoryRight={renderIcon}
+                        captionIcon={!passwordFocus || checkPassword ? null : AlertIcon}
+                        secureTextEntry={secureTextEntry}
                         value={password}
                         onChangeText={setPassword}
-                        returnKeyType="done"
-                        textContentType="password"
-                        autoCapitalize="none"
-                        onSubmitEditing={login}
+                        onFocus={() => { setPasswordFocus(true); }}
                     />
                 </View>
                 <View style={styles.actionContainer}>
@@ -118,8 +182,9 @@ export default function Login() {
                         containerStyle={styles.loginButtonContainer}
                         color="#F2F1F0"
                         buttonStyle={styles.btn}
-                        onPress={login}
+                        onPress={Login}
                         loading={isLoadingLogin}
+                        disabled={!checkUsername || !checkPassword}
                     />
                     <TouchableOpacity
                         style={styles.registerButton}

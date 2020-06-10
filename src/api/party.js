@@ -6,7 +6,7 @@ export default {
             .then(response => response.data)
     },
     getById: (id) => {
-        return api.get('/party/' + id)
+        return api.get(`/pub/party/${id}`)
             .then(response => response.data)
     }
     ,

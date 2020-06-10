@@ -27,7 +27,7 @@ const ContentTitle = ({ title, style }) => (
 function Item({ item }) {
     const navigation = useNavigation()
     const dispatch = useDispatch()
-    const image = { uri: item.pic }
+    const image = { uri: item.image }
     return (
         <TouchableOpacity
             style={styles.button}
@@ -44,7 +44,7 @@ function Item({ item }) {
                     cornerRadius={5}
                     style={styles.cardViewStyle}>
                     <ImageBackground source={image} style={styles.image}>
-                        <Text style={styles.title}>{item.title}</Text>
+                        <Text style={styles.title}>{item.name}</Text>
                     </ImageBackground>
                 </CardView>
             </View>
@@ -61,8 +61,9 @@ export default function AllStore() {
     const getPub = useCallback(() => {
         console.log('fetch')
         pubAPI.get()
-            .then((pubs) => {
-                setPub(pubs)
+            .then(res => {
+                setPub(res)
+                // console.log(res)
                 setLoading(false)
             })
             .catch(error => { })
