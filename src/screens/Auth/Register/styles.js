@@ -39,7 +39,7 @@ export default StyleSheet.create({
     input: {
         paddingHorizontal: 0,
         marginHorizontal: 10,
-        marginVertical: 10,
+        marginVertical: 5,
     },
     actionContainer: {
         marginTop: 24,

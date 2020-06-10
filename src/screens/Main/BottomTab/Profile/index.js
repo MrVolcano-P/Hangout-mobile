@@ -35,11 +35,11 @@ export default function Profile() {
     const navigation = useNavigation()
     const dispatch = useDispatch()
     const logout = useCallback(() => {
-        // authAPI.logout(token)
-        //     .finally(() => {
-        dispatch(setAuthToken(null))
-        dispatch(setProfile(null))
-        //     })
+        authAPI.logout(token)
+            .finally(() => {
+                dispatch(setAuthToken(null))
+                dispatch(setProfile(null))
+            })
         console.log('logout')
     }, [dispatch, token])
 

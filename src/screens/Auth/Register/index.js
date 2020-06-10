@@ -29,10 +29,6 @@ const CorrectIcon = (props) => (
 const CalenderIcon = (props) => (
     <Icon {...props} name='calendar-outline' />
 );
-const showWarningPopup = (message) => Alert.alert(
-    'กรุณาตรวจสอบข้อมูล',
-    message,
-)
 
 export default function Register() {
     const navigation = useNavigation()

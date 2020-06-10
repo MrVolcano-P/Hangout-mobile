@@ -15,7 +15,7 @@ export default {
             .then(response => response.data)
     },
     logout: (token) => {
-        return api.post('/auth/logout', null, {
+        return api.post('/logout', null, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
