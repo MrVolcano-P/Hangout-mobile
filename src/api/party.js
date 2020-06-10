@@ -10,7 +10,7 @@ export default {
             .then(response => response.data)
     }
     ,
-    add: (id, data,token) => {
+    add: (id, data, token) => {
         return api.post(`/user/party/${id}`, data, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -23,12 +23,20 @@ export default {
             member: member
         })
     },
-    sendMsg: (msg, id) => {
-        console.log(msg)
-        console.log(id)
-        return api.put('/party/' + id, {
-            message: msg
+    //   sendMsg: (msg, id) => {
+    //         console.log(msg)
+    //         console.log(id)
+    //         return api.put('/party/' + id, {
+    //             message: msg
+    //         })
+    //     }  
+    getByUserID: (token) => {
+        return api.get(`/user/party`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         })
+            .then(response => response.data)
     }
 
 }

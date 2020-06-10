@@ -17,10 +17,10 @@ export default PartyDetail = (props) => {
     }, [])
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            getParty()
-        }, 1000);
-        return () => clearInterval(interval);
+        // const interval = setInterval(() => {
+        //     getParty()
+        // }, 1000);
+        // return () => clearInterval(interval);
     }, [getParty])
 
     function handleSend(newMessage = []) {

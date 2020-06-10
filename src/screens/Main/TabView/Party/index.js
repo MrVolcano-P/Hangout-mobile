@@ -23,6 +23,7 @@ function Item({ item, setData, setVisible }) {
             onPress={() => {
                 setData(item)
                 setVisible(true)
+                console.log('click')
             }}
         >
             <View style={styles.item}>
@@ -32,10 +33,10 @@ function Item({ item, setData, setVisible }) {
                     cornerRadius={5}>
                     <View style={styles.content}>
                         <View style={styles.contentView1}>
-                            <Text style={styles.title}>{item.member.length}/{item.amount}</Text>
+                            <Text style={styles.title}>{item.members.length}/{item.membership}</Text>
                         </View>
                         <View style={styles.contentView2}>
-                            <Text style={styles.title}>{item.title}</Text>
+                            <Text style={styles.title}>{item.name}</Text>
                         </View>
                     </View>
                 </CardView>
@@ -64,8 +65,8 @@ export default Party = (props) => {
         setDate(currentDate);
     };
 
-    var datafilter = party?.filter(data => data.placeID === pub.id)
-    var datefilter = datafilter.filter(d => moment(parseInt(d.date)).format('DD-MM') === moment(date).format('DD-MM'))
+    // var datafilter = party?.filter(data => data.placeID === pub.id)
+    var datefilter = party?.filter(d => moment(parseInt(d.date)).format('DD-MM') === moment(date).format('DD-MM'))
 
     const getParty = useCallback(() => {
         console.log('fetch')
@@ -105,15 +106,15 @@ export default Party = (props) => {
                 </View>
                 :
                 <>
-                    {datefilter.length === 0 ?
+                    {party.length === 0 ?
                         <View style={{ flex: 7, justifyContent: 'center', alignItems: 'center', }}>
                             <Text>No Party</Text>
                         </View>
                         :
                         <View style={{ flex: 7 }}>
                             <FlatList
-                                data={datefilter}
-                                renderItem={({ item }) => <Item item={item} setData={(data) => setData(data)} setVisible={(value) => setVisible(value)} />}
+                                data={party}
+                                renderItem={({ item }) => <Item item={item} setData={(data) => setData(data)} setVisible={setVisible} />}
                                 keyExtractor={item => item.id}
                                 refreshing={datefilter.networkStatus === 4}
                                 onRefresh={() => getParty()}
@@ -164,9 +165,9 @@ export default Party = (props) => {
                             onChange={onChange}
                         />
                     )}
-                    {data.member !== undefined ?
+                    {data.members !== undefined ?
                         <Modal isVisible={visible}
-                            backdropColor='rgba(51, 51, 51, 1)'
+                            backdropColor='rgba(51, 51, 51, 0.5)'
                             backdropOpacity={2}
                             animationIn="zoomInDown"
                             animationOut="zoomOutUp"
@@ -177,8 +178,8 @@ export default Party = (props) => {
                                         <View style={{ flex: 1, flexDirection: "row" }}>
                                             <View style={{ flex: 1 }}></View>
                                             <View style={{ flex: 4, alignItems: 'center', justifyContent: 'center', }}>
-                                                <Text style={styles.modaltitle}>{data.title}</Text>
-                                                <Text>{data.member.length}/{data.amount}</Text>
+                                                <Text style={styles.modaltitle}>{data.name}</Text>
+                                                <Text>{data.members.length}/{data.membership}</Text>
                                             </View>
                                             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}>
                                                 <TouchableOpacity onPress={() => setVisible(false)}>
@@ -197,7 +198,7 @@ export default Party = (props) => {
                                     <View style={{ flex: 3 }}>
                                         <FlatGrid
                                             itemDimension={60}
-                                            items={data.member}
+                                            items={data.members}
                                             renderItem={({ item, index }) => (
                                                 <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
                                                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -210,7 +211,7 @@ export default Party = (props) => {
                                                         }
 
                                                     </View>
-                                                    <Text style={{ fontSize: 18, textAlign: 'center' }}>{item.username}</Text>
+                                                    <Text style={{ fontSize: 18, textAlign: 'center' }}>{item.name}</Text>
                                                 </View>
                                             )
                                             }
@@ -228,7 +229,7 @@ export default Party = (props) => {
                                                 buttonStyle={styles.btn}
                                             />
                                             :
-                                            _.includes(_.map(data?.member, 'username'), profile?.username) || _.eq(data?.owner?.username, profile?.username) ?
+                                            _.includes(_.map(data?.members, 'username'), profile?.username) || _.eq(data?.leader?.username, profile?.username) ?
                                                 <Button title="Chat" onPress={() => {
                                                     navigation.navigate('DetailParty', {
                                                         data: data

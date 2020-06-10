@@ -13,7 +13,7 @@ import pubAPI from 'src/api/pub'
 import _ from 'lodash'
 import { dateTime } from 'src/helpers/text'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
+import { dateMonth } from 'src/helpers/text'
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content
         title={<Text style={style}> {title} </Text>}
@@ -40,7 +40,7 @@ export default DetailParty = (props) => {
     useEffect(() => {
         getPub()
     }, [getPub])
-
+    console.log(data.pub.name)
     return (
         <>
             <SafeAreaView>
@@ -48,21 +48,22 @@ export default DetailParty = (props) => {
                     <Appbar.BackAction
                         onPress={() => navigation.goBack()}
                     />
-                    <ContentTitle title={data.title} style={styles.contentTitle} />
+                    <ContentTitle title={data.name} style={styles.contentTitle} />
                     <Appbar.Action />
                 </Appbar.Header>
             </SafeAreaView>
             <View style={[styles.content, { opacity: 100 }]} >
                 <View style={styles.contentView1}>
-                    <Text style={styles.title}>{data.member.length}/{data.amount}</Text>
+                    <Text style={styles.title}>{data.members.length}/{data.membership}</Text>
                 </View>
                 <View style={styles.contentView2}>
-                    <Text style={styles.title2}>{moment(parseInt(data.date)).format('DD MMM YYYY kk:mm')}</Text>
+
+                    <Text style={styles.title2}>{dateTime(data.date)}</Text>
                 </View>
             </View>
             <View style={styles.content}>
                 <View style={[styles.contentView2, { backgroundColor: '#5F67B1' }]}>
-                    <Text style={styles.title3}>{place?.title}</Text>
+                    <Text style={styles.title3}>{data.pub.name}</Text>
                 </View>
                 <View style={[styles.contentView1, { backgroundColor: '#F8C441' }]}>
                     <TouchableOpacity>

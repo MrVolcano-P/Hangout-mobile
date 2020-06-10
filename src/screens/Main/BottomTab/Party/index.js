@@ -40,10 +40,10 @@ function Item({ item, setData, setVisible }) {
                     cornerRadius={5}>
                     <View style={styles.content}>
                         <View style={styles.contentView1}>
-                            <Text style={styles.title}>{item.member.length}/{item.amount}</Text>
+                            <Text style={styles.title}>{item.members.length}/{item.membership}</Text>
                         </View>
                         <View style={styles.contentView2}>
-                            <Text style={styles.title}>{item.title}</Text>
+                            <Text style={styles.title}>{item.name}</Text>
                         </View>
                     </View>
                 </CardView>
@@ -65,13 +65,13 @@ export default PartyBottom = () => {
     const [party, setParty] = useState([])
     const getParty = useCallback(() => {
         console.log('fetch')
-        partyAPI.get()
-            .then((parties) => {
-                setParty(parties)
+        partyAPI.getByUserID(token)
+            .then(res => {
+                setParty(res)
                 setLoading(false)
             })
             .catch(error => { })
-    }, [])
+    }, [token])
 
     useEffect(() => {
         getParty()
@@ -89,10 +89,10 @@ export default PartyBottom = () => {
         setDate(currentDate);
     };
 
-    var datafilter = party?.filter(data => data.member.some(i => i?.username.includes(profile?.username)))
+    // var datafilter = party?.filter(data => data.member.some(i => i?.username.includes(profile?.username)))
 
-    var datefilter = datafilter.filter(d => moment(parseInt(d.date)).format('DD-MM') === moment(date).format('DD-MM'))
-
+    var datefilter = party?.filter(d => moment(parseInt(d.date)).format('DD-MM') === moment(date).format('DD-MM'))
+    console.log(token);
     return (
         <>
             {token === null ?
@@ -134,14 +134,14 @@ export default PartyBottom = () => {
                         </View>
                         :
                         <View style={styles.container}>
-                            {datefilter.length === 0 ?
+                            {party.length === 0 ?
                                 <View style={{ flex: 11, justifyContent: 'center', alignItems: 'center', }}>
                                     <Text style={styles.nopartyTitle}>No Party</Text>
                                 </View>
                                 :
                                 <View style={{ flex: 11 }}>
                                     <FlatList
-                                        data={datefilter}
+                                        data={party}
                                         renderItem={({ item }) => <Item item={item} setData={(data) => setData(data)} setVisible={(value) => setVisible(value)} />}
                                         keyExtractor={item => item.id}
                                         refreshing={datefilter.networkStatus === 4}
