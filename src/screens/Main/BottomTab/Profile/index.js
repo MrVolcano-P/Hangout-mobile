@@ -31,7 +31,6 @@ const ContentTitle = ({ title, style }) => (
 export default function Profile() {
     const token = useSelector(state => state.authToken)
     const profile = useSelector(state => state.profile)
-    const mypub = useSelector(state => state.mypub)
     const [profileImage, setProfileImage] = useState({ uri: profile?.image })
     const navigation = useNavigation()
     const dispatch = useDispatch()
@@ -47,24 +46,40 @@ export default function Profile() {
     const changeProfileImage = useCallback(async () => {
         try {
             const image = await imagePicker()
-            console.log(image)
-            var blob = new Blob(image.data)
-            var file = new File([blob], image.fileName, { type: image.type, lastModified: Date.now() });
-            var form = new FormData();
-            form.append("photos", file)
             setProfileImage(image)
-            profileAPI.updateImage(form, token)
-                .then(res => {
-                    console.log('sss')
+            const uri = image.uri;
+            const type = image.type;
+            const name = image.fileName;
+            const source = {
+                uri,
+                type,
+                name,
+            }
+            const data = new FormData()
+            data.append('file', source)
+            data.append('upload_preset', 'tg0bqnqp')
+            data.append("cloud_name", "dvuadgr2r")
+            fetch("https://api.cloudinary.com/v1_1/dvuadgr2r/image/upload", {
+                method: "post",
+                body: data
+            }).then(res => res.json()).
+                then(image => {
+                    const data = {
+                        "image": image.secure_url
+                    }
+                    profileAPI.updateImage(data, token)
+                        .then(res => {
+                            console.log(res)
+                            dispatch(setProfile(res))
+                        })
+                }).catch(err => {
+                    Alert.alert("An Error Occured While Uploading")
                 })
-                .catch(error => { })
         }
         catch (error) { }
     }, [token])
-
     useEffect(() => {
     }, [])
-    console.log(mypub)
     return (
         <>
             {
@@ -141,7 +156,7 @@ export default function Profile() {
                                 <List.Item
                                     title="Edit My Pub"
                                     description="Change your pub data"
-                                    left={props => <List.Icon {...props} icon="key" />}
+                                    left={props => <List.Icon {...props} icon="store" />}
                                     onPress={() => navigation.navigate('ChangePubData')}
                                 />
                                 :

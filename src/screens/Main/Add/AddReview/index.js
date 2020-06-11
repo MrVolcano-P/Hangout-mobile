@@ -81,14 +81,6 @@ export default AddReview = (props) => {
             </SafeAreaView>
             <View style={styles.modal}>
                 <View style={styles.formContainer}>
-                    {/* <Input
-                        style={styles.input}
-                        label="Text"
-                        multiline={true}
-                        textStyle={{ minHeight: 64 }}
-                        placeholder='Multiline'
-                        maxLength={123}
-                    /> */}
                     <Input
                         style={styles.input}
                         label='Review'
@@ -105,16 +97,6 @@ export default AddReview = (props) => {
                         textStyle={{ minHeight: 100 }}
                         maxLength={123}
                     />
-                    {/* <TextInput
-                        label="Text"
-                        mode="outlined"
-                        style={styles.input}
-                        value={text}
-                        onChangeText={setText}
-                        multiline
-                        maxLength={123}
-                        numberOfLines={4}
-                    /> */}
                     <View style={styles.textLength}>
                         {text.length === 123 ?
                             <Text style={{ color: 'red' }}>

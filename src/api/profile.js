@@ -21,9 +21,8 @@ export default {
         })
             .then(response => response.data)
     },
-    updateImage: (formData, token) => {
-        console.log(formData)
-        return api.put('/user/profile/image', formData, {
+    updateImage: (data, token) => {
+        return api.put('/user/profile/image', data, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
