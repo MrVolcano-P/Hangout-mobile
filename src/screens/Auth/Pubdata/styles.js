@@ -70,22 +70,8 @@ export default StyleSheet.create({
         borderColor: '#2E8AD8',
     }, image: {
         flex: 1,
-        width: 150,
-        height: 150,
+        width: '100%',
+        height: 100,
         justifyContent: 'center',
-    },
-    headerInsetContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginVertical: 20,
-    }, icon: {
-        backgroundColor: 'rgba(52, 52, 52, 0.8)',
-        position: 'absolute',
-        bottom: -12,
-        right: -12,
-        height: 30,
-        width: 30,
-        borderRadius: 2
     }
 })

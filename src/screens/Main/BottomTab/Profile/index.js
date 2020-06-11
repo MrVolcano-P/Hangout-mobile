@@ -31,7 +31,7 @@ const ContentTitle = ({ title, style }) => (
 export default function Profile() {
     const token = useSelector(state => state.authToken)
     const profile = useSelector(state => state.profile)
-    const [profileImage, setProfileImage] = useState({ uri: `${host}/${profile?.image}` })
+    const [profileImage, setProfileImage] = useState({ uri: profile?.image })
     const navigation = useNavigation()
     const dispatch = useDispatch()
     const logout = useCallback(() => {
@@ -52,7 +52,7 @@ export default function Profile() {
             var form = new FormData();
             form.append("photos", file)
             setProfileImage(image)
-            await profileAPI.updateImage(form, token)
+            profileAPI.updateImage(form, token)
                 .then(res => {
                     console.log('sss')
                 })

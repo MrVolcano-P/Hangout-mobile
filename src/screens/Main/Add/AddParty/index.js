@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useState, useCallback, useEffect, useRef } from 'react'
 import { View, Text, Image, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import styles from './styles'

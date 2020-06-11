@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import BottomTab from './BottomTab'
@@ -10,6 +11,7 @@ import AddReview from '../screens/Main/Add/AddReview'
 import DetailParty from '../screens/Main/DetailParty'
 import ChangePassword from '../screens/Main/ChangePassword'
 import PubRegister from '../screens/Auth/PubRegister'
+import Pubdata from '../screens/Auth/Pubdata'
 const Stack = createStackNavigator()
 
 export default () => {
@@ -20,6 +22,7 @@ export default () => {
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="PubRegister" component={PubRegister} />
+            <Stack.Screen name="Pubdata" component={Pubdata} />
             <Stack.Screen name="EditProfile" component={EditProfile} />
             <Stack.Screen name="DetailParty" component={DetailParty} />
             <Stack.Screen name="AddParty" component={AddParty} />

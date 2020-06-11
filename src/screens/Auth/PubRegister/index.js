@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable prettier/prettier */
 import React, { useState, useCallback, useRef } from 'react'
 import { View, ScrollView, Text, TouchableOpacity, Alert, Image } from 'react-native'
 import { Button } from 'react-native-elements'
@@ -17,6 +20,9 @@ import { dateMonth } from 'src/helpers/text'
 import { TouchableWithoutFeedback } from 'react-native';
 import { Icon, Input } from '@ui-kitten/components';
 import moment from 'moment'
+import imagePicker from 'src/helpers/imagePicker'
+import { Icon as IconElements } from 'react-native-elements'
+import { host } from '../../../api/instance'
 const AlertIcon = (props) => (
     <Icon {...props} name='alert-circle-outline' />
 );
@@ -98,49 +104,6 @@ export default function Register() {
         setDOB(date)
     }, [setDOB, setIsDatePickerVisble])
 
-    const [namePub, setNamePub] = useState('')
-    const checkNamePub = namePub && namePub.length > 0;
-    const [namePubFocus, setNamePubFocus] = useState(false);
-
-    const callRegisterAPI = useCallback(() => {
-        setIsLoadingRegister(true)
-        const parseDate = moment.utc(dob, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-        console.log({
-            username,
-            password,
-            name,
-            firstName,
-            lastName,
-            email,
-            parseDate,
-        })
-        const data = {
-            "username": username,
-            "password": password,
-            "name": name,
-            "firstName": firstName,
-            "lastName": lastName,
-            "email": email,
-            "dob": parseDate
-        }
-        authAPI.register(data)
-            .then(({ token }) => {
-                dispatch(setAuthToken(token))
-                console.log(token)
-                profileAPI.get(token)
-                    .then(res => {
-                        console.log(res)
-                        dispatch(setProfile(res))
-                        navigation.navigate('BottomTab')
-                    })
-                    .catch(err => console.log(err))
-            })
-            .finally(() => {
-                setIsLoadingRegister(false)
-            })
-
-    }, [dispatch, navigation, username, password, name, firstName, lastName, dob])
-
     const checkUsernameAfterEnd = () => {
         console.log('run')
         authAPI.checkUsernameAvailability(username)
@@ -151,6 +114,85 @@ export default function Register() {
             .catch(err => console.log(err))
     }
 
+    const [profileImage, setProfileImage] = useState('')
+    const [imageData, setImageData] = useState({})
+
+    const changeProfileImage = useCallback(async () => {
+        try {
+            const image = await imagePicker()
+            setProfileImage(image)
+            const uri = image.uri;
+            const type = image.type;
+            const name = image.fileName;
+            const source = {
+                uri,
+                type,
+                name,
+            }
+            setImageData(source)
+        }
+        catch (error) { }
+    }, [])
+    const callRegisterAPI = useCallback((photo) => {
+        const parseDate = moment.utc(dob, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        console.log({
+            username,
+            password,
+            name,
+            firstName,
+            lastName,
+            email,
+            parseDate,
+            photo,
+        })
+        const data = {
+            "username": username,
+            "password": password,
+            "name": name,
+            "firstName": firstName,
+            "lastName": lastName,
+            "email": email,
+            "dob": parseDate,
+            "image": photo,
+            "role": "owner"
+        }
+        console.log(data)
+        authAPI.register(data)
+            .then(({ token }) => {
+                dispatch(setAuthToken(token))
+                console.log(token)
+                profileAPI.get(token)
+                    .then(res => {
+                        console.log(res)
+                        dispatch(setProfile(res))
+                        navigation.navigate('Pubdata')
+                    })
+                    .catch(err => console.log(err))
+            })
+            .finally(() => {
+                setIsLoadingRegister(false)
+            })
+
+    }, [dispatch, navigation, username, password, name, firstName, lastName, dob, email])
+    const cloudinaryUpload = () => {
+        setIsLoadingRegister(true)
+        const data = new FormData()
+        data.append('file', imageData)
+        data.append('upload_preset', 'tg0bqnqp')
+        data.append("cloud_name", "dvuadgr2r")
+        fetch("https://api.cloudinary.com/v1_1/dvuadgr2r/image/upload", {
+            method: "post",
+            body: data
+        }).then(res => res.json()).
+            then(data => {
+                // setPhoto(data.secure_url)
+                console.log(data.secure_url)
+                callRegisterAPI(data.secure_url)
+
+            }).catch(err => {
+                Alert.alert("An Error Occured While Uploading")
+            })
+    }
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
             <SafeAreaView style={styles.contentContaier}>
@@ -283,32 +325,41 @@ export default function Register() {
                         onConfirm={changeDOB}
                         onCancel={() => setIsDatePickerVisble(false)}
                     />
-                    {/* namepub */}
-                    <Input
-                        style={styles.input}
-                        label='Pub Name'
-                        status={!namePubFocus || checkNamePub ? 'info' : 'danger'}
-                        caption={!namePubFocus || checkNamePub ? null : 'Can not be empty'}
-                        autoCapitalize='none'
-                        placeholder='example'
-                        accessoryRight={!namePubFocus ? null : checkNamePub ? CorrectIcon : WrongIcon}
-                        captionIcon={!namePubFocus || checkNamePub ? null : AlertIcon}
-                        value={namePub}
-                        onChangeText={setNamePub}
-                        onFocus={() => { setNamePubFocus(true); }}
-                    />
-                    {/* map */}
+                    {/* image */}
+                    <View style={styles.headerInsetContainer} >
+                        {profileImage === undefined || profileImage === '' ?
+                            <TouchableOpacity onPress={changeProfileImage}>
+                                <View>
+                                    <Image
+                                        source={require('src/assets/no-avatar.jpg')}
+                                        style={styles.image}
+                                    />
+                                    <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' onPress={console.log('I was clicked')} />
+                                </View>
+                            </TouchableOpacity>
+                            :
+                            <TouchableOpacity onPress={changeProfileImage}>
+                                <View>
+                                    <Image
+                                        source={profileImage}
+                                        style={styles.image}
+                                    />
+                                    <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' onPress={console.log('I was clicked')} />
+                                </View>
+                            </TouchableOpacity>
+                        }
+                    </View>
                 </View>
                 <View style={styles.actionContainer}>
                     <Button
-                        title="REGISTER"
+                        title="Next"
                         raised
                         containerStyle={styles.registerButtonContainer}
                         color="#F2F1F0"
                         buttonStyle={styles.btn}
-                        onPress={callRegisterAPI}
+                        onPress={cloudinaryUpload}
                         loading={isLoadingRegister}
-                        disabled={!checkUsername || !checkPassword || !checkPasswordConfirm || !checkName || !checkFirstName || !checkLastName}
+                        disabled={!checkUsername || !checkPassword || !checkPasswordConfirm || !checkName || !checkFirstName || !checkLastName || profileImage === ''}
                     />
                     <TouchableOpacity
                         style={styles.backButton}
