@@ -47,20 +47,23 @@ const ContentTitle = ({ title, style }) => (
 export default function Register() {
     const navigation = useNavigation()
     const token = useSelector(state => state.authToken)
+    const mypub = useSelector(state => state.mypub)
     const dispatch = useDispatch()
     const [isLoadingRegister, setIsLoadingRegister] = useState(false)
-    const [namePub, setNamePub] = useState('')
+    const [namePub, setNamePub] = useState(mypub.name)
     const checkNamePub = namePub && namePub.length > 0;
     const [namePubFocus, setNamePubFocus] = useState(false);
 
-    const [detailPub, setDetailPub] = useState('')
+    const [detailPub, setDetailPub] = useState(mypub.detail)
     const [detailPubFocus, setDetailPubFocus] = useState(false);
 
-    const [pubImage, setPubImage] = useState('')
+    const [pubImage, setPubImage] = useState(mypub.image)
     const [imageData, setImageData] = useState({})
+    const [change, setChange] = useState(false)
     const changePubImage = useCallback(async () => {
         try {
             const image = await imagePicker()
+            setChange(true)
             setPubImage(image)
             const uri = image.uri;
             const type = image.type;
@@ -74,7 +77,7 @@ export default function Register() {
         }
         catch (error) { }
     }, [])
-    const callRegisterAPI = useCallback((photo) => {
+    const callUpdateAPI = useCallback((photo) => {
         console.log({
             namePub,
             photo,
@@ -86,50 +89,34 @@ export default function Register() {
             "detail": detailPub,
         }
         console.log(data)
-        // pubApi.register(data)
-        //     .then(({ token }) => {
-        //         dispatch(setAuthToken(token))
-        //         console.log(token)
-        //         profileAPI.get(token)
-        //             .then(res => {
-        //                 console.log(res)
-        //                 dispatch(setProfile(res))
-        //                 navigation.navigate('BottomTab')
-        //             })
-        //             .catch(err => console.log(err))
-        //     })
-        //     .finally(() => {
-        //         setIsLoadingRegister(false)
-        //     })
-        pubAPI.create(data, token)
+        pubAPI.updatepub(data, token)
             .then(res => {
                 dispatch(setMyPub(res))
-                navigation.navigate('BottomTab')
+                navigation.goBack()
             })
-            .catch(err => console.log(err))
             .finally(() => {
                 setIsLoadingRegister(false)
             })
     }, [dispatch, navigation, namePub, detailPub, token])
     const cloudinaryUpload = () => {
         setIsLoadingRegister(true)
-        const data = new FormData()
-        data.append('file', imageData)
-        data.append('upload_preset', 'dz8g51wn')
-        data.append("cloud_name", "dvuadgr2r")
-        fetch("https://api.cloudinary.com/v1_1/dvuadgr2r/image/upload", {
-            method: "post",
-            body: data
-        }).then(res => res.json()).
-            then(data => {
-                console.log(data)
-                // setPhoto(data.secure_url)
-                console.log(data.secure_url)
-                callRegisterAPI(data.secure_url)
-
-            }).catch(err => {
-                Alert.alert("An Error Occured While Uploading")
-            })
+        if (change) {
+            const data = new FormData()
+            data.append('file', imageData)
+            data.append('upload_preset', 'dz8g51wn')
+            data.append("cloud_name", "dvuadgr2r")
+            fetch("https://api.cloudinary.com/v1_1/dvuadgr2r/image/upload", {
+                method: "post",
+                body: data
+            }).then(res => res.json()).
+                then(data => {
+                    callUpdateAPI(data.secure_url)
+                }).catch(err => {
+                    Alert.alert("An Error Occured While Uploading")
+                })
+        } else {
+            callUpdateAPI(pubImage)
+        }
     }
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
@@ -160,44 +147,25 @@ export default function Register() {
                     <Input
                         style={styles.input}
                         label='Detail'
-                        status={!detailPubFocus ? 'info' : 'danger'}
+                        status={'info'}
                         autoCapitalize='none'
                         placeholder='example'
                         value={detailPub}
                         onChangeText={setDetailPub}
                         onFocus={() => { setDetailPubFocus(true); }}
+                        multiline={true}
+                        textStyle={{ minHeight: 100 }}
                     />
                     {/* image */}
-                    {/* <TouchableOpacity onPress={changePubImage}>
+                    <TouchableOpacity onPress={changePubImage}>
                         <View>
                             <Image
-                                source={pubImage}
+                                source={change ? pubImage : { uri: pubImage }}
                                 style={styles.image}
                             />
                             <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' onPress={console.log('I was clicked')} />
                         </View>
-                    </TouchableOpacity> */}
-                    {pubImage === undefined || pubImage === '' ?
-                        <TouchableOpacity onPress={changePubImage}>
-                            <View>
-                                <Image
-                                    source={require('src/assets/no-avatar.jpg')}
-                                    style={styles.image}
-                                />
-                                <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' onPress={console.log('I was clicked')} />
-                            </View>
-                        </TouchableOpacity>
-                        :
-                        <TouchableOpacity onPress={changePubImage}>
-                            <View>
-                                <Image
-                                    source={pubImage}
-                                    style={styles.image}
-                                />
-                                <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' onPress={console.log('I was clicked')} />
-                            </View>
-                        </TouchableOpacity>
-                    }
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.actionContainer}>
                     <Button

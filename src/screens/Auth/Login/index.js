@@ -5,6 +5,7 @@ import { Button } from 'react-native-elements'
 import LinearGradient from 'react-native-linear-gradient'
 import authAPI from 'src/api/auth'
 import profileAPI from 'src/api/profile'
+import pubAPI from 'src/api/pub'
 import { useDispatch } from 'react-redux'
 import { setAuthToken } from 'src/actions/authToken'
 import { setProfile } from 'src/actions/profile'
@@ -14,6 +15,7 @@ import { TextInput } from 'react-native-paper'
 import colors from 'src/themes/colors'
 import { TouchableWithoutFeedback } from 'react-native';
 import { Icon, Input } from '@ui-kitten/components';
+import { setMyPub } from '../../../actions/myPub'
 
 const AlertIcon = (props) => (
     <Icon {...props} name='alert-circle-outline' />
@@ -50,38 +52,28 @@ export default function Login() {
                     .then(res => {
                         console.log(res)
                         dispatch(setProfile(res))
-                        navigation.navigate('BottomTab')
+                        getMypubfunc(res, token)
                     })
                     .catch(err => console.log(err))
             })
             .catch(error => {
-                // if (error.response) {
-                //     if (error.response.data.messages.includes('incorrect/username')) {
-                //         Alert.alert(
-                //             'กรุณาตรวจสอบข้อมูล',
-                //             'Username ไม่ถูกต้อง',
-                //         )
-                //     }
-                //     if (error.response.data.messages.includes('incorrect/password')) {
-                //         Alert.alert(
-                //             'กรุณาตรวจสอบข้อมูล',
-                //             'Password ไม่ถูกต้อง',
-                //         )
-                //     }
-                // }
-                // else {
-                //     Alert.alert(
-                //         'ไม่สามารถเชื่อมต่ออินเทอร์เน็ต',
-                //         'ไม่สามารถเชื่อมต่ออินเทอร์เน็ตได้ กรุณาตรวจสอบการเชื่อมต่อของท่านอีกครั้ง',
-                //     )
-                // }
                 console.log(error)
             })
             .finally(() => {
                 setIsLoadingLogin(false)
             })
     }, [username, password, navigation, dispatch])
-
+    const getMypubfunc = (res, token) => {
+        if (res.role === 'owner') {
+            pubAPI.getmypub(token).then(res => {
+                console.log(res)
+                dispatch(setMyPub(res))
+                navigation.navigate('BottomTab')
+            }).catch(err => console.log(err))
+        } else {
+            navigation.navigate('BottomTab')
+        }
+    }
     const register = useCallback(() => {
         navigation.navigate('Register')
     }, [navigation])

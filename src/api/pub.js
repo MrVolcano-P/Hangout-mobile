@@ -12,5 +12,21 @@ export default {
             }
         })
             .then(response => response.data)
+    },
+    getmypub: (token) => {
+        return api.get('/user/pub', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+            .then(response => response.data)
+    },
+    updatepub: (data, token) => {
+        return api.put('/user/pub', data, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
+            .then(response => response.data)
     }
 }
