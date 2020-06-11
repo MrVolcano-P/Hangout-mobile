@@ -26,7 +26,7 @@ function Item({ item }) {
     console.log(item)
     const Header = (props) => (
         <View {...props} style={styles.commentHeader}>
-            <Avatar />
+            <Avatar source={{ uri: item.user.image }} />
             <View style={styles.commentAuthorContainer}>
                 <Text category='s2'>{item.user.name}</Text>
                 <Text appearance='hint' category='c1'>{moment(item.date).startOf('seconds').fromNow()}</Text>
@@ -70,15 +70,24 @@ export default Review = (props) => {
                     <Spinner color="#321069" type="9CubeGrid" />
                 </View>
                 :
-                <View style={{ flex: 1, }}>
-                    <FlatList
-                        data={review.reverse()}
-                        renderItem={({ item }) => <Item item={item} />}
-                        keyExtractor={item => item.id}
-                        refreshing={review.networkStatus === 4}
-                        onRefresh={() => getReview()}
-                    />
-                </View>
+                <>
+                    {
+                        review.length === 0 ?
+                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
+                                <Text>No Review</Text>
+                            </View>
+                            :
+                            <View style={{ flex: 1, }}>
+                                <FlatList
+                                    data={review.reverse()}
+                                    renderItem={({ item }) => <Item item={item} />}
+                                    keyExtractor={item => item.id}
+                                    refreshing={review.networkStatus === 4}
+                                    onRefresh={() => getReview()}
+                                />
+                            </View>
+                    }
+                </>
             }
         </>
     )

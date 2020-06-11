@@ -31,6 +31,7 @@ const ContentTitle = ({ title, style }) => (
 export default function Profile() {
     const token = useSelector(state => state.authToken)
     const profile = useSelector(state => state.profile)
+    const mypub = useSelector(state => state.mypub)
     const [profileImage, setProfileImage] = useState({ uri: profile?.image })
     const navigation = useNavigation()
     const dispatch = useDispatch()
@@ -63,8 +64,7 @@ export default function Profile() {
 
     useEffect(() => {
     }, [])
-    console.log(`${host}/${profile?.image}`)
-    console.log(profile)
+    console.log(mypub)
     return (
         <>
             {
@@ -137,12 +137,16 @@ export default function Profile() {
                                 left={props => <List.Icon {...props} icon="account-edit" />}
                                 onPress={() => navigation.navigate('EditProfile')}
                             />
-                            <List.Item
-                                title="Change Password"
-                                description="Change your current password"
-                                left={props => <List.Icon {...props} icon="key" />}
-                                onPress={() => navigation.navigate('ChangePassword')}
-                            />
+                            {profile?.role === 'owner' ?
+                                <List.Item
+                                    title="Edit My Pub"
+                                    description="Change your pub data"
+                                    left={props => <List.Icon {...props} icon="key" />}
+                                    onPress={() => navigation.navigate('ChangePubData')}
+                                />
+                                :
+                                null
+                            }
                             <List.Item
                                 title="Logout"
                                 description="Sign out from the system"

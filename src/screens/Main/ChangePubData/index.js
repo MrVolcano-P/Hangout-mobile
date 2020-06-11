@@ -25,6 +25,7 @@ import imagePicker from 'src/helpers/imagePicker'
 import { Icon as IconElements } from 'react-native-elements'
 import { host } from '../../../api/instance'
 import { setMyPub } from '../../../actions/myPub'
+import { Avatar, Chip, Appbar } from 'react-native-paper'
 const AlertIcon = (props) => (
     <Icon {...props} name='alert-circle-outline' />
 );
@@ -37,7 +38,12 @@ const CorrectIcon = (props) => (
 const CalenderIcon = (props) => (
     <Icon {...props} name='calendar-outline' />
 );
-
+const ContentTitle = ({ title, style }) => (
+    <Appbar.Content
+        title={<Text style={style}> {title} </Text>}
+        style={{ alignItems: 'center' }}
+    />
+);
 export default function Register() {
     const navigation = useNavigation()
     const token = useSelector(state => state.authToken)
@@ -127,10 +133,14 @@ export default function Register() {
     }
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
-            <SafeAreaView style={styles.contentContaier}>
-                <Text style={styles.mainText}>
-                    Pub Data
-                </Text>
+            <SafeAreaView>
+                <Appbar.Header>
+                    <Appbar.BackAction
+                        onPress={() => navigation.goBack()}
+                    />
+                    <ContentTitle title={'Edit My Pub'} style={styles.contentTitle} />
+                    <Appbar.Action />
+                </Appbar.Header>
                 <View style={styles.formContainer}>
                     {/* namepub */}
                     <Input
@@ -200,12 +210,6 @@ export default function Register() {
                         loading={isLoadingRegister}
                         disabled={!checkNamePub || pubImage === ''}
                     />
-                    <TouchableOpacity
-                        style={styles.backButton}
-                        onPress={() => navigation.navigate('Login')}
-                    >
-                        <Text style={styles.backText}>BACK TO LOGIN</Text>
-                    </TouchableOpacity>
                 </View>
             </SafeAreaView>
         </ScrollView>

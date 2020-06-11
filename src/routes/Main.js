@@ -9,9 +9,9 @@ import EditProfile from '../screens/Main/EditProfile'
 import AddParty from '../screens/Main/Add/AddParty'
 import AddReview from '../screens/Main/Add/AddReview'
 import DetailParty from '../screens/Main/DetailParty'
-import ChangePassword from '../screens/Main/ChangePassword'
 import PubRegister from '../screens/Auth/PubRegister'
 import Pubdata from '../screens/Auth/Pubdata'
+import ChangePubData from '../screens/Main/ChangePubData'
 const Stack = createStackNavigator()
 
 export default () => {
@@ -27,7 +27,7 @@ export default () => {
             <Stack.Screen name="DetailParty" component={DetailParty} />
             <Stack.Screen name="AddParty" component={AddParty} />
             <Stack.Screen name="AddReview" component={AddReview} />
-            <Stack.Screen name="ChangePassword" component={ChangePassword} />
+            <Stack.Screen name="ChangePubData" component={ChangePubData} />
         </Stack.Navigator>
     )
 }

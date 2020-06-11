@@ -125,6 +125,9 @@ export default Detail = (props) => {
                 <View style={styles.imgview}>
                     <ImageBackground source={image}
                         style={styles.img} />
+                    <View style={styles.detail}>
+                        <Text>{pub.detail}</Text>
+                    </View>
                 </View>
                 <TabView
                     navigationState={{ index, routes }}
