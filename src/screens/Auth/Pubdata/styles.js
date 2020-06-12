@@ -86,5 +86,10 @@ export default StyleSheet.create({
         height: 30,
         width: 30,
         borderRadius: 2
-    }
+    }, button: {
+        margin: 2,
+        backgroundColor: '#321069',
+    }, backdrop: {
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
 })

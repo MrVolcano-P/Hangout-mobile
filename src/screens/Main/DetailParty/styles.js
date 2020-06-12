@@ -61,7 +61,6 @@ export default StyleSheet.create({
         borderWidth: 5
     },
     headChat: {
-        flex: 1,
         backgroundColor: '#321069',
         alignItems: 'center',
         justifyContent: 'center',

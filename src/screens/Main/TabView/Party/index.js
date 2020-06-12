@@ -123,7 +123,7 @@ export default Party = (props) => {
                             />
                         </View>
                     }
-                    <View style={{ flex: 1, backgroundColor: '#321069', flexDirection: 'row' }}>
+                    {/* <View style={{ flex: 1, backgroundColor: '#321069', flexDirection: 'row' }}>
                         <View style={{ flex: 1 }}></View>
                         <View style={{ flex: 5 }}>
                             <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -166,7 +166,7 @@ export default Party = (props) => {
                             display="default"
                             onChange={onChange}
                         />
-                    )}
+                    )} */}
                     {data.members !== undefined ?
                         <Modal isVisible={visible}
                             backdropColor='rgba(51, 51, 51, 0.5)'

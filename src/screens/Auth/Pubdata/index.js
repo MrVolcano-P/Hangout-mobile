@@ -20,11 +20,14 @@ import { setProfile } from 'src/actions/profile'
 import { dateMonth } from 'src/helpers/text'
 import { TouchableWithoutFeedback } from 'react-native';
 import { Icon, Input } from '@ui-kitten/components';
+import { Button as ButtonUI } from '@ui-kitten/components';
 import moment from 'moment'
-import imagePicker from 'src/helpers/imagePicker'
+import imagePickerCrop from 'src/helpers/imagePickerCrop'
+import imagePickerCropFromGal from 'src/helpers/imagePickerCropFromGal'
 import { Icon as IconElements } from 'react-native-elements'
 import { host } from '../../../api/instance'
 import { setMyPub } from '../../../actions/myPub'
+import { Card, Modal } from '@ui-kitten/components';
 const AlertIcon = (props) => (
     <Icon {...props} name='alert-circle-outline' />
 );
@@ -35,10 +38,17 @@ const CorrectIcon = (props) => (
     <Icon {...props} name='checkmark-outline' />
 );
 
+const CameraIcon = (props) => (
+    <Icon {...props} name='camera' />
+);
+const ImageIcon = (props) => (
+    <Icon {...props} name='image' />
+)
 export default function Register() {
     const navigation = useNavigation()
     const token = useSelector(state => state.authToken)
     const dispatch = useDispatch()
+    const [visible, setVisible] = React.useState(false);
     const [isLoadingRegister, setIsLoadingRegister] = useState(false)
     const [namePub, setNamePub] = useState('')
     const checkNamePub = namePub && namePub.length > 0;
@@ -50,12 +60,34 @@ export default function Register() {
     const [pubImage, setPubImage] = useState('')
     const [imageData, setImageData] = useState({})
     const changePubImage = useCallback(async () => {
+        setVisible(false)
         try {
-            const image = await imagePicker()
-            setPubImage(image)
-            const uri = image.uri;
-            const type = image.type;
-            const name = image.fileName;
+            const image = await imagePickerCrop()
+            console.log(image.mime)
+            console.log(image.modificationDate)
+            setPubImage({ uri: `data:${image.mime};base64,${image.data}` })
+            const uri = image.path;
+            const type = image.mime;
+            const name = "fileName";
+            const source = {
+                uri,
+                type,
+                name,
+            }
+            setImageData(source)
+        }
+        catch (error) { }
+    }, [])
+    const changePubImageFromGallery = useCallback(async () => {
+        setVisible(false)
+        try {
+            const image = await imagePickerCropFromGal()
+            console.log(image.mime)
+            console.log(image.modificationDate)
+            setPubImage({ uri: `data:${image.mime};base64,${image.data}` })
+            const uri = image.path;
+            const type = image.mime;
+            const name = "fileName";
             const source = {
                 uri,
                 type,
@@ -107,6 +139,7 @@ export default function Register() {
                 callRegisterAPI(data.secure_url)
 
             }).catch(err => {
+                console.log(err)
                 Alert.alert("An Error Occured While Uploading")
             })
     }
@@ -146,7 +179,7 @@ export default function Register() {
                     />
                     {/* image */}
                     {pubImage === undefined || pubImage === '' ?
-                        <TouchableOpacity onPress={changePubImage}>
+                        <TouchableOpacity onPress={() => setVisible(true)}>
                             <View>
                                 <Image
                                     source={require('src/assets/no-avatar.jpg')}
@@ -156,7 +189,7 @@ export default function Register() {
                             </View>
                         </TouchableOpacity>
                         :
-                        <TouchableOpacity onPress={changePubImage}>
+                        <TouchableOpacity onPress={() => setVisible(true)}>
                             <View>
                                 <Image
                                     source={pubImage}
@@ -166,6 +199,25 @@ export default function Register() {
                             </View>
                         </TouchableOpacity>
                     }
+                    <Modal
+                        visible={visible}
+                        backdropStyle={styles.backdrop}
+                        onBackdropPress={() => setVisible(false)}>
+                        <Card disabled={true}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <ButtonUI
+                                    style={styles.button}
+                                    onPress={changePubImage}
+                                    accessoryLeft={CameraIcon}
+                                />
+                                <ButtonUI
+                                    style={styles.button}
+                                    onPress={changePubImageFromGallery}
+                                    accessoryLeft={ImageIcon}
+                                />
+                            </View>
+                        </Card>
+                    </Modal>
                     {/* longtitude */}
                     <Input
                         style={styles.inputDate}

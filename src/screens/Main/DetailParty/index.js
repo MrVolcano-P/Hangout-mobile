@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { View, Text, ScrollView } from 'react-native'
+import { View, Text, ScrollView, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Appbar } from 'react-native-paper'
 import styles from './styles'
@@ -14,6 +14,7 @@ import _ from 'lodash'
 import { dateTime } from 'src/helpers/text'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { dateMonth } from 'src/helpers/text'
+import { FlatGrid } from 'react-native-super-grid'
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content
         title={<Text style={style}> {title} </Text>}
@@ -40,7 +41,6 @@ export default DetailParty = (props) => {
     useEffect(() => {
         getPub()
     }, [getPub])
-    console.log(data.pub.name)
     return (
         <>
             <SafeAreaView>
@@ -73,7 +73,7 @@ export default DetailParty = (props) => {
             </View>
             <View style={{ flex: 12 }}>
                 <View style={styles.chat}>
-                    <View style={{ marginVertical: 5 }}>
+                    {/* <View style={{ marginVertical: 5 }}>
                         {timeleft < 0 || finish ?
                             <CountDown
                                 until={timeleft}
@@ -102,12 +102,35 @@ export default DetailParty = (props) => {
                         }
 
                     </View>
-                    <View style={styles.headChat}>
-                        <Text style={styles.headChatText}>Chat Room</Text>
-                    </View>
+                    // <View style={styles.headChat}>
+                    //     <Text style={styles.headChatText}>Chat Room</Text>
+                    // </View>
                     <View style={styles.chatContent}>
                         <Chat id={data.id} />
+                    </View> */}
+                    <View style={styles.headChat}>
+                        <Text style={styles.headChatText}>Members</Text>
                     </View>
+                    <FlatGrid
+                        itemDimension={60}
+                        items={data.members}
+                        renderItem={({ item, index }) => (
+                            <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
+                                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                    {item?.img === undefined || item?.img === '' ?
+                                        <Image source={require('src/assets/no-avatar.jpg')}
+                                            style={{ width: 80, height: 80, borderRadius: 5 }} />
+                                        :
+                                        <Image source={{ uri: item?.img }}
+                                            style={{ width: 80, height: 80, borderRadius: 5 }} />
+                                    }
+
+                                </View>
+                                <Text style={{ fontSize: 18, textAlign: 'center' }}>{item.name}</Text>
+                            </View>
+                        )
+                        }
+                    />
                 </View>
             </View>
         </>

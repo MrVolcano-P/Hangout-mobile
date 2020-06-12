@@ -149,7 +149,7 @@ export default PartyBottom = () => {
                                     />
                                 </View>
                             }
-                            <View style={{ flex: 1, backgroundColor: '#321069', flexDirection: 'row' }}>
+                            {/* <View style={{ flex: 1, backgroundColor: '#321069', flexDirection: 'row' }}>
                                 <View style={{ flex: 1 }}></View>
                                 <View style={{ flex: 5 }}>
                                     <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -184,7 +184,7 @@ export default PartyBottom = () => {
                                         <Icon name="calendar-alt" size={24} color="#F2F1F0" />
                                     </TouchableOpacity>
                                 </View>
-                            </View>
+                            </View> */}
                         </View>
                     }
                 </>

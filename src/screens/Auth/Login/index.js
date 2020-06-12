@@ -142,7 +142,7 @@ export default function Login() {
                         style={styles.registerButton}
                         onPress={pubregister}
                     >
-                        <Text style={styles.registerText}>BECOME PARTNER</Text>
+                        <Text style={styles.registerText}>BECOME OWNER</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
