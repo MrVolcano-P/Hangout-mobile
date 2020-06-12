@@ -99,7 +99,6 @@ export default Party = (props) => {
     useEffect(() => {
         getParty()
     }, [getParty, navigation])
-
     return (
         <>
             {loading ?
@@ -115,7 +114,7 @@ export default Party = (props) => {
                         :
                         <View style={{ flex: 7 }}>
                             <FlatList
-                                data={party}
+                                data={party.filter(p => p.members.length != p.membership)}
                                 renderItem={({ item }) => <Item item={item} setData={(data) => setData(data)} setVisible={setVisible} />}
                                 keyExtractor={item => item.id}
                                 refreshing={datefilter.networkStatus === 4}
