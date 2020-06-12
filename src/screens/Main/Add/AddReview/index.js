@@ -1,17 +1,13 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react'
-import { View, Text, Image, TouchableOpacity, ScrollView, Alert } from 'react-native'
+import React, { useState, useCallback } from 'react'
+import { View, Text, Alert } from 'react-native'
 import styles from './styles'
 import { Button } from 'react-native-elements'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Appbar, TextInput, Menu } from 'react-native-paper'
+import { Appbar } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
-import { useSelector, useDispatch } from 'react-redux'
-// import Icon from 'react-native-vector-icons/FontAwesome5'
-import DateTimePickerModal from 'react-native-modal-datetime-picker'
-import pubAPI from 'src/api/pub'
-import moment from 'moment'
+import { useSelector } from 'react-redux'
 import reviewAPI from 'src/api/review'
-import { Icon, Input, Autocomplete, IndexPath, Layout, Select, SelectItem } from '@ui-kitten/components';
+import { Icon, Input } from '@ui-kitten/components';
 const AlertIcon = (props) => (
     <Icon {...props} name='alert-circle-outline' />
 );
@@ -48,8 +44,6 @@ export default AddReview = (props) => {
     const [textFocus, setTextFocus] = useState(false);
 
     const addReview = useCallback(() => {
-        // if (validateForm()) {
-        //     const unixDate = new Date().getTime()
         setIsLoadingAddReview(true)
         let data = {
             "text": text
@@ -66,7 +60,6 @@ export default AddReview = (props) => {
                 setIsLoadingAddReview(false)
                 setText('')
             })
-        // }
     }, [text, token])
     return (
         <View style={{ flex: 1 }}>

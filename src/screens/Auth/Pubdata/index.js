@@ -1,31 +1,19 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prettier/prettier */
-import React, { useState, useCallback, useRef } from 'react'
+import React, { useState, useCallback } from 'react'
 import { View, ScrollView, Text, TouchableOpacity, Alert, Image } from 'react-native'
 import { Button } from 'react-native-elements'
-import DateTimePickerModal from 'react-native-modal-datetime-picker'
-import LinearGradient from 'react-native-linear-gradient'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 import styles from './styles'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { TextInput } from 'react-native-paper'
-import colors from 'src/themes/colors'
-import authAPI from 'src/api/auth'
 import pubAPI from 'src/api/pub'
-import profileAPI from 'src/api/profile'
-import { setAuthToken } from 'src/actions/authToken'
-import { setProfile } from 'src/actions/profile'
-import { dateMonth } from 'src/helpers/text'
-import { TouchableWithoutFeedback } from 'react-native';
 import { Icon, Input } from '@ui-kitten/components';
 import { Button as ButtonUI } from '@ui-kitten/components';
-import moment from 'moment'
 import imagePickerCrop from 'src/helpers/imagePickerCrop'
 import imagePickerCropFromGal from 'src/helpers/imagePickerCropFromGal'
 import { Icon as IconElements } from 'react-native-elements'
-import { host } from '../../../api/instance'
 import { setMyPub } from '../../../actions/myPub'
 import { Card, Modal } from '@ui-kitten/components';
 const AlertIcon = (props) => (

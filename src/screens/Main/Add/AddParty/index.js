@@ -1,21 +1,16 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react-hooks/exhaustive-deps */
-
-import React, { useState, useCallback, useEffect, useRef } from 'react'
-import { View, Text, Image, TouchableOpacity, ScrollView, Alert } from 'react-native'
+import React, { useState, useCallback, useEffect } from 'react'
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
 import styles from './styles'
 import { Button } from 'react-native-elements'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Appbar, TextInput, Menu } from 'react-native-paper'
+import { Appbar } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { useSelector, useDispatch } from 'react-redux'
-// import Icon from 'react-native-vector-icons/FontAwesome5'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import pubAPI from 'src/api/pub'
-import moment from 'moment'
 import partyAPI from 'src/api/party'
-import { Icon, Input, Autocomplete, IndexPath, Layout, Select, SelectItem } from '@ui-kitten/components';
-import { dateMonth, dateTime } from 'src/helpers/text'
+import { Icon, Input, IndexPath, Select, SelectItem } from '@ui-kitten/components';
+import { dateTime } from 'src/helpers/text'
 import _ from 'lodash'
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content
@@ -35,11 +30,6 @@ const CorrectIcon = (props) => (
 const CalenderIcon = (props) => (
     <Icon {...props} name='calendar-outline' />
 );
-const showWarningPopup = (message) => Alert.alert(
-    'กรุณาตรวจสอบข้อมูล',
-    message,
-)
-
 export default AddParty = (props) => {
     const token = useSelector(state => state.authToken)
     const navigation = useNavigation()
@@ -106,7 +96,6 @@ export default AddParty = (props) => {
                 setDate(new Date())
                 setMembership('')
             })
-        // }
     }, [fromPub, pubNow, name, membership, date, placeData])
     const getPub = useCallback(() => {
         pubAPI.get()

@@ -7,7 +7,6 @@ export default StyleSheet.create({
     },
     contentContainerStyle: {
         flexGrow: 1,
-        // paddingBottom: 16,
     },
     mainText: {
         fontWeight: 'bold',
@@ -32,7 +31,6 @@ export default StyleSheet.create({
         marginTop: 18,
         marginHorizontal: 32,
         marginBottom: 22,
-        // backgroundColor: 'rgba(50, 16, 105, 0.5)',
 
         borderRadius: 5
     },
@@ -66,7 +64,6 @@ export default StyleSheet.create({
         paddingHorizontal: 0,
         marginHorizontal: 10,
         marginVertical: 10,
-        // backgroundColor:'red'
         borderColor: '#2E8AD8',
     }, image: {
         flex: 1,

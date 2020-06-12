@@ -10,7 +10,6 @@ export default StyleSheet.create({
     }, modal: {
         flex: 1,
         width: '100%',
-        // height: 325,
         backgroundColor: '#F2F1F0',
     },
     modalTop: {
@@ -26,7 +25,6 @@ export default StyleSheet.create({
         marginTop: 18,
         marginHorizontal: 32,
         marginBottom: 22,
-        // backgroundColor: 'rgba(255, 253, 253, 0.5)',
         borderRadius: 5
     },
     input: {

@@ -1,15 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native'
 
 export default StyleSheet.create({
-    // container: {
-    //     flex: 4,
-    //     // ...StyleSheet.absoluteFillObject,
-    //     justifyContent: 'flex-end',
-    //     alignItems: 'center',
-    // },
-    // map: {
-    //     ...StyleSheet.absoluteFillObject,
-    // },
     container: {
         display: "flex",
         flex: 1,
@@ -33,7 +24,6 @@ export default StyleSheet.create({
         backgroundColor: "#fff",
         padding: 10,
         display: "flex",
-        // justifyContent: "flex-start"
     },
     spinnerView: {
         flex: 1,

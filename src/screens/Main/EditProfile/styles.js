@@ -37,7 +37,6 @@ export default StyleSheet.create({
         paddingHorizontal: 0,
         marginHorizontal: 10,
         marginVertical: 10,
-        // backgroundColor:'red'
         borderColor: '#2E8AD8',
     }
 })

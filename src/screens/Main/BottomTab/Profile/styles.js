@@ -1,40 +1,14 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-    // picContainer:{
-    //     flex: 1,
-    //     alignItems:'center'
-    // },
-    // pic: {
-    //     width: 180,
-    //     height: 200
-    // },
-    // bottomContainer:{
-    //     flex:1,
-    //     justifyContent:'center',
-    //     alignItems: 'center'
-    // },
-    // input:{
-    //     width:100,
-    //     height:100
-    // }, modal: {
-    //     width: '100%',
-    //     height: 300,
-    //     backgroundColor: 'white',
-    // },
-    // modaltitle: {
-    //     fontSize: 18,
-    // },
     contentTitle: {
         fontFamily: 'Roboto',
-        // color: 'white',
         fontSize: 26,
         color: '#fff',
         textShadowOffset: { width: 2, height: 2 },
         textShadowRadius: 2,
         textShadowColor: '#000',
         fontFamily: 'System'
-        // height:40
     },
     container: {
         flex: 1,

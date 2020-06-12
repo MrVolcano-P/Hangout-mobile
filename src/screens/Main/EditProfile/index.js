@@ -1,18 +1,15 @@
-import React, { useState, useCallback, useEffect } from 'react'
-import { View, Text, Image, TouchableOpacity, ScrollView, Alert } from 'react-native'
+import React, { useState, useCallback } from 'react'
+import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import styles from './styles'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Appbar, TextInput, } from 'react-native-paper'
+import { Appbar, } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import { useSelector, useDispatch } from 'react-redux'
 import { dateMonth } from 'src/helpers/text'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
-import LinearGradient from 'react-native-linear-gradient'
 import { Button } from 'react-native-elements'
-import { TouchableWithoutFeedback } from 'react-native';
 import { Icon, Input } from '@ui-kitten/components';
 import { setProfile } from 'src/actions/profile'
-import moment from 'moment'
 import profileAPI from 'src/api/profile'
 const AlertIcon = (props) => (
     <Icon {...props} name='alert-circle-outline' />
@@ -93,11 +90,6 @@ export default EditProfile = () => {
             })
     }, [dispatch, name, email, firstName, lastName, dob, navigation, token])
 
-    useEffect(() => {
-        // setName(profile.name)
-        // setDOB(new Date(profile.DOB))
-    }, [profile])
-    console.log(new Date())
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
             <SafeAreaView style={styles.contentContaier}>

@@ -3,14 +3,12 @@ import { StyleSheet } from "react-native"
 export default StyleSheet.create({
     contentTitle: {
         fontFamily: 'Roboto',
-        // color: 'white',
         fontSize: 26,
         color: '#fff',
         textShadowOffset: { width: 2, height: 2 },
         textShadowRadius: 2,
         textShadowColor: '#000',
         fontFamily: 'System'
-        // height:40
     }, content: {
         flex: 1,
         width: '100%',

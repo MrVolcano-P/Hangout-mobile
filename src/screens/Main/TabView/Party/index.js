@@ -1,14 +1,12 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import { View, Text, FlatList, TouchableOpacity, ImageBackground, ScrollView, Image } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native'
 import styles from './styles'
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useNavigation} from '@react-navigation/native';
 import CardView from 'react-native-cardview';
 import Modal from 'react-native-modal';
 import { FlatGrid } from 'react-native-super-grid';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import partyAPI from 'src/api/party'
 import { useSelector } from 'react-redux';
 import _ from 'lodash'
@@ -65,7 +63,6 @@ export default Party = (props) => {
         setDate(currentDate);
     };
 
-    // var datafilter = party?.filter(data => data.placeID === pub.id)
     var datefilter = party?.filter(d => moment(parseInt(d.date)).format('DD-MM') === moment(date).format('DD-MM'))
 
     const getParty = useCallback(() => {
@@ -259,8 +256,6 @@ export default Party = (props) => {
                     }
                 </>
             }
-
-
         </>
     )
 }

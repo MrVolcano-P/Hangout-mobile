@@ -31,9 +31,7 @@ export default StyleSheet.create({
         color: '#BCBCBC',
     },
     formContainer: {
-        // height:150,
         marginBottom: 22,
-        // backgroundColor: 'rgba(50, 16, 105, 0.5)',
         borderRadius: 5
     },
     input: {

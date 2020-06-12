@@ -25,9 +25,6 @@ const ContentTitle = ({ title, style }) => (
     />
 );
 
-// Disable yellow box warning messages
-// console.disableYellowBox = true;
-
 class ChooseMap extends React.Component {
     constructor(props) {
         super(props);

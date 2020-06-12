@@ -11,14 +11,12 @@ export default StyleSheet.create({
         paddingBottom: 16,
     }, contentTitle: {
         fontFamily: 'Roboto',
-        // color: 'white',
         fontSize: 26,
         color: '#fff',
         textShadowOffset: { width: 2, height: 2 },
         textShadowRadius: 2,
         textShadowColor: '#000',
         fontFamily: 'System'
-        // height:40
     }, modalContainer: {
         flex: 1,
         justifyContent: 'center',
@@ -43,7 +41,6 @@ export default StyleSheet.create({
         marginTop: 18,
         marginHorizontal: 32,
         marginBottom: 22,
-        // backgroundColor: 'rgba(255, 253, 253, 0.5)',
         borderRadius: 5
     },
     input: {
@@ -59,7 +56,6 @@ export default StyleSheet.create({
         paddingHorizontal: 0,
         marginHorizontal: 10,
         marginVertical: 10,
-        // backgroundColor:'red'
         borderColor: '#2E8AD8',
     }
 })

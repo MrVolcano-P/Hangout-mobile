@@ -1,18 +1,13 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react'
-import { View, Text, Image, ImageBackground, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
+import React, { useState, useCallback, useEffect } from 'react'
+import { View, Text, ImageBackground, Dimensions } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Appbar, Searchbar, TextInput } from 'react-native-paper';
+import { Appbar } from 'react-native-paper';
 import styles from './styles'
-import { Button } from 'react-native-elements'
 import Party from '../TabView/Party'
 import Review from '../TabView/Review'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import Modal from 'react-native-modal';
-import { useDispatch, useSelector } from 'react-redux';
-import DateTimePickerModal from 'react-native-modal-datetime-picker'
-import moment from 'moment';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import { useSelector } from 'react-redux';
 import partyAPI from 'src/api/party'
 import reviewAPI from 'src/api/review'
 
@@ -53,7 +48,6 @@ export default Detail = (props) => {
         partyAPI.getById(pub.id)
             .then(res => {
                 setParty(res)
-                // console.log(res)
             })
             .catch(error => { })
     }, [])
@@ -61,7 +55,6 @@ export default Detail = (props) => {
     const getReview = useCallback(() => {
         reviewAPI.get(pub.id)
             .then(res => {
-                // console.log(res)
                 setReview(res)
             })
             .catch(error => { })
@@ -137,7 +130,6 @@ export default Detail = (props) => {
                     initialLayout={initialLayout}
                     style={styles.tabViewContainer}
                     lazy={true}
-                // tabBarPosition='bottom'
                 />
             </View>
         </>

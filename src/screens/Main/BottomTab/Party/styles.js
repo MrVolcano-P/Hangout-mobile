@@ -3,14 +3,12 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
     contentTitle: {
         fontFamily: 'Roboto',
-        // color: 'white',
         fontSize: 26,
         color: '#fff',
         textShadowOffset: { width: 2, height: 2 },
         textShadowRadius: 2,
         textShadowColor: '#000',
         fontFamily: 'System'
-        // height:40
     }, content: {
         flex: 1,
         width: '100%',
@@ -46,14 +44,12 @@ export default StyleSheet.create({
         backgroundColor: '#F2F1F0'
     }, nopartyTitle: {
         fontFamily: 'Roboto',
-        // color: 'white',
         fontSize: 26,
         color: '#000',
         textShadowOffset: { width: 1, height: 1 },
         textShadowRadius: 2,
         textShadowColor: '#fff',
         fontFamily: 'System'
-        // height:40
     }, editProfileImage: {
         marginTop: 12,
         width: '100%',

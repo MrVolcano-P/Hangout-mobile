@@ -1,21 +1,14 @@
-import React, { useMemo, useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { FlatList, View, Text, ImageBackground, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styles from './styles'
-import { Chip } from 'react-native-paper'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
-import { Avatar } from 'react-native-paper'
-import { fundComma, dateTime } from 'src/helpers/text'
 import { Appbar, Searchbar } from 'react-native-paper';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import CardView from 'react-native-cardview';
 import pubAPI from 'src/api/pub'
 import { setPub } from 'src/actions/pub'
-import SearchInput, { createFilter } from 'react-native-search-filter';
 import Spinner from 'react-native-spinkit'
-
-const KEYS_TO_FILTERS = ['title'];
 
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content

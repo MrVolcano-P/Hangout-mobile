@@ -20,7 +20,6 @@ export default StyleSheet.create({
     },
     item: {
         marginVertical: 4,
-        // marginHorizontal: 8,
     },
     hr: {
         marginHorizontal: 10,

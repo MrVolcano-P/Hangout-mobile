@@ -1,8 +1,7 @@
-import React, { useState, useCallback, useRef, Fragment } from 'react'
+import React, { useState, useCallback } from 'react'
 import { ScrollView, View, Text, Image, TouchableOpacity, Alert } from 'react-native'
 import styles from './styles'
 import { Button } from 'react-native-elements'
-import LinearGradient from 'react-native-linear-gradient'
 import authAPI from 'src/api/auth'
 import profileAPI from 'src/api/profile'
 import pubAPI from 'src/api/pub'
@@ -11,8 +10,6 @@ import { setAuthToken } from 'src/actions/authToken'
 import { setProfile } from 'src/actions/profile'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { TextInput } from 'react-native-paper'
-import colors from 'src/themes/colors'
 import { TouchableWithoutFeedback } from 'react-native';
 import { Icon, Input } from '@ui-kitten/components';
 import { setMyPub } from '../../../actions/myPub'
