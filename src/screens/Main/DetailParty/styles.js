@@ -29,7 +29,7 @@ export default StyleSheet.create({
         flex: 3,
         backgroundColor: '#8A93E2',
         justifyContent: 'center',
-        height: '100%'
+        height: '100%',
     }, title: {
         fontSize: 20,
         color: '#fff',
@@ -53,6 +53,7 @@ export default StyleSheet.create({
         textShadowRadius: 2,
         textShadowColor: '#000',
         fontFamily: 'System',
+        marginHorizontal:10
     },
     chat: {
         flex: 1,

@@ -58,6 +58,7 @@ export default function Login() {
             })
             .catch(error => {
                 console.log(error)
+                Alert.alert("Username or password not correct")
             })
             .finally(() => {
                 setIsLoadingLogin(false)
@@ -88,7 +89,7 @@ export default function Login() {
                     <Image
                         style={styles.logo}
                         resizeMode="contain"
-                        source={{ uri: 'https://reactjs.org/logo-og.png' }}
+                        source={require('src/assets/logo_square.png')}
                     />
                 </View>
                 <View style={styles.formContainer}>

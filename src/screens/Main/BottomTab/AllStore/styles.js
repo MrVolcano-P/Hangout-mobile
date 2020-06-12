@@ -30,8 +30,8 @@ export default StyleSheet.create({
         textShadowOffset: { width: 2, height: 2 },
         textShadowRadius: 2,
         textShadowColor: '#000',
-        fontFamily: 'System'
-        // fontWeight: 'bold',
+        fontFamily: 'System',
+        marginHorizontal:10
     }, image: {
         flex: 1,
         width: '100%',

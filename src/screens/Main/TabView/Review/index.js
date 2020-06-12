@@ -26,7 +26,7 @@ function Item({ item }) {
     console.log(item)
     const Header = (props) => (
         <View {...props} style={styles.commentHeader}>
-            <Avatar source={item.user.image === "" ? require('src/assets/no-avatar.jpg') : { uri: item.user.image }} />
+            <Avatar shape='square' source={item.user.image === "" ? require('src/assets/no-avatar.jpg') : { uri: item.user.image }} />
             <View style={styles.commentAuthorContainer}>
                 <Text category='s2'>{item.user.name}</Text>
                 <Text appearance='hint' category='c1'>{moment(item.date).startOf('seconds').fromNow()}</Text>

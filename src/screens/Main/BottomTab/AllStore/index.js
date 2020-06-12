@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import styles from './styles'
 import { Chip } from 'react-native-paper'
 import { useSelector, useDispatch } from 'react-redux'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { Avatar } from 'react-native-paper'
 import { fundComma, dateTime } from 'src/helpers/text'
 import { Appbar, Searchbar } from 'react-native-paper';
@@ -73,7 +73,11 @@ export default function AllStore() {
         getPub()
     }, [getPub])
 
-    const filteredPub = pub?.filter(createFilter(searchTerm, KEYS_TO_FILTERS))
+    useFocusEffect(
+        React.useCallback(() => {
+            getPub();
+        }, [getPub])
+    );
 
     return (
         <>
@@ -90,15 +94,15 @@ export default function AllStore() {
                 <View style={styles.container}>
                     <Searchbar
                         placeholder="Search"
-                        onChangeText={(text) => setSearchTerm(text)}
+                        onChangeText={setSearchTerm}
                         value={searchTerm}
                         style={styles.searchbar}
                     />
                     <FlatList
-                        data={filteredPub}
+                        data={searchTerm === '' ? pub : pub.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()))}
                         renderItem={({ item }) => <Item item={item} />}
                         keyExtractor={item => item.id}
-                        refreshing={filteredPub.networkStatus === 4}
+                        refreshing={pub.networkStatus === 4}
                         onRefresh={() => getPub()}
                     />
                 </View>

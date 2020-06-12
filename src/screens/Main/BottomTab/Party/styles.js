@@ -58,8 +58,14 @@ export default StyleSheet.create({
         marginTop: 12,
         width: '100%',
         height: 150,
-    },btn: {
+    }, btn: {
         backgroundColor: '#321069',
         marginHorizontal: 40
+    },
+    searchbar: {
+        marginVertical: 5,
+        borderRadius: 8,
+        marginHorizontal: 16,
+        height: 40
     }
 })

@@ -11,23 +11,26 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { ApplicationProvider, Layout, Text, IconRegistry } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import appTheme from './themes/colors'
+import { mapping, light as lightTheme } from '@eva-design/eva'
+const theme = { ...lightTheme, ...appTheme }
 export default () => {
   return (
     <ReduxProvider store={reduxStore.store}>
       <PersistGate loading={null} persistor={reduxStore.persistor}>
-        {/* <PaperProvider theme={paperTheme}> */}
-        <IconRegistry icons={EvaIconsPack} />
-        <ApplicationProvider {...eva} theme={eva.light}>
-          <StatusBar
-            translucent
-            backgroundColor="transparent"
-            barStyle="dark-content"
-          />
-          <SafeAreaProvider>
-            <Router />
-          </SafeAreaProvider>
-        </ApplicationProvider>
-        {/* </PaperProvider> */}
+        <PaperProvider theme={paperTheme}>
+          <IconRegistry icons={EvaIconsPack} />
+          <ApplicationProvider {...eva} theme={theme}>
+            <StatusBar
+              translucent
+              backgroundColor="transparent"
+              barStyle="dark-content"
+            />
+            <SafeAreaProvider>
+              <Router />
+            </SafeAreaProvider>
+          </ApplicationProvider>
+        </PaperProvider>
       </PersistGate>
     </ReduxProvider>
   );

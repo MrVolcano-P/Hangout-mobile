@@ -15,6 +15,9 @@ import { dateTime } from 'src/helpers/text'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { dateMonth } from 'src/helpers/text'
 import { FlatGrid } from 'react-native-super-grid'
+import getDirections from 'react-native-google-maps-directions'
+import { check, request, PERMISSIONS, RESULTS, openSettings } from 'react-native-permissions'
+import Geolocation from 'react-native-geolocation-service'
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content
         title={<Text style={style}> {title} </Text>}
@@ -24,12 +27,24 @@ const ContentTitle = ({ title, style }) => (
 export default DetailParty = (props) => {
     require('moment-countdown');
     const navigation = useNavigation()
-    const [pub, setPub] = useState([])
+    // const [pub, setPub] = useState([])
     const [data, setData] = useState(props.route.params.data)
     const [timeleft, setTimeleft] = useState(Math.floor((parseInt(data.date) - +new Date()) / 1000))
     const [finish, setFinish] = useState(false)
-    const place = _.find(pub, function (o) { return o.id === data.placeID })
-
+    const [coordinate, setCoordinate] = useState({})
+    const handleGetDirections = () => {
+        const direction = {
+            source: {
+                latitude: parseFloat(coordinate?.latitude),
+                longitude: parseFloat(coordinate?.longitude)
+            },
+            destination: {
+                latitude: parseFloat(data.pub.geolocation.latitude),
+                longitude: parseFloat(data.pub.geolocation.longtitude)
+            }
+        }
+        getDirections(direction)
+    }
     const getPub = useCallback(() => {
         pubAPI.get()
             .then((pubs) => {
@@ -37,10 +52,48 @@ export default DetailParty = (props) => {
             })
             .catch(error => { })
     }, [])
-
     useEffect(() => {
-        getPub()
+        // getPub()
+        check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION)
+            .then(result => {
+                if (result === RESULTS.GRANTED) {
+                    callLocation((position) => {
+                        setCoordinate(position.coords)
+                    })
+                }
+                if (result === RESULTS.DENIED) {
+                    request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION)
+                        .then(result => {
+                            if (result === RESULTS.GRANTED) {
+                                callLocation((position) => {
+                                    setCoordinate(position.coords)
+                                })
+                            }
+                            else if (result === RESULTS.DENIED) {
+                                alert('Please accept')
+                            }
+                            else if (result === RESULTS.BLOCKED) {
+                                alert('Thank you')
+                            }
+                        })
+                    return
+                }
+                if (result === RESULTS.BLOCKED) {
+                    alert('...')
+                }
+            })
     }, [getPub])
+    const callLocation = (callback) => {
+        Geolocation.getCurrentPosition(
+            (position) => {
+                callback(position)
+            },
+            (error) => {
+                console.log(error.code, error.message);
+            },
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+        )
+    }
     return (
         <>
             <SafeAreaView>
@@ -66,7 +119,7 @@ export default DetailParty = (props) => {
                     <Text style={styles.title3}>{data.pub.name}</Text>
                 </View>
                 <View style={[styles.contentView1, { backgroundColor: '#F8C441' }]}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleGetDirections()}>
                         <Text style={styles.title}>Go!</Text>
                     </TouchableOpacity>
                 </View>

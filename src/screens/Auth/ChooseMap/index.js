@@ -232,14 +232,14 @@ class ChooseMap extends React.Component {
                                 longitude : {this.state.region.longitude}
                             </Text>
                             <Button
+                                color="#F2F1F0"
+                                buttonStyle={styles.btn}
                                 title="PICK THIS LOCATION"
                                 onPress={this.back}
+                            
                             >
                             </Button>
                         </View>
-                        {/* <View style={styles.btnContainer}>
-
-                        </View> */}
                     </View>
                 </>
             );

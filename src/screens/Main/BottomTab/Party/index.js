@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react'
 import { View, Text, TouchableOpacity, ScrollView, FlatList, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styles from './styles'
-import { Appbar, TextInput } from 'react-native-paper'
+import { Appbar, TextInput, Searchbar } from 'react-native-paper'
 import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
@@ -63,6 +63,7 @@ export default PartyBottom = () => {
     const [date, setDate] = useState(new Date())
     const [show, setShow] = useState(false);
     const [party, setParty] = useState([])
+    const [searchTerm, setSearchTerm] = useState('')
     const getParty = useCallback(() => {
         console.log('fetch')
         partyAPI.getByUserID(token)
@@ -88,11 +89,6 @@ export default PartyBottom = () => {
         setShow(Platform.OS === 'ios');
         setDate(currentDate);
     };
-
-    // var datafilter = party?.filter(data => data.member.some(i => i?.username.includes(profile?.username)))
-
-    var datefilter = party?.filter(d => moment(parseInt(d.date)).format('DD-MM') === moment(date).format('DD-MM'))
-    console.log(token);
     return (
         <>
             {token === null ?
@@ -140,11 +136,17 @@ export default PartyBottom = () => {
                                 </View>
                                 :
                                 <View style={{ flex: 11 }}>
+                                    <Searchbar
+                                        placeholder="Search"
+                                        onChangeText={(text) => setSearchTerm(text)}
+                                        value={searchTerm}
+                                        style={styles.searchbar}
+                                    />
                                     <FlatList
-                                        data={party}
+                                        data={searchTerm === '' ? party : party.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()))}
                                         renderItem={({ item }) => <Item item={item} setData={(data) => setData(data)} setVisible={(value) => setVisible(value)} />}
                                         keyExtractor={item => item.id}
-                                        refreshing={datefilter.networkStatus === 4}
+                                        refreshing={party.networkStatus === 4}
                                         onRefresh={() => getParty()}
                                     />
                                 </View>

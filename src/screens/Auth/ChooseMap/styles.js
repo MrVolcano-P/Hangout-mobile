@@ -42,5 +42,7 @@ export default StyleSheet.create({
     },
     btnContainer: {
         flex: 1
+    }, btn: {
+        backgroundColor: '#321069',
     }
 });

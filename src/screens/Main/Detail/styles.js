@@ -32,5 +32,6 @@ export default StyleSheet.create({
         flex: 1,
         borderColor: 'black',
         borderWidth: 1,
+        padding: 4
     }
 });
