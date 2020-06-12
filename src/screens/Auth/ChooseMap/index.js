@@ -1,23 +1,14 @@
-import React, { useEffect, Component, useState } from 'react';
+import React from 'react';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'; // remove PROVIDER_GOOGLE import if not using Google Maps
 import Geolocation from 'react-native-geolocation-service';
 import { check, PERMISSIONS, RESULTS, request } from 'react-native-permissions';
 import { openSettings } from 'react-native-permissions';
-import { View, Text, TouchableOpacity, ScrollView, FlatList, Image } from 'react-native'
+import { View, Text, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styles from './styles'
-import { Appbar, TextInput, ActivityIndicator } from 'react-native-paper'
-import Modal from 'react-native-modal';
-import { useDispatch, useSelector } from 'react-redux';
-import DateTimePickerModal from 'react-native-modal-datetime-picker'
-import moment from 'moment';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import CardView from 'react-native-cardview';
+import { Appbar, ActivityIndicator } from 'react-native-paper'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
-import partyAPI from 'src/api/party';
 import { Button } from 'react-native-elements'
-import Spinner from 'react-native-spinkit'
-import Icon from 'react-native-vector-icons/MaterialIcons';
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content
         title={<Text style={style}> {title} </Text>}
@@ -233,7 +224,7 @@ class ChooseMap extends React.Component {
                                 buttonStyle={styles.btn}
                                 title="PICK THIS LOCATION"
                                 onPress={this.back}
-                            
+
                             >
                             </Button>
                         </View>

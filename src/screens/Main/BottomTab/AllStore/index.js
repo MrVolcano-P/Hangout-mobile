@@ -59,7 +59,6 @@ export default function AllStore() {
             })
             .catch(error => { })
     }, [])
-
     useEffect(() => {
         getPub()
     }, [getPub])
