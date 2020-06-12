@@ -149,7 +149,7 @@ export default function Register() {
             "image": photo,
             "role": "customer"
         }
-        console.log(data)
+        // console.log(data)
         authAPI.register(data)
             .then(({ token }) => {
                 dispatch(setAuthToken(token))

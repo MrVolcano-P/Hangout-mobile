@@ -75,6 +75,7 @@ export default function Profile() {
     }, [token])
     useEffect(() => {
     }, [])
+    console.log(profile)
     return (
         <>
             {
