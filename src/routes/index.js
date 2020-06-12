@@ -12,12 +12,12 @@ export default () => {
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                {
-                    !token ?
-                        <Stack.Screen name="Auth" component={Auth} />
-                        :
-                        <Stack.Screen name="Main" component={Main} />
-                }
+                {/* {
+                    token ? */}
+                {/* <Stack.Screen name="Auth" component={Auth} />
+                        : */}
+                <Stack.Screen name="Main" component={Main} />
+                {/* } */}
             </Stack.Navigator>
         </NavigationContainer>
     )
