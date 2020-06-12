@@ -34,9 +34,6 @@ const WrongIcon = (props) => (
 const CorrectIcon = (props) => (
     <Icon {...props} name='checkmark-outline' />
 );
-const CalenderIcon = (props) => (
-    <Icon {...props} name='calendar-outline' />
-);
 
 export default function Register() {
     const navigation = useNavigation()
@@ -68,6 +65,9 @@ export default function Register() {
         }
         catch (error) { }
     }, [])
+
+    const [longtitude, setLongtitude] = useState(0)
+    const [latitude, setLatitude] = useState(0)
     const callRegisterAPI = useCallback((photo) => {
         console.log({
             namePub,
@@ -78,23 +78,11 @@ export default function Register() {
             "name": namePub,
             "image": photo,
             "detail": detailPub,
+            "geolocation": {
+                "longtitude": longtitude.toString(),
+                "latitude": latitude.toString(),
+            }
         }
-        console.log(data)
-        // pubApi.register(data)
-        //     .then(({ token }) => {
-        //         dispatch(setAuthToken(token))
-        //         console.log(token)
-        //         profileAPI.get(token)
-        //             .then(res => {
-        //                 console.log(res)
-        //                 dispatch(setProfile(res))
-        //                 navigation.navigate('BottomTab')
-        //             })
-        //             .catch(err => console.log(err))
-        //     })
-        //     .finally(() => {
-        //         setIsLoadingRegister(false)
-        //     })
         pubAPI.create(data, token)
             .then(res => {
                 dispatch(setMyPub(res))
@@ -104,7 +92,7 @@ export default function Register() {
             .finally(() => {
                 setIsLoadingRegister(false)
             })
-    }, [dispatch, navigation, namePub, detailPub, token])
+    }, [dispatch, navigation, namePub, detailPub, longtitude, latitude, token])
     const cloudinaryUpload = () => {
         setIsLoadingRegister(true)
         const data = new FormData()
@@ -116,9 +104,6 @@ export default function Register() {
             body: data
         }).then(res => res.json()).
             then(data => {
-                console.log(data)
-                // setPhoto(data.secure_url)
-                console.log(data.secure_url)
                 callRegisterAPI(data.secure_url)
 
             }).catch(err => {
@@ -150,23 +135,16 @@ export default function Register() {
                     <Input
                         style={styles.input}
                         label='Detail'
-                        status={!detailPubFocus ? 'info' : 'danger'}
+                        status={'info'}
                         autoCapitalize='none'
                         placeholder='example'
                         value={detailPub}
                         onChangeText={setDetailPub}
                         onFocus={() => { setDetailPubFocus(true); }}
+                        multiline={true}
+                        textStyle={{ minHeight: 100 }}
                     />
                     {/* image */}
-                    {/* <TouchableOpacity onPress={changePubImage}>
-                        <View>
-                            <Image
-                                source={pubImage}
-                                style={styles.image}
-                            />
-                            <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' onPress={console.log('I was clicked')} />
-                        </View>
-                    </TouchableOpacity> */}
                     {pubImage === undefined || pubImage === '' ?
                         <TouchableOpacity onPress={changePubImage}>
                             <View>
@@ -188,6 +166,41 @@ export default function Register() {
                             </View>
                         </TouchableOpacity>
                     }
+                    {/* longtitude */}
+                    <Input
+                        style={styles.inputDate}
+                        label='Longtitude'
+                        status={'info'}
+                        autoCapitalize='none'
+                        value={longtitude.toString()}
+                        disabled
+                    />
+                    {/* latitude */}
+                    <Input
+                        style={styles.inputDate}
+                        label='Latitude'
+                        status={'info'}
+                        autoCapitalize='none'
+                        value={latitude.toString()}
+                        disabled
+                    />
+                    <View style={{ alignItems: 'center' }}>
+                        <Button
+                            title="Choose Map"
+                            raised
+                            containerStyle={styles.choosemapbtnContainer}
+                            color="#F2F1F0"
+                            buttonStyle={styles.btn}
+                            onPress={() => navigation.navigate('ChooseMap', {
+                                onGoBack: (lat, long) => {
+                                    setLatitude(lat)
+                                    setLongtitude(long)
+                                },
+                                lat: latitude,
+                                long: longtitude
+                            })}
+                        />
+                    </View>
                 </View>
                 <View style={styles.actionContainer}>
                     <Button
@@ -198,7 +211,7 @@ export default function Register() {
                         buttonStyle={styles.btn}
                         onPress={cloudinaryUpload}
                         loading={isLoadingRegister}
-                        disabled={!checkNamePub || pubImage === ''}
+                        disabled={!checkNamePub || pubImage === '' || longtitude === 0 || latitude === 0}
                     />
                     <TouchableOpacity
                         style={styles.backButton}

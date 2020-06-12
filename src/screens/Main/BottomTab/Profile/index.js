@@ -21,6 +21,7 @@ import Login from '../../../Auth/Login'
 import moment from 'moment'
 import { Button } from 'react-native-elements'
 import { host } from 'src/api/instance'
+import { setMyPub } from '../../../../actions/myPub'
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content
         title={<Text style={style}> {title} </Text>}
@@ -39,6 +40,7 @@ export default function Profile() {
             .finally(() => {
                 dispatch(setAuthToken(null))
                 dispatch(setProfile(null))
+                dispatch(setMyPub({}))
             })
         console.log('logout')
     }, [dispatch, token])

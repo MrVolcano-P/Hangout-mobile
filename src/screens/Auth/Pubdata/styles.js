@@ -42,11 +42,14 @@ export default StyleSheet.create({
         marginVertical: 5,
     },
     actionContainer: {
-        marginTop: 24,
+        marginTop: 16,
         alignItems: 'center'
     },
     registerButtonContainer: {
         width: '70%',
+    },
+    choosemapbtnContainer: {
+        width: '50%',
     },
     registerButton: {
         borderRadius: 999,
@@ -61,6 +64,8 @@ export default StyleSheet.create({
         fontSize: 12,
     }, btn: {
         backgroundColor: '#321069',
+    },
+    btnchoosemap: {
     },
     inputDate: {
         paddingHorizontal: 0,

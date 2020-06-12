@@ -77,16 +77,25 @@ export default function Register() {
         }
         catch (error) { }
     }, [])
+    const [longtitude, setLongtitude] = useState(parseFloat(mypub.geolocation.longtitude))
+    const [latitude, setLatitude] = useState(parseFloat(mypub.geolocation.latitude))
+    let pubID = mypub?.id
     const callUpdateAPI = useCallback((photo) => {
         console.log({
             namePub,
             photo,
             detailPub,
         })
+        console.log(pubID)
         const data = {
             "name": namePub,
             "image": photo,
             "detail": detailPub,
+            "geolocation": {
+                "longtitude": longtitude.toString(),
+                "latitude": latitude.toString(),
+            },
+            "pub_id": pubID,
         }
         console.log(data)
         pubAPI.updatepub(data, token)
@@ -97,7 +106,8 @@ export default function Register() {
             .finally(() => {
                 setIsLoadingRegister(false)
             })
-    }, [dispatch, navigation, namePub, detailPub, token])
+    }, [dispatch, navigation, namePub, detailPub, longtitude, latitude, token, pubID])
+    console.log(mypub)
     const cloudinaryUpload = () => {
         setIsLoadingRegister(true)
         if (change) {
@@ -118,6 +128,7 @@ export default function Register() {
             callUpdateAPI(pubImage)
         }
     }
+    console.log(mypub)
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
             <SafeAreaView>
@@ -166,10 +177,45 @@ export default function Register() {
                             <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' onPress={console.log('I was clicked')} />
                         </View>
                     </TouchableOpacity>
+                    {/* longtitude */}
+                    <Input
+                        style={styles.inputDate}
+                        label='Longtitude'
+                        status={'info'}
+                        autoCapitalize='none'
+                        value={longtitude.toString()}
+                        disabled
+                    />
+                    {/* latitude */}
+                    <Input
+                        style={styles.inputDate}
+                        label='Latitude'
+                        status={'info'}
+                        autoCapitalize='none'
+                        value={latitude.toString()}
+                        disabled
+                    />
+                    <View style={{ alignItems: 'center' }}>
+                        <Button
+                            title="Choose Map"
+                            raised
+                            containerStyle={styles.choosemapbtnContainer}
+                            color="#F2F1F0"
+                            buttonStyle={styles.btn}
+                            onPress={() => navigation.navigate('ChooseMap', {
+                                onGoBack: (lat, long) => {
+                                    setLatitude(lat)
+                                    setLongtitude(long)
+                                },
+                                lat: latitude,
+                                long: longtitude
+                            })}
+                        />
+                    </View>
                 </View>
                 <View style={styles.actionContainer}>
                     <Button
-                        title="CREATE"
+                        title="Update"
                         raised
                         containerStyle={styles.registerButtonContainer}
                         color="#F2F1F0"

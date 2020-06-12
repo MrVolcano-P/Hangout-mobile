@@ -42,7 +42,6 @@ export default StyleSheet.create({
         marginVertical: 5,
     },
     actionContainer: {
-        marginTop: 24,
         alignItems: 'center'
     },
     registerButtonContainer: {

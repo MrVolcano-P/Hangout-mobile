@@ -12,6 +12,7 @@ import DetailParty from '../screens/Main/DetailParty'
 import PubRegister from '../screens/Auth/PubRegister'
 import Pubdata from '../screens/Auth/Pubdata'
 import ChangePubData from '../screens/Main/ChangePubData'
+import ChooseMap from '../screens/Auth/ChooseMap'
 const Stack = createStackNavigator()
 
 export default () => {
@@ -23,6 +24,7 @@ export default () => {
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="PubRegister" component={PubRegister} />
             <Stack.Screen name="Pubdata" component={Pubdata} />
+            <Stack.Screen name="ChooseMap" component={ChooseMap} />
             <Stack.Screen name="EditProfile" component={EditProfile} />
             <Stack.Screen name="DetailParty" component={DetailParty} />
             <Stack.Screen name="AddParty" component={AddParty} />
