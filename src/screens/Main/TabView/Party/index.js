@@ -21,7 +21,6 @@ function Item({ item, setData, setVisible }) {
             onPress={() => {
                 setData(item)
                 setVisible(true)
-                console.log('click')
             }}
         >
             <View style={styles.item}>
@@ -66,7 +65,6 @@ export default Party = (props) => {
     var datefilter = party?.filter(d => moment(parseInt(d.date)).format('DD-MM') === moment(date).format('DD-MM'))
 
     const getParty = useCallback(() => {
-        console.log('fetch')
         partyAPI.getById(pub.id)
             .then(res => {
                 setParty(res)
@@ -79,7 +77,6 @@ export default Party = (props) => {
         setIsLoadingJoinParty(true)
         partyAPI.join(data.id, token)
             .then(() => {
-                console.log('join')
                 navigation.navigate('DetailParty', {
                     data: data
                 })

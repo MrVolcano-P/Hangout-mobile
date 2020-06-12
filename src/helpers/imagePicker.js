@@ -4,7 +4,6 @@ import ImagePicker from 'react-native-image-picker'
 export default () => new Promise(async (resolve, reject) => {
     if (await requestCameraPermission() && await requestWriteStoragePermission()) {
         ImagePicker.showImagePicker({}, (response) => {
-            console.log(response)
             if (response.uri) {
                 resolve(response)
             }

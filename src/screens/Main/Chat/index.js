@@ -8,7 +8,6 @@ export default PartyDetail = (props) => {
     const [text, setText] = useState('');
     const [messages, setMessages] = useState([]);
     const getParty = useCallback(() => {
-        // console.log('reload')
         partyAPI.getById(props.id)
             .then((party) => {
                 setMessages(party.message)

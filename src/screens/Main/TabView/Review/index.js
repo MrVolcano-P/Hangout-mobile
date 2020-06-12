@@ -12,7 +12,6 @@ import {
     Text,
 } from '@ui-kitten/components';
 function Item({ item }) {
-    console.log(item)
     const Header = (props) => (
         <View {...props} style={styles.commentHeader}>
             <Avatar shape='square' source={item.user.image === "" ? require('src/assets/no-avatar.jpg') : { uri: item.user.image }} />
@@ -38,10 +37,8 @@ export default Review = (props) => {
     const [review, setReview] = useState([])
     const [loading, setLoading] = useState(true)
     const getReview = useCallback(() => {
-        console.log('fetch')
         reviewAPI.get(pub.id)
             .then(res => {
-                // console.log(res)
                 setReview(res)
                 setLoading(false)
             })

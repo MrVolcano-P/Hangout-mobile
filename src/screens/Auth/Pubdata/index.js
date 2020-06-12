@@ -51,8 +51,6 @@ export default function Register() {
         setVisible(false)
         try {
             const image = await imagePickerCrop()
-            console.log(image.mime)
-            console.log(image.modificationDate)
             setPubImage({ uri: `data:${image.mime};base64,${image.data}` })
             const uri = image.path;
             const type = image.mime;
@@ -70,8 +68,6 @@ export default function Register() {
         setVisible(false)
         try {
             const image = await imagePickerCropFromGal()
-            console.log(image.mime)
-            console.log(image.modificationDate)
             setPubImage({ uri: `data:${image.mime};base64,${image.data}` })
             const uri = image.path;
             const type = image.mime;
@@ -89,11 +85,6 @@ export default function Register() {
     const [longtitude, setLongtitude] = useState(0)
     const [latitude, setLatitude] = useState(0)
     const callRegisterAPI = useCallback((photo) => {
-        console.log({
-            namePub,
-            photo,
-            detailPub,
-        })
         const data = {
             "name": namePub,
             "image": photo,
@@ -127,7 +118,6 @@ export default function Register() {
                 callRegisterAPI(data.secure_url)
 
             }).catch(err => {
-                console.log(err)
                 Alert.alert("An Error Occured While Uploading")
             })
     }
@@ -173,7 +163,7 @@ export default function Register() {
                                     source={require('src/assets/no-avatar.jpg')}
                                     style={styles.image}
                                 />
-                                <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' onPress={console.log('I was clicked')} />
+                                <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' />
                             </View>
                         </TouchableOpacity>
                         :
@@ -183,7 +173,7 @@ export default function Register() {
                                     source={pubImage}
                                     style={styles.image}
                                 />
-                                <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' onPress={console.log('I was clicked')} />
+                                <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' />
                             </View>
                         </TouchableOpacity>
                     }

@@ -82,7 +82,6 @@ export default AddParty = (props) => {
         setIsLoadingAddParty(true)
         partyAPI.add(id, data, token)
             .then(res => {
-                console.log('success')
                 navigation.navigate('DetailParty', {
                     data: res
                 })
@@ -112,8 +111,6 @@ export default AddParty = (props) => {
     useEffect(() => {
         getPub()
     }, [getPub])
-
-    console.log(date)
     return (
         <View style={{ flex: 1 }}>
             <SafeAreaView style={styles.contentContaier}>

@@ -58,8 +58,6 @@ export default function Register() {
         try {
             const image = await imagePickerCrop()
             setChange(true)
-            console.log(image.mime)
-            console.log(image.modificationDate)
             setPubImage({ uri: `data:${image.mime};base64,${image.data}` })
             const uri = image.path;
             const type = image.mime;
@@ -78,8 +76,6 @@ export default function Register() {
         try {
             const image = await imagePickerCropFromGal()
             setChange(true)
-            console.log(image.mime)
-            console.log(image.modificationDate)
             setPubImage({ uri: `data:${image.mime};base64,${image.data}` })
             const uri = image.path;
             const type = image.mime;
@@ -97,12 +93,6 @@ export default function Register() {
     const [latitude, setLatitude] = useState(parseFloat(mypub.geolocation.latitude))
     let pubID = mypub?.id
     const callUpdateAPI = useCallback((photo) => {
-        console.log({
-            namePub,
-            photo,
-            detailPub,
-        })
-        console.log(pubID)
         const data = {
             "name": namePub,
             "image": photo,
@@ -113,7 +103,6 @@ export default function Register() {
             },
             "pub_id": pubID,
         }
-        console.log(data)
         pubAPI.updatepub(data, token)
             .then(res => {
                 dispatch(setMyPub(res))
@@ -123,7 +112,6 @@ export default function Register() {
                 setIsLoadingRegister(false)
             })
     }, [dispatch, navigation, namePub, detailPub, longtitude, latitude, token, pubID])
-    console.log(mypub)
     const cloudinaryUpload = () => {
         setIsLoadingRegister(true)
         if (change) {
@@ -144,7 +132,6 @@ export default function Register() {
             callUpdateAPI(pubImage)
         }
     }
-    console.log(mypub)
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainerStyle}>
             <SafeAreaView>
@@ -190,7 +177,7 @@ export default function Register() {
                                 source={change ? pubImage : { uri: pubImage }}
                                 style={styles.image}
                             />
-                            <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' onPress={console.log('I was clicked')} />
+                            <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' />
                         </View>
                     </TouchableOpacity>
                     <Modal

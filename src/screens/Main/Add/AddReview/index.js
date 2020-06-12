@@ -50,7 +50,6 @@ export default AddReview = (props) => {
         }
         reviewAPI.add(pub.id, data, token)
             .then(() => {
-                console.log('success')
                 navigation.goBack()
             })
             .catch(error => {

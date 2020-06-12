@@ -52,11 +52,9 @@ export default function AllStore() {
     const [searchTerm, setSearchTerm] = useState('')
     const [loading, setLoading] = useState(true)
     const getPub = useCallback(() => {
-        console.log('fetch')
         pubAPI.get()
             .then(res => {
                 setPub(res)
-                // console.log(res)
                 setLoading(false)
             })
             .catch(error => { })

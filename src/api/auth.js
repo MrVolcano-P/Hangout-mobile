@@ -2,7 +2,6 @@ import api from './instance'
 
 export default {
     login: (data) => {
-        console.log(data)
         return api.post('/login', data)
             .then(response => response.data)
     },

@@ -65,7 +65,6 @@ export default PartyBottom = () => {
     const [party, setParty] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
     const getParty = useCallback(() => {
-        console.log('fetch')
         partyAPI.getByUserID(token)
             .then(res => {
                 setParty(res)

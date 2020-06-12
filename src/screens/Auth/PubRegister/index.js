@@ -98,10 +98,8 @@ export default function Register() {
     }, [setDOB, setIsDatePickerVisble])
 
     const checkUsernameAfterEnd = () => {
-        console.log('run')
         authAPI.checkUsernameAvailability(username)
             .then(res => {
-                console.log('res', res.is_Available)
                 setCheckUsernameAvailable(res.is_Available)
             })
             .catch(err => console.log(err))
@@ -128,16 +126,6 @@ export default function Register() {
     }, [])
     const callRegisterAPI = useCallback((photo) => {
         const parseDate = moment.utc(dob, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-        console.log({
-            username,
-            password,
-            name,
-            firstName,
-            lastName,
-            email,
-            parseDate,
-            photo,
-        })
         const data = {
             "username": username,
             "password": password,
@@ -149,14 +137,11 @@ export default function Register() {
             "image": photo,
             "role": "owner"
         }
-        console.log(data)
         authAPI.register(data)
             .then(({ token }) => {
                 dispatch(setAuthToken(token))
-                console.log(token)
                 profileAPI.get(token)
                     .then(res => {
-                        console.log(res)
                         dispatch(setProfile(res))
                         navigation.navigate('Pubdata')
                     })
@@ -325,7 +310,7 @@ export default function Register() {
                                         source={require('src/assets/no-avatar.jpg')}
                                         style={styles.image}
                                     />
-                                    <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' onPress={console.log('I was clicked')} />
+                                    <IconElements name={'edit'} containerStyle={styles.icon} color='#fff'  />
                                 </View>
                             </TouchableOpacity>
                             :
@@ -335,7 +320,7 @@ export default function Register() {
                                         source={profileImage}
                                         style={styles.image}
                                     />
-                                    <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' onPress={console.log('I was clicked')} />
+                                    <IconElements name={'edit'} containerStyle={styles.icon} color='#fff'  />
                                 </View>
                             </TouchableOpacity>
                         }

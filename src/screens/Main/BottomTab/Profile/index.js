@@ -35,7 +35,6 @@ export default function Profile() {
                 dispatch(setProfile(null))
                 dispatch(setMyPub({}))
             })
-        console.log('logout')
     }, [dispatch, token])
 
     const changeProfileImage = useCallback(async () => {
@@ -64,7 +63,6 @@ export default function Profile() {
                     }
                     profileAPI.updateImage(data, token)
                         .then(res => {
-                            console.log(res)
                             dispatch(setProfile(res))
                         })
                 }).catch(err => {
@@ -75,7 +73,6 @@ export default function Profile() {
     }, [token])
     useEffect(() => {
     }, [])
-    console.log(profile)
     return (
         <>
             {
@@ -116,7 +113,7 @@ export default function Profile() {
                                             source={require('src/assets/no-avatar.jpg')}
                                             style={{ width: 150, height: 150, borderRadius: 2 }}
                                         />
-                                        <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' onPress={console.log('I was clicked')} />
+                                        <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' />
                                     </View>
                                 </TouchableOpacity>
                                 :
@@ -126,7 +123,7 @@ export default function Profile() {
                                             source={profileImage}
                                             style={{ width: 150, height: 150, borderRadius: 2 }}
                                         />
-                                        <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' onPress={console.log('I was clicked')} />
+                                        <IconElements name={'edit'} containerStyle={styles.icon} color='#fff' />
                                     </View>
                                 </TouchableOpacity>
                             }

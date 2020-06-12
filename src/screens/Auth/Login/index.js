@@ -40,21 +40,17 @@ export default function Login() {
     const [isLoadingLogin, setIsLoadingLogin] = useState(false)
     const Login = useCallback(() => {
         setIsLoadingLogin(true)
-        console.log({ username, password })
         authAPI.login({ "username": username, "password": password })
             .then(({ token }) => {
                 dispatch(setAuthToken(token))
-                console.log(token)
                 profileAPI.get(token)
                     .then(res => {
-                        console.log(res)
                         dispatch(setProfile(res))
                         getMypubfunc(res, token)
                     })
                     .catch(err => console.log(err))
             })
             .catch(error => {
-                console.log(error)
                 Alert.alert("Username or password not correct")
             })
             .finally(() => {
@@ -64,7 +60,6 @@ export default function Login() {
     const getMypubfunc = (res, token) => {
         if (res.role === 'owner') {
             pubAPI.getmypub(token).then(res => {
-                console.log(res)
                 dispatch(setMyPub(res))
                 navigation.navigate('BottomTab')
             }).catch(err => console.log(err))

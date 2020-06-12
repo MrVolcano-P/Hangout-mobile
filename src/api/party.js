@@ -27,8 +27,6 @@ export default {
             .then(response => response.data)
     },
     //   sendMsg: (msg, id) => {
-    //         console.log(msg)
-    //         console.log(id)
     //         return api.put('/party/' + id, {
     //             message: msg
     //         })
