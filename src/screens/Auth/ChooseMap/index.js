@@ -11,13 +11,13 @@ import Modal from 'react-native-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import moment from 'moment';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import CardView from 'react-native-cardview';
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import partyAPI from 'src/api/party';
 import { Button } from 'react-native-elements'
 import Spinner from 'react-native-spinkit'
+import Icon from 'react-native-vector-icons/MaterialIcons';
 const ContentTitle = ({ title, style }) => (
     <Appbar.Content
         title={<Text style={style}> {title} </Text>}
@@ -215,10 +215,13 @@ class ChooseMap extends React.Component {
                                     />
                                 </MapView>
                             }
-
-                            {/* <View style={styles.mapMarkerContainer}>
-                            <Text style={{ fontFamily: 'fontawesome', fontSize: 42, color: "#ad1f1f" }}>&#xf041;</Text>
-                        </View> */}
+                            <View style={styles.mapMarkerContainer}>
+                                <Image
+                                    // style={styles.logo}
+                                    resizeMode="contain"
+                                    source={require('src/assets/location.png')}
+                                />
+                            </View>
                         </View>
                         <View style={styles.deatilSection}>
                             <Text style={{ fontSize: 16, fontWeight: "bold", fontFamily: "roboto", marginBottom: 20 }}>Move map for location</Text>
