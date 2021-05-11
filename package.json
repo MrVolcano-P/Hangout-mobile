@@ -29,7 +29,7 @@
     "emoji-utils": "^1.0.1",
     "formik": "^2.1.4",
     "formik-antd": "^2.0.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "moment": "^2.26.0",
     "moment-countdown": "^0.0.3",
     "react": "16.11.0",
